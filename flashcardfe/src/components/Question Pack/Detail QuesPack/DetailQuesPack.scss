@@ -1,0 +1,159 @@
+.DetailQuesPack-container {
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  color: #f0f0f0;
+}
+
+.DetailQP-content.container-fluid.col-9 {
+  margin-left: 40px;
+}
+
+/* Flexbox container for the author section */
+.DQP-author {
+  display: flex;
+  align-items: center;
+  gap: 15px; /* Space between image and text */
+  margin-top: 20px;
+}
+
+.DQP-author img {
+  width: 100px; /* Adjust as needed */
+  height: 100px; /* Adjust as needed */
+  border-radius: 50%; /* Optional: circular image */
+  object-fit: cover; /* Ensures image covers the container */
+}
+
+.DQP-author p {
+  font-size: 18px;
+  color: #fff; /* Adjust text color as needed */
+  margin: 0; /* Removes default margin */
+}
+
+/* New icons container */
+.DQP-author-icons {
+  display: flex;
+  gap: 10px; /* Space between icons */
+  margin-top: 10px; /* Space between author text and icons */
+}
+
+.DQP-author-icons .icon {
+  font-size: 24px; /* Adjust icon size as needed */
+  color: #fff; /* Adjust icon color as needed */
+  cursor: pointer;
+  transition: color 0.3s ease-in-out;
+}
+
+.DQP-author-icons .icon:hover {
+  color: #5d37f5; /* Hover color */
+}
+
+/* Flashcard styles */
+.flashcard-container {
+  position: relative;
+}
+
+.flashcard {
+  width: 200px;
+  height: 150px;
+  perspective: 1000px;
+  cursor: pointer;
+  opacity: 1;
+  transform: translateX(0);
+  transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out; /* Faster transition */
+  position: relative;
+}
+
+.flashcard.animating {
+  opacity: 0;
+  transform: translateX(100px);
+}
+
+.flashcard:not(.animating) {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.flashcard-front,
+.flashcard-back {
+  width: 100%;
+  height: 100%;
+  background: #f0f0f0;
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  backface-visibility: hidden;
+  position: absolute;
+}
+
+.flashcard-front {
+  transform: rotateY(0deg);
+  transition: transform 0.3s ease; /* Faster flip transition */
+}
+
+.flashcard-back {
+  transform: rotateY(180deg);
+  transition: transform 0.3s ease; /* Faster flip transition */
+}
+
+.flipped .flashcard-front {
+  transform: rotateY(180deg);
+}
+
+.flipped .flashcard-back {
+  transform: rotateY(360deg);
+}
+
+/* Footer styles */
+.flashcard-footer {
+  display: flex;
+  justify-content: center; 
+  align-items: center;
+  width: 90%;  
+  padding: 10px 20px; 
+  margin-top: 20px;  
+  border-bottom: 1px solid #333;
+}
+
+.flashcard-footer div {
+  cursor: pointer;
+  font-size: 30px;  
+  color: #5d37f5;  
+  transition: color 0.2s ease-in-out; /* Faster hover color change */
+}
+
+.flashcard-footer div:hover {
+  color: #3b29b8;  
+}
+
+/* Disabled state */
+.flashcard-footer div.disabled {
+  cursor: not-allowed;
+  color: #ccc; 
+  pointer-events: none;
+}
+
+.btn-hanldenextpre {
+  svg {
+    font-size: 42px;
+  }
+}
+
+/* Table styles */
+.DQ-table {
+  height: 92px;
+  width: 100%;
+  background-color: #2d1785;
+  margin-bottom: 8px;
+}
+
+/* Add any additional styles you need here */
+.DQP-author-icons {
+  width: 100%;
+}
+.DQP-author-icons{
+  display: flex;
+  justify-content: flex-end;
+}

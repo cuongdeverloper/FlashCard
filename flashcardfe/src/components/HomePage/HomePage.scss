@@ -1,0 +1,52 @@
+.HomePage-container{
+    display: flex;
+    height: 100vh; /* Full viewport height */
+    overflow: hidden; /* Prevent content overflow */
+}
+
+.Admin-SideBar {
+    flex-shrink: 0; /* Ensure sidebar doesn't shrink */
+    .pro-sidebar {
+        .pro-sidebar-inner {
+            .pro-sidebar-layout {
+                background-color: rgba(100, 101, 119, 0.2);
+            }
+        }
+    }
+}
+.Homepage-content {
+    flex: 1; /* Allow content to take up remaining space */
+    display: flex;
+    flex-direction: column;
+    max-width: 100%;
+    position: relative;
+    overflow-y: auto; /* Enable vertical scrolling if content overflows */
+    background: #121045;
+    .Header-container {
+        position: sticky;
+        top: 0;
+        z-index: 1;
+    }
+}
+
+.ManageUser-container {
+    flex: 1;
+    overflow-y: auto; /* Ensure content doesn't overflow */
+}
+
+.Manageuser-content {
+    flex: 1;
+    overflow-y: auto; /* Allow content to scroll */
+}
+
+.TableUserPagination-paginate {
+    display: flex;
+    justify-content: center;
+}
+
+.reactIconFa {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: -12px;
+}
