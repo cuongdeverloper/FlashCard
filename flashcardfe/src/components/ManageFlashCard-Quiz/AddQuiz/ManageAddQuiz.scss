@@ -1,0 +1,84 @@
+.ManageAddQuiz-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+
+    h1 {
+        text-align: center;
+        margin-bottom: 20px;
+        color: #2c3e50;
+    }
+
+    .question-block {
+        padding: 20px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        background-color: #f9f9f9;
+        margin-bottom: 30px;
+
+        .question-row {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 20px;
+
+            .form-control {
+                flex: 1;
+                font-size: 1rem;
+            }
+        }
+
+        .image-row {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+
+            .form-control-file {
+                margin-bottom: 10px;
+            }
+
+            .image-preview {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+
+                img {
+                    max-width: 100%;
+                    height: auto;
+                    border-radius: 4px;
+                }
+
+                .btn-danger {
+                    margin-top: 10px;
+                    padding: 5px 10px;
+                    font-size: 0.9rem;
+                }
+            }
+        }
+
+        .answers-row {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 20px;
+
+            .answer-input {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+
+                .form-check {
+                    margin-left: auto;
+                }
+            }
+        }
+    }
+
+    .btn {
+        font-size: 1rem;
+    }
+
+    hr {
+        margin: 20px 0;
+    }
+}

@@ -1,5 +1,5 @@
 import axios from 'axios';
-// import NProgress from 'nprogress';
+import NProgress from 'nprogress';
 import { isTokenExpired } from './decodeJWT.js';
 import { store } from '../redux/store';
 
@@ -24,10 +24,10 @@ instance.interceptors.request.use(function (config) {
         config.headers['Authorization'] = 'Bearer ' + accessToken;
     }
 
-    // NProgress.start();
+    NProgress.start();
     return config;
 }, function (error) {
-    // NProgress.done();
+    NProgress.done();
     return Promise.reject(error);
 });
 
@@ -36,7 +36,7 @@ instance.interceptors.response.use(function (response) {
     // NProgress.done();
     return response && response.data ? response.data : response;
 }, function (error) {
-    // NProgress.done();
+    NProgress.done();
 
     if (error.response) {
         // Handle specific error cases
