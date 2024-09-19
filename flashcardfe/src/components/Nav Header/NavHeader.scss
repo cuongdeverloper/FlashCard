@@ -117,3 +117,6 @@ a.dropdown-item.active {
         font-weight: bold;
     }
 }
+.dropdown-toggle::after {
+    display: none !important;
+}
