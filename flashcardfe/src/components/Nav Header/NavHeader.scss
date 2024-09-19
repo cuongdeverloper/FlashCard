@@ -10,7 +10,7 @@
     color: #fff !important;
 
     nav.bg-body-tertiary.navbar.navbar-expand-lg.navbar-light {
-        background-color: #343a40 !important;
+        background-color: #0A092D !important;
 
         .container-navbar a {
             color: #ffffffd8;
@@ -120,3 +120,36 @@ a.dropdown-item.active {
 .dropdown-toggle::after {
     display: none !important;
 }
+
+
+#mid-navbar-nav {
+    background-color: #2E3856;
+    border-radius: 10px;
+    height: 2.5rem;
+    padding: 0 15px;
+    box-shadow: 0px 0px 8px #2E3856;
+    display: flex;
+    align-items: center;
+    transition: box-shadow 0.3s ease; 
+}
+
+
+#mid-navbar-nav input {
+    background-color: transparent;
+    border: none;
+    font-size: 1.1rem;
+    width: 100%;
+    margin-left: 10px;
+    color: white; 
+}
+
+
+#mid-navbar-nav input:focus {
+    outline: none; 
+}
+
+#mid-navbar-nav:focus-within {
+    box-shadow: 0px 0px 1px 2px rgba(126, 126, 126, 0.8); 
+    transition: box-shadow 0.3s ease;
+}
+
