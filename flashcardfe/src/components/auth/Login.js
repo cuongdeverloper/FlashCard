@@ -6,7 +6,8 @@ import './Login.scss'
 import { LoginApi } from "../../service/ApiService";
 import { toast } from "react-toastify";
 import { doLogin } from "../../redux/action/userAction";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import Cookies from "js-cookie";
 const Login = () =>{
     const [isLoadingLogin, setIsLoadingLogin] = useState(false);
     const [email, setEmail] = useState('');
@@ -15,6 +16,12 @@ const Login = () =>{
     const [exist, setExist] = useState(false);
     const dispatch = useDispatch()
     const navigate = useNavigate();
+    const isAuthenticated = useSelector(state => state.user.isAuthenticated);
+    useEffect(() => {
+        if (isAuthenticated) {
+            navigate('/'); 
+        }
+    }, [isAuthenticated,navigate]);
     const checkExist = () => {
         setExist(email !== '' && password !== '' && confirm);
     };
@@ -27,6 +34,8 @@ const Login = () =>{
             let response = await LoginApi(email, password);
             if(response.errorCode === 0) {
                 toast.success(response.message);
+                Cookies.set('accessToken', response.data.access_token, { expires: 1 });
+                Cookies.set('refreshToken', response.data.refresh_token, { expires: 7 });
                 dispatch(doLogin(response));
 
                 navigate('/')
