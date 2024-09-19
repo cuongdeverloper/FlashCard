@@ -12,7 +12,10 @@ import './HomePage.scss'
 const HomePage = () => {
     const dispatch = useDispatch();
     const isAuthenticated = useSelector(state => state.user.isAuthenticated);
-
+    const userRole = useSelector(state => state);
+useEffect(()=>{
+    console.log('userR',userRole)
+},[])
     const isTokenExpired = (token) => {
         try {
             const decodedToken = jwtDecode(token);

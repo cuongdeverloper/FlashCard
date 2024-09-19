@@ -36,6 +36,7 @@ const Login = () =>{
                 toast.success(response.message);
                 Cookies.set('accessToken', response.data.access_token, { expires: 1 });
                 Cookies.set('refreshToken', response.data.refresh_token, { expires: 7 });
+                console.log('response',response)
                 dispatch(doLogin(response));
 
                 navigate('/')
