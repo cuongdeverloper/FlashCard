@@ -14,9 +14,9 @@ const flashcardSchema = new mongoose.Schema({
     required: true,
     validate: {
       validator: function(val) {
-        return val.length === 4;
+        return val.length > 1 && val.length <= 4; // Ensure between 2 and 4 answers
       },
-      message: 'There must be exactly 4 answers'
+      message: 'There must be between 2 and 4 answers'
     }
   },
   correctAnswers: {

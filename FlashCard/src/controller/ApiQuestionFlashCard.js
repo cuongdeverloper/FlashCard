@@ -38,13 +38,7 @@ const addQuestionFlashCard = (req, res) => {
       const parsedAnswers = typeof answers === 'string' ? JSON.parse(answers) : answers;
       const parsedCorrectAnswers = typeof correctAnswers === 'string' ? JSON.parse(correctAnswers) : correctAnswers;
 
-      // Validate the number of answers
-      if (parsedAnswers.length !== 4) {
-        return res.status(400).json({
-          errorCode: 5,
-          message: 'There must be exactly 4 answers'
-        });
-      }
+   
 
       // Create a new Flashcard
       const newFlashcard = new FlashCard({

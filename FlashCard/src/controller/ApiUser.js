@@ -61,4 +61,10 @@ const getUserFromUserId = async(req,res) =>{
     });
   }
 }
-module.exports = { addUser,getUserFromUserId };
+const getId = async(req,res) =>{
+  return res.status(200).json({
+    errorCode: 0,
+    data: req.user
+  });
+}
+module.exports = { addUser,getUserFromUserId,getId };
