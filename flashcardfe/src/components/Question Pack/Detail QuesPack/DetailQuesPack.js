@@ -32,7 +32,7 @@ const DetailQuesPack = () => {
       try {
         let response1 = await getUserByUserId(authorId);
         setDataAuthor(response1.data);  
-        console.log('author', response1.data);
+        console.log('author', response1);
       } catch (error) {
         console.error(error);
       }
@@ -82,7 +82,9 @@ const DetailQuesPack = () => {
         <DetailFormQA
           dataQuestion={dataQuestion}
           currentQuestionIndex={currentQuestionIndex}
-          isAnimating={isAnimating}  // Pass animation state
+          isAnimating={isAnimating} 
+          idAuthor = {idAuthor}
+          dataAuthor = {dataAuthor}
         />
         <div className="flashcard-footer">
           <div
@@ -119,14 +121,25 @@ const DetailQuesPack = () => {
         </div>
 
         <div className="DQ-table-container">
-          <h4>There are {dataQuestion.length} questions in this course.</h4>
-          {dataQuestion.length > 0 && dataQuestion.map((item, index) => (
-            <div key={index} className="DQ-table row">
-              <div className="col-4">{item.question}</div>
-              <div className="col-4">{item.answer}</div>
-            </div>
-          ))}
-        </div>
+  <h4>There are {dataQuestion.length} questions in this course.</h4>
+  {dataQuestion.length > 0 && dataQuestion.map((item, index) => (
+    <div key={index} className="DQ-table row">
+      <div className="col-4">{item.questionText}</div>
+      <div className="col-4">
+        {item.correctAnswers.map((answerIndex, idx) => (
+          <div key={answerIndex}>
+            {item.answers[answerIndex]}
+            {/* Line break after each correct answer */}
+            {idx < item.correctAnswers.length - 1 && <br />}
+          </div>
+        ))}
+      </div>
+     
+    </div>
+  ))}
+</div>
+
+
       </div>
     </div>
   );

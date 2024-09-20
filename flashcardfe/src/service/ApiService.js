@@ -83,14 +83,6 @@ const createQuestionToQuestionPackAPI = async (questionText, image, answers, cor
 
         formData.append('answers', JSON.stringify(answers)); 
         formData.append('correctAnswers', JSON.stringify(correctAnswers)); 
-
-        // const response = await axios.post('/question', formData, {
-        //     headers: {
-        //         'Authorization': `Bearer ${token}`,
-        //         'Content-Type': 'multipart/form-data'
-        //     }
-        // });
-        
         const response = await axios.post('/question', formData);
 
         return response;
@@ -100,4 +92,37 @@ const createQuestionToQuestionPackAPI = async (questionText, image, answers, cor
     }
 };
 
-export {LoginApi,loginWGoogle,decodeDataGoogle,getAllQuestionPack,getQuestionByQPId,getUserByUserId,createNewQuestionPackApi,getUserId,createQuestionToQuestionPackAPI}
+const getAllCommentFlashCard = async(commentId) =>{
+    return axios.get(`/questionpack/comments/${commentId}`)
+
+}
+const postComment = async (userId, commentContent, flashcardId, file) => {
+    try {
+        // Retrieve the token from cookies or local storage
+        const token = Cookies.get('accessToken'); // Adjust if using a different method
+
+        // Create a FormData object
+        const formData = new FormData();
+        formData.append('user', userId);
+        formData.append('content', commentContent);
+        formData.append('flashcardId', flashcardId);
+        if (file) formData.append('image', file);
+
+        const response = await axios.post('/questionpack/comments', formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data', // Set the correct content type
+                Authorization: `Bearer ${token}` // Attach token in Authorization header
+            }
+        });
+
+        return response.data; 
+        
+    } catch (error) {
+        console.error('Error posting comment:', error);
+        throw error;
+    }
+};
+export {LoginApi,loginWGoogle,decodeDataGoogle,getAllQuestionPack,
+    getQuestionByQPId,getUserByUserId,createNewQuestionPackApi,
+    getUserId,createQuestionToQuestionPackAPI,getAllCommentFlashCard,
+    postComment}

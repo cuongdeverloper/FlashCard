@@ -9,7 +9,6 @@ import ListQuestionPack from "./components/Question Pack/ListQuestionPack";
 import DetailQuesPack from "./components/Question Pack/Detail QuesPack/DetailQuesPack";
 import ManageFcQ from "./components/ManageFlashCard-Quiz/ManageFcQ";
 import ManageAddQuiz from "./components/ManageFlashCard-Quiz/AddQuiz/MangeAddQuiz";
-import PrivateRoute from "./components/routes/PrivateRoute";
 
 const Layout = () => {
     return (
@@ -27,19 +26,21 @@ const Layout = () => {
                 theme="light"
             />
             <BrowserRouter>
-            <Routes>
-                <Route path="/login" element={<Login />} />
-                <Route path="/logout" element={<Logout />} />
-                {/* Public routes */}
-                <Route path="/" element={<HomePage />}>
-                    <Route index element={<ListQuestionPack />} />
-                    <Route path="detailquespack/:packId" element={<DetailQuesPack />} />
-                </Route>
-                {/* Protected routes */}
-                <Route path="/crud-q" element={<PrivateRoute element={<ManageFcQ />} />} />
-                <Route path="/crud-q/add-q" element={<PrivateRoute element={<ManageAddQuiz />} />} />
-            </Routes>
-        </BrowserRouter>
+                <Routes>
+                    {/* Define the layout route with nested routes */}
+                    <Route path="/" element={<HomePage />}>
+                        <Route index element={<ListQuestionPack />} />
+                        <Route path="detailquespack/:packId" element={<DetailQuesPack />} />
+                        <Route path="/crud-q" element={<ManageFcQ />}>
+                            <Route path="add-q" element={<ManageAddQuiz />} />
+                        </Route>
+                    </Route>
+                    <Route path="/login" element={<Login />} />
+                    <Route path="/logout" element={<Logout />} />
+
+
+                </Routes>
+            </BrowserRouter>
         </Suspense>
     );
 };

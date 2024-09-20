@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const Comment = require('./Comment');
 
 const questionPackSchema = new mongoose.Schema({
   title: {
@@ -28,7 +29,8 @@ const questionPackSchema = new mongoose.Schema({
   imagePreview:{
     type:String
   },
-  createdAt: {
+
+   createdAt: {
     type: Date,
     default: Date.now
   }

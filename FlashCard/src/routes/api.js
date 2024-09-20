@@ -5,6 +5,7 @@ const { createRefreshToken, createJWT, decodeToken, checkAccessToken } = require
 const passport = require('passport');
 const { createQuestionPack, getAllQuestionPack } = require('../controller/ApiQuestionPack');
 const { addQuestionFlashCard, getQuestionFlashCardByQuestionPackId } = require('../controller/ApiQuestionFlashCard');
+const { addComment, getComments, getCommentById } = require('../controller/ApiComment');
 
 const routerApi = express.Router();
 
@@ -50,4 +51,11 @@ routerApi.get('/questionPack',getAllQuestionPack)
 routerApi.get('/questionPack/:questionPackId',getQuestionFlashCardByQuestionPackId)
 //Api questionFC
 routerApi.post('/question',addQuestionFlashCard)
+
+
+//Api comment
+routerApi.post('/questionpack/comments',checkAccessToken,addComment)
+routerApi.get('/questionpack/comments/:flashcardId',getComments)
+routerApi.get('/questionpack/comment/:commentId',getCommentById)
+
 module.exports = { routerApi };

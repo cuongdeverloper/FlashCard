@@ -1,5 +1,7 @@
 const mongoose = require('mongoose');
 
+
+// Define the flashcard schema
 const flashcardSchema = new mongoose.Schema({
   questionText: {
     type: String,
@@ -34,7 +36,10 @@ const flashcardSchema = new mongoose.Schema({
     ref: 'QuestionPack', 
     required: true
   },
- 
+  comments: [{ 
+    type: mongoose.Schema.Types.ObjectId, 
+    ref: 'Comment' 
+  }], // Added comments field
 }, { timestamps: true });
 
 module.exports = mongoose.model('Flashcard', flashcardSchema);

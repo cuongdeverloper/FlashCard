@@ -1,24 +1,23 @@
 // components/PrivateRoute.js
 import React from 'react';
-import { Navigate, useLocation } from 'react-router-dom';
+import { Route, Navigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import Cookies from 'js-cookie';
 
 const PrivateRoute = ({ element: Component, ...rest }) => {
     const isAuthenticated = useSelector(state => state.user.isAuthenticated);
-    const location = useLocation();
 
-    // Kiểm tra nếu có accessToken trong cookies
     const accessToken = Cookies.get('accessToken');
+
+    // Kiểm tra nếu token hợp lệ
     const isValidToken = !!accessToken && isAuthenticated;
 
-    if (!isValidToken) {
-        // Redirect to login page if not authenticated
-        return <Navigate to="/login" state={{ from: location }} replace />;
-    }
-
-    // Render the component if authenticated
-    return <Component {...rest} />;
+    return (
+        <Route
+            {...rest}
+            element={isValidToken ? Component : <Navigate to="/login" />}
+        />
+    );
 };
 
 export default PrivateRoute;
