@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import "./DetailFormQA.scss";
-import { getAllCommentFlashCard, postComment } from "../../../../service/ApiService";
+import { getAllCommentFlashCard, getUserByUserId, getUserId, postComment } from "../../../../service/ApiService";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom"; // Import useNavigate
 import { toast, ToastContainer } from "react-toastify"; // Import toast components
@@ -16,8 +16,9 @@ const DetailFormQA = (props) => {
   const [loadingComments, setLoadingComments] = useState(true);
   const [imageUrl, setImageUrl] = useState(''); 
   const [file, setFile] = useState(null);
+  const [userData,setUserData] = useState([])
   const isAuthenticated = useSelector(state => state.user.isAuthenticated); // Check user authentication status
-  const navigate = useNavigate(); // Initialize useNavigate
+  const navigate = useNavigate(); 
 
   useEffect(() => {
     setIsFlipped(false);
@@ -38,7 +39,15 @@ const DetailFormQA = (props) => {
       }
     }
   };
-
+  const getUserInfor = async () =>{
+    let response = await getUserId()
+    let userResponse = await getUserByUserId(response.data.id)
+    console.log('sa',userResponse.data)
+    setUserData(userResponse.data)
+  }
+useEffect(()=>{
+  getUserInfor()
+},[])
   useEffect(() => {
     fetchComments();
     const intervalId = setInterval(() => {
@@ -78,7 +87,7 @@ const DetailFormQA = (props) => {
     const flashcardId = dataQuestion[currentQuestionIndex]._id;
 
     try {
-      const result = await postComment(idAuthor, newComment, flashcardId, file);
+      const result = await postComment(userData._id, newComment, flashcardId, file);
       if (result) {
         console.log('Comment posted successfully:', result);
         await fetchComments();
@@ -141,7 +150,7 @@ const DetailFormQA = (props) => {
             <ul>
               {comments.map((comment) => (
                 <li key={comment._id}>
-                  <img src={dataAuthor.image} style={{height:'50px',width:'50px'}} alt="Author" />
+                  <img src={userData.image} style={{height:'50px',width:'50px'}} alt="Author" />
                   <p><strong>{comment.user.username}:</strong> {comment.content}</p>
                   {comment.image && (
                     <img
