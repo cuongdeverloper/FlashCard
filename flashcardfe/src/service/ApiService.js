@@ -20,19 +20,31 @@ const getUserByUserId = (userId) =>{
     return axios.get(`/user/${userId}`)
 }
 
+
 const getUserId = async () => {
     try {
         const token = Cookies.get('accessToken');
+
+        // Check if the token exists
+        if (!token) {
+            console.warn('No access token found');
+            return null; 
+        }
+
+        // Proceed with the API request if the token exists
         const response = await axios.get('/id', {
             headers: {
                 'Authorization': `Bearer ${token}`
             }
         });
+
         return response;
     } catch (error) {
-        throw error;
+        console.error('Error fetching user ID:', error);
+        return null;
     }
 };
+
 const createNewQuestionPackApi = async (title, description, teacher, semester, subject, imagePreviewQP) => {
     const token = Cookies.get('accessToken');
 
@@ -92,10 +104,9 @@ const createQuestionToQuestionPackAPI = async (questionText, image, answers, cor
     }
 };
 
-const getAllCommentFlashCard = async(commentId) =>{
-    return axios.get(`/questionpack/comments/${commentId}`)
-
-}
+const getAllCommentFlashCard = async (flashcardId, page = 1) => {
+    return axios.get(`/questionpack/comments/${flashcardId}?page=${page}`);
+  };
 const postComment = async (userId, commentContent, flashcardId, file) => {
     try {
         // Retrieve the token from cookies or local storage

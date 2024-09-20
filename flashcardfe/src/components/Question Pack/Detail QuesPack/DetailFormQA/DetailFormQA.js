@@ -1,14 +1,10 @@
 import { useState, useEffect } from "react";
 import "./DetailFormQA.scss";
-import { getAllCommentFlashCard, getUserByUserId, getUserId, postComment } from "../../../../service/ApiService";
-import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom"; // Import useNavigate
-import { toast, ToastContainer } from "react-toastify"; // Import toast components
-import 'react-toastify/dist/ReactToastify.css'; // Import toast styles
+import { getAllCommentFlashCard, postComment } from "../../../../service/ApiService";
 import Form from 'react-bootstrap/Form';
 
 const DetailFormQA = (props) => {
-  const { dataQuestion, currentQuestionIndex, isAnimating, idAuthor, dataAuthor } = props;
+  const { dataQuestion, currentQuestionIndex, isAnimating, idAuthor } = props;
   const [isFlipped, setIsFlipped] = useState(false);
   const [comments, setComments] = useState([]);
   const [newComment, setNewComment] = useState("");
@@ -16,9 +12,8 @@ const DetailFormQA = (props) => {
   const [loadingComments, setLoadingComments] = useState(true);
   const [imageUrl, setImageUrl] = useState(''); 
   const [file, setFile] = useState(null);
-  const [userData,setUserData] = useState([])
-  const isAuthenticated = useSelector(state => state.user.isAuthenticated); // Check user authentication status
-  const navigate = useNavigate(); 
+  const [page, setPage] = useState(1); // State for current page
+  const [totalPages, setTotalPages] = useState(1); // State for total pages
 
   useEffect(() => {
     setIsFlipped(false);
@@ -28,34 +23,23 @@ const DetailFormQA = (props) => {
     if (dataQuestion && dataQuestion[currentQuestionIndex]) {
       const flashcardId = dataQuestion[currentQuestionIndex]._id;
 
+      setLoadingComments(true);
       try {
-        const response = await getAllCommentFlashCard(flashcardId);
+        const response = await getAllCommentFlashCard(flashcardId, page);
         setComments(response.data || []);
+        setTotalPages(response.totalPages || 1); // Set total pages from response
       } catch (error) {
         console.error("Error fetching comments:", error.message);
-        setComments([]); 
+        setComments([]);
       } finally {
         setLoadingComments(false);
       }
     }
   };
-  const getUserInfor = async () =>{
-    let response = await getUserId()
-    let userResponse = await getUserByUserId(response.data.id)
-    console.log('sa',userResponse.data)
-    setUserData(userResponse.data)
-  }
-useEffect(()=>{
-  getUserInfor()
-},[])
+
   useEffect(() => {
     fetchComments();
-    const intervalId = setInterval(() => {
-      fetchComments();
-    }, 10000);
-
-    return () => clearInterval(intervalId);
-  }, [dataQuestion, currentQuestionIndex]);
+  }, [dataQuestion, currentQuestionIndex, page]);
 
   const handleCardClick = () => {
     setIsFlipped(!isFlipped);
@@ -76,27 +60,33 @@ useEffect(()=>{
   const handleCommentSubmit = async (e) => {
     e.preventDefault();
 
-    if (!isAuthenticated) {
-      toast.warning("Please log in to add a comment!");
-      navigate("/login"); 
-      return;
-    }
-
     if (!newComment.trim()) return;
 
     const flashcardId = dataQuestion[currentQuestionIndex]._id;
 
     try {
-      const result = await postComment(userData._id, newComment, flashcardId, file);
+      const result = await postComment(idAuthor, newComment, flashcardId, file);
       if (result) {
         console.log('Comment posted successfully:', result);
         await fetchComments();
-        setNewComment(""); // Clear the form input
-        setFile(null); // Clear the selected file
-        setImageUrl(''); // Clear the image URL
+        setNewComment("");
+        setFile(null);
+        setImageUrl('');
       }
     } catch (error) {
       console.error("Error posting comment:", error.message);
+    }
+  };
+
+  const handleNextPage = () => {
+    if (page < totalPages) {
+      setPage(page + 1);
+    }
+  };
+
+  const handlePrevPage = () => {
+    if (page > 1) {
+      setPage(page - 1);
     }
   };
 
@@ -150,7 +140,7 @@ useEffect(()=>{
             <ul>
               {comments.map((comment) => (
                 <li key={comment._id}>
-                  <img src={userData.image} style={{height:'50px',width:'50px'}} alt="Author" />
+                  <img src={comment.user.image} style={{ height: '50px', width: '50px' }} alt="Author" />
                   <p><strong>{comment.user.username}:</strong> {comment.content}</p>
                   {comment.image && (
                     <img
@@ -165,6 +155,18 @@ useEffect(()=>{
           ) : (
             <p>No comments yet.</p>
           )}
+
+          {/* Pagination Controls */}
+          <div className="pagination-controls">
+            <button onClick={handlePrevPage} disabled={page === 1}>
+              Previous
+            </button>
+            <span>Page {page} of {totalPages}</span>
+            <button onClick={handleNextPage} disabled={page === totalPages}>
+              Next
+            </button>
+          </div>
+
           <form onSubmit={handleCommentSubmit}>
             <textarea
               value={newComment}
@@ -191,8 +193,6 @@ useEffect(()=>{
           </form>
         </div>
       )}
-
-      <ToastContainer /> {/* Add ToastContainer to display the toast */}
     </div>
   );
 };

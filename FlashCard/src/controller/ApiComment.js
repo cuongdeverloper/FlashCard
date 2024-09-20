@@ -58,23 +58,28 @@ const addComment = async (req, res) => {
     });
   };
   
-
-const getComments = async (req, res) => {
+  const getComments = async (req, res) => {
     const { flashcardId } = req.params;
+    const { page = 1, limit = 4 } = req.query; 
 
     try {
         const comments = await Comment.find({ flashcard: flashcardId })
+            .skip((page - 1) * limit)  // Calculate offset
+            .limit(parseInt(limit))    // Limit number of results
             .populate({
                 path: 'user',
-                select: 'username'
+                select: 'username email phoneNumber gender image role type'
             });
 
-     
+        const totalComments = await Comment.countDocuments({ flashcard: flashcardId });
 
         res.status(200).json({
             errorCode: 0,
             message: 'Comments retrieved successfully',
-            data: comments
+            data: comments,
+            total: totalComments,
+            page: parseInt(page),
+            totalPages: Math.ceil(totalComments / limit)
         });
     } catch (error) {
         console.error('Error fetching comments:', error);
@@ -84,6 +89,8 @@ const getComments = async (req, res) => {
         });
     }
 };
+
+
 const getCommentById = async (req, res) => {
     const { commentId } = req.params;
 
