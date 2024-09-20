@@ -46,7 +46,7 @@ const ListQuestionPack = () => {
               <div className="row">
                 {group.map(pack => (
                   <div className="col-md-3" key={pack._id}>
-                    <Card style={{ width: '100%' }}>
+                    <Card style={{ width: '100%' ,backgroundColor:'#2E3856'}}>
                       <span className="img-container"
                         onClick={() => {
                           navigate(`/detailquespack/${pack._id}`, {
@@ -70,10 +70,10 @@ const ListQuestionPack = () => {
                             <span className="user-name">
                               {userNames[pack.teacher?._id] || 'Loading...'}
                             </span>
-                            <button className='btn btn-secondary btn-queslength'>{pack.questions.length} Terminology</button>
+                            <button className='btn btn-secondary btn-queslength'>{pack.questions.length} Flashcard</button>
                           </span>
                         </Card.Text>
-                        <Button variant="primary">Start</Button>
+                        
                       </Card.Body>
                     </Card>
                   </div>
