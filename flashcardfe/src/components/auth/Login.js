@@ -71,6 +71,13 @@ const Login = () =>{
         }
     };
     useEffect(() => {
+        if (isAuthenticated) {
+          const redirectUrl = localStorage.getItem('redirectAfterLogin');
+          localStorage.removeItem('redirectAfterLogin'); 
+          window.location.href = redirectUrl;
+        }
+      }, [isAuthenticated, navigate]);
+    useEffect(() => {
         checkExist();
     }, [email, password, confirm]);
     return(

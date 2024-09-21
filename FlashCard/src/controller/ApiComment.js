@@ -57,7 +57,6 @@ const addComment = async (req, res) => {
       }
     });
   };
-  
   const getComments = async (req, res) => {
     const { flashcardId } = req.params;
     const { page = 1, limit = 4 } = req.query; 
@@ -68,15 +67,18 @@ const addComment = async (req, res) => {
             .limit(parseInt(limit))    // Limit number of results
             .populate({
                 path: 'user',
-                select: 'username email phoneNumber gender image role type'
+                select: 'username email phoneNumber gender image role type' // include user ID here if necessary
             });
 
         const totalComments = await Comment.countDocuments({ flashcard: flashcardId });
-
+console.log(req.user)
         res.status(200).json({
             errorCode: 0,
             message: 'Comments retrieved successfully',
-            data: comments,
+            data: comments.map(comment => ({
+                ...comment.toObject(),
+                isOwner: comment.user.toString() === req.user.id // Check if the comment's user ID matches the current user's ID
+            })),
             total: totalComments,
             page: parseInt(page),
             totalPages: Math.ceil(totalComments / limit)
@@ -89,6 +91,7 @@ const addComment = async (req, res) => {
         });
     }
 };
+
 
 
 const getCommentById = async (req, res) => {
@@ -122,5 +125,50 @@ const getCommentById = async (req, res) => {
         });
     }
 };
+const deleteComment = async (req, res) => {
+  const { commentId } = req.params;
+  const userId = req.user.id; // Assuming you're storing user info in req.user
 
-module.exports = { addComment, getComments,getCommentById };
+  try {
+      const comment = await Comment.findById(commentId);
+
+      // Check if comment exists
+      if (!comment) {
+          return res.status(404).json({
+              errorCode: 1,
+              message: 'Comment not found'
+          });
+      }
+
+      // Check if the user is the owner of the comment
+      if (comment.user.toString() !== userId) {
+          return res.status(403).json({
+              errorCode: 2,
+              message: 'You are not authorized to delete this comment'
+          });
+      }
+
+      // Delete the comment
+      await Comment.findByIdAndDelete(commentId);
+
+      // Optionally: Remove the comment ID from the related flashcard
+      await FlashCard.findByIdAndUpdate(
+          comment.flashcard,
+          { $pull: { comments: commentId } }
+      );
+
+      return res.status(200).json({
+          errorCode: 0,
+          message: 'Comment deleted successfully'
+      });
+  } catch (error) {
+      console.error('Error deleting comment:', error);
+      return res.status(500).json({
+          errorCode: 6,
+          message: 'An error occurred while deleting the comment'
+      });
+  }
+};
+
+module.exports = { addComment, getComments, getCommentById, deleteComment };
+

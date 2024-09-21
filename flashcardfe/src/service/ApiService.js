@@ -105,12 +105,41 @@ const createQuestionToQuestionPackAPI = async (questionText, image, answers, cor
 };
 
 const getAllCommentFlashCard = async (flashcardId, page = 1) => {
-    return axios.get(`/questionpack/comments/${flashcardId}?page=${page}`);
-  };
-const postComment = async (userId, commentContent, flashcardId, file) => {
+    const token = Cookies.get('accessToken');
+
+    // Check if the token exists
+    if (!token) {
+        console.warn('No access token found');
+        // Optionally handle redirect or error
+        return null; // Or throw an error based on your use case
+    }
+
+    try {
+        const response = await axios.get(`/questionpack/comments/${flashcardId}?page=${page}`, {
+            
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
+        return response; // Return the data from the response
+    } catch (error) {
+        console.error('Error fetching comments:', error);
+        throw error; // Handle the error appropriately
+    }
+};
+
+  const postComment = async (userId, commentContent, flashcardId, file) => {
     try {
         // Retrieve the token from cookies or local storage
         const token = Cookies.get('accessToken'); // Adjust if using a different method
+
+        // If no token, open a new tab for login and save current URL for redirection
+        if (!token) {
+            const currentUrl = window.location.href; // Save the current URL
+            localStorage.setItem('redirectAfterLogin', currentUrl); // Store it in localStorage
+            window.open('/login', '_blank'); // Open login in a new tab/window
+            return;
+        }
 
         // Create a FormData object
         const formData = new FormData();
@@ -119,6 +148,7 @@ const postComment = async (userId, commentContent, flashcardId, file) => {
         formData.append('flashcardId', flashcardId);
         if (file) formData.append('image', file);
 
+        // Send the POST request with the token in the Authorization header
         const response = await axios.post('/questionpack/comments', formData, {
             headers: {
                 'Content-Type': 'multipart/form-data', // Set the correct content type
@@ -126,14 +156,41 @@ const postComment = async (userId, commentContent, flashcardId, file) => {
             }
         });
 
-        return response.data; 
-        
+        return response.data;
+
     } catch (error) {
-        console.error('Error posting comment:', error);
-        throw error;
+        if (error.response && error.response.status === 401) {
+            const currentUrl = window.location.href; // Save the current URL
+            localStorage.setItem('redirectAfterLogin', currentUrl); // Store it in localStorage
+            window.open('/login', '_blank'); // Open login in a new tab/window
+        } else {
+            console.error('Error posting comment:', error);
+            throw error;
+        }
     }
 };
+
+const deleteCommentApi = async (commentId) => {
+    const token = Cookies.get('accessToken');
+
+    if (!token) {
+        throw new Error('No token found');
+    }
+
+    try {
+        const response = await axios.delete(`/questionpack/comment/${commentId}`, {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
+        return response; 
+    } catch (error) {
+        console.error('Error deleting comment:', error);
+        throw error; 
+    }
+};
+
 export {LoginApi,loginWGoogle,decodeDataGoogle,getAllQuestionPack,
     getQuestionByQPId,getUserByUserId,createNewQuestionPackApi,
     getUserId,createQuestionToQuestionPackAPI,getAllCommentFlashCard,
-    postComment}
+    postComment,deleteCommentApi}

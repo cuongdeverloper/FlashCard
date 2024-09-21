@@ -5,7 +5,7 @@ const { createRefreshToken, createJWT, decodeToken, checkAccessToken } = require
 const passport = require('passport');
 const { createQuestionPack, getAllQuestionPack } = require('../controller/ApiQuestionPack');
 const { addQuestionFlashCard, getQuestionFlashCardByQuestionPackId } = require('../controller/ApiQuestionFlashCard');
-const { addComment, getComments, getCommentById } = require('../controller/ApiComment');
+const { addComment, getComments, getCommentById, deleteComment } = require('../controller/ApiComment');
 
 const routerApi = express.Router();
 
@@ -55,7 +55,8 @@ routerApi.post('/question',addQuestionFlashCard)
 
 //Api comment
 routerApi.post('/questionpack/comments',checkAccessToken,addComment)
-routerApi.get('/questionpack/comments/:flashcardId',getComments)
+routerApi.get('/questionpack/comments/:flashcardId',checkAccessToken,getComments)
 routerApi.get('/questionpack/comment/:commentId',getCommentById)
+routerApi.delete('/questionpack/comment/:commentId',checkAccessToken,deleteComment)
 
 module.exports = { routerApi };

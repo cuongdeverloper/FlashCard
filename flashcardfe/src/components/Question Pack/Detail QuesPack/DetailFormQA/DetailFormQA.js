@@ -1,19 +1,24 @@
 import { useState, useEffect } from "react";
+import { FaTrash, FaUpload } from "react-icons/fa"; // Import upload icon from react-icons
 import "./DetailFormQA.scss";
-import { getAllCommentFlashCard, postComment } from "../../../../service/ApiService";
+import { deleteCommentApi, getAllCommentFlashCard, postComment } from "../../../../service/ApiService";
 import Form from 'react-bootstrap/Form';
+import Cookies from 'js-cookie'; // Import Cookies for token management
+import { useNavigate } from 'react-router-dom'; // Import useNavigate for redirection
+import { toast } from "react-toastify";
 
 const DetailFormQA = (props) => {
   const { dataQuestion, currentQuestionIndex, isAnimating, idAuthor } = props;
+  const navigate = useNavigate(); // Initialize navigate
   const [isFlipped, setIsFlipped] = useState(false);
   const [comments, setComments] = useState([]);
   const [newComment, setNewComment] = useState("");
   const [showComments, setShowComments] = useState(false);
   const [loadingComments, setLoadingComments] = useState(true);
-  const [imageUrl, setImageUrl] = useState(''); 
+  const [imageUrl, setImageUrl] = useState('');
   const [file, setFile] = useState(null);
-  const [page, setPage] = useState(1); // State for current page
-  const [totalPages, setTotalPages] = useState(1); // State for total pages
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
 
   useEffect(() => {
     setIsFlipped(false);
@@ -27,7 +32,7 @@ const DetailFormQA = (props) => {
       try {
         const response = await getAllCommentFlashCard(flashcardId, page);
         setComments(response.data || []);
-        setTotalPages(response.totalPages || 1); // Set total pages from response
+        setTotalPages(response.totalPages || 1);
       } catch (error) {
         console.error("Error fetching comments:", error.message);
         setComments([]);
@@ -37,8 +42,30 @@ const DetailFormQA = (props) => {
     }
   };
 
+  const handleDeleteComment = async (commentId) => {
+    const token = Cookies.get('accessToken');
+
+    if (!token) {
+        localStorage.setItem('redirectAfterLogin', window.location.href);
+        navigate('/login');
+        return;
+    }
+
+    try {
+        let response = await deleteCommentApi(commentId);
+        if (response && response.errorCode === 0) {
+          toast.success(response.message)
+        }
+        await fetchComments();
+        console.log('Comment deleted successfully');
+    } catch (error) {
+        console.error('Error deleting comment:', error.message);
+    }
+};
+
   useEffect(() => {
-    fetchComments();
+    fetchComments(); // Initial fetch on mount
+
   }, [dataQuestion, currentQuestionIndex, page]);
 
   const handleCardClick = () => {
@@ -64,11 +91,19 @@ const DetailFormQA = (props) => {
 
     const flashcardId = dataQuestion[currentQuestionIndex]._id;
 
+    const token = Cookies.get('accessToken');
+    if (!token) {
+      // If not authenticated, redirect to login and store the current URL
+      localStorage.setItem('redirectAfterLogin', window.location.href);
+      navigate('/login');
+      return;
+    }
+
     try {
       const result = await postComment(idAuthor, newComment, flashcardId, file);
       if (result) {
         console.log('Comment posted successfully:', result);
-        await fetchComments();
+        await fetchComments(); // Refresh comments after posting
         setNewComment("");
         setFile(null);
         setImageUrl('');
@@ -149,6 +184,12 @@ const DetailFormQA = (props) => {
                       style={{ width: '100px', height: 'auto' }}
                     />
                   )}
+                  {comment.user._id === idAuthor && ( // Only show delete button if the user is the owner
+                    <button onClick={() => handleDeleteComment(comment._id)}>
+                      <FaTrash /> Delete
+                    </button>
+                  )}
+
                 </li>
               ))}
             </ul>
@@ -176,10 +217,15 @@ const DetailFormQA = (props) => {
               required
             />
             <Form.Group>
+              <label htmlFor="file-upload" className="file-upload-label">
+                <FaUpload size={24} style={{ cursor: 'pointer' }} />
+              </label>
               <Form.Control
+                id="file-upload"
                 type="file"
                 accept="image/*"
                 onChange={handleFileChange}
+                style={{ display: 'none' }}
               />
               {imageUrl && (
                 <img
