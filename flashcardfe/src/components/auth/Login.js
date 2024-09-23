@@ -25,9 +25,13 @@ const Login = () =>{
     const checkExist = () => {
         setExist(email !== '' && password !== '' && confirm);
     };
-    const redirectGoogleLogin = () => {
+
+    const redirectGoogleLogin = async () => {
+        setIsLoadingLogin(true);
         window.location.href = "http://localhost:6868/auth/google";
     };
+
+   
     const handleLogin = async () => {
         setIsLoadingLogin(true);
         try {
@@ -36,7 +40,6 @@ const Login = () =>{
                 toast.success(response.message);
                 Cookies.set('accessToken', response.data.access_token, { expires: 1 });
                 Cookies.set('refreshToken', response.data.refresh_token, { expires: 7 });
-                console.log('response',response)
                 dispatch(doLogin(response));
 
                 navigate('/')
@@ -44,7 +47,6 @@ const Login = () =>{
             else{
                 toast.error(response.error)
             }
-            console.log('API response:', response);
 
             
         } catch (error) {
@@ -73,8 +75,10 @@ const Login = () =>{
     useEffect(() => {
         if (isAuthenticated) {
           const redirectUrl = localStorage.getItem('redirectAfterLogin');
-          localStorage.removeItem('redirectAfterLogin'); 
+          if(redirectUrl) {
+            localStorage.removeItem('redirectAfterLogin'); 
           window.location.href = redirectUrl;
+          }
         }
       }, [isAuthenticated, navigate]);
     useEffect(() => {

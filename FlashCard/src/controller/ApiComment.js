@@ -15,7 +15,6 @@ const addComment = async (req, res) => {
       let imageUrl = '';
   
       if (req.file) {
-        // Retrieve the image URL from the file path provided by multer-storage-cloudinary
         imageUrl = req.file.path; // The path should be the URL provided by Cloudinary
       }
   
@@ -59,19 +58,19 @@ const addComment = async (req, res) => {
   };
   const getComments = async (req, res) => {
     const { flashcardId } = req.params;
-    const { page = 1, limit = 4 } = req.query; 
+    const { page = 1, limit = 4 } = req.query;
 
     try {
         const comments = await Comment.find({ flashcard: flashcardId })
+            .sort({ createdAt: -1 }) // Sort by createdAt in descending order
             .skip((page - 1) * limit)  // Calculate offset
             .limit(parseInt(limit))    // Limit number of results
             .populate({
                 path: 'user',
-                select: 'username email phoneNumber gender image role type' // include user ID here if necessary
+                select: 'username email phoneNumber gender image role type' 
             });
 
         const totalComments = await Comment.countDocuments({ flashcard: flashcardId });
-console.log(req.user)
         res.status(200).json({
             errorCode: 0,
             message: 'Comments retrieved successfully',
@@ -127,7 +126,7 @@ const getCommentById = async (req, res) => {
 };
 const deleteComment = async (req, res) => {
   const { commentId } = req.params;
-  const userId = req.user.id; // Assuming you're storing user info in req.user
+  const userId = req.user.id; 
 
   try {
       const comment = await Comment.findById(commentId);

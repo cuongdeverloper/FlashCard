@@ -29,7 +29,6 @@ const upsertSocialMedia = async (typeAcc, dataRaw) => {
                     image:dataRaw.photo,
                     socialLogin: true 
                 });
-                console.log('chich',dataUser)
                 await dataUser.save();
             }
         }

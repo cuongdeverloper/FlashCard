@@ -77,7 +77,10 @@ const NavHeader = () => {
                     Class
                   </NavDropdown.Item>
                   <NavDropdown.Item as={NavLink} to="/crud-q">
-                    FlashCard/Quiz
+                    FlashCard
+                  </NavDropdown.Item>
+                  <NavDropdown.Item as={NavLink} to="/quiz">
+                    Quiz
                   </NavDropdown.Item>
                   <NavDropdown.Item as={NavLink} to="/shop/product/ao-ba-lo">
                     Folder

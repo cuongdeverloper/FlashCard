@@ -29,7 +29,7 @@ import "./Sidebar.scss";
 const SideBar = (props) => {
   const { image } = props;
   // const{handleToggleSidebar} = props;
-  const [collapsed, setCollapsed] = useState(false);
+  const [collapsed, setCollapsed] = useState(true);
 
   const [toggled, setToggled] = useState(false);
   const [tfReactIcon, settfReactIcon] = useState(true);

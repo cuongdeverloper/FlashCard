@@ -6,6 +6,7 @@ import Form from 'react-bootstrap/Form';
 import Cookies from 'js-cookie'; // Import Cookies for token management
 import { useNavigate } from 'react-router-dom'; // Import useNavigate for redirection
 import { toast } from "react-toastify";
+import { useSelector } from "react-redux";
 
 const DetailFormQA = (props) => {
   const { dataQuestion, currentQuestionIndex, isAnimating, idAuthor } = props;
@@ -19,9 +20,11 @@ const DetailFormQA = (props) => {
   const [file, setFile] = useState(null);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
+  const userAcc = useSelector(state => state.user.account.id);
 
   useEffect(() => {
     setIsFlipped(false);
+    console.log('us',userAcc)
   }, [currentQuestionIndex]);
 
   const fetchComments = async () => {
@@ -32,6 +35,7 @@ const DetailFormQA = (props) => {
       try {
         const response = await getAllCommentFlashCard(flashcardId, page);
         setComments(response.data || []);
+        console.log(response.data)
         setTotalPages(response.totalPages || 1);
       } catch (error) {
         console.error("Error fetching comments:", error.message);
@@ -53,6 +57,7 @@ const DetailFormQA = (props) => {
 
     try {
         let response = await deleteCommentApi(commentId);
+        console.log(response)
         if (response && response.errorCode === 0) {
           toast.success(response.message)
         }
@@ -100,10 +105,10 @@ const DetailFormQA = (props) => {
     }
 
     try {
-      const result = await postComment(idAuthor, newComment, flashcardId, file);
+      const result = await postComment(userAcc, newComment, flashcardId, file);
       if (result) {
         console.log('Comment posted successfully:', result);
-        await fetchComments(); // Refresh comments after posting
+        await fetchComments(); 
         setNewComment("");
         setFile(null);
         setImageUrl('');
@@ -124,6 +129,9 @@ const DetailFormQA = (props) => {
       setPage(page - 1);
     }
   };
+ 
+
+
 
   if (!dataQuestion || !dataQuestion[currentQuestionIndex]) {
     return <p>Loading questions...</p>;
@@ -137,7 +145,7 @@ const DetailFormQA = (props) => {
         className={`flashcard ${isFlipped ? "flipped" : ""} ${isAnimating ? "animating" : ""}`}
         onClick={handleCardClick}
       >
-        <div className="flashcard-front">
+        <div className="flashcard-front" style={{display:'flex',flexDirection:'column'}}>
           <p>{currentQuestion.questionText}</p>
           {currentQuestion.questionImage && (
             <img
@@ -147,7 +155,7 @@ const DetailFormQA = (props) => {
             />
           )}
         </div>
-        <div className="flashcard-back">
+        <div className="flashcard-back" style={{display:'flex',flexDirection:'column'}}>
           {currentQuestion.correctAnswers && currentQuestion.correctAnswers.length > 0 ? (
             <ul>
               {currentQuestion.correctAnswers.map((correctAnswerIndex, idx) => (
@@ -184,7 +192,10 @@ const DetailFormQA = (props) => {
                       style={{ width: '100px', height: 'auto' }}
                     />
                   )}
-                  {comment.user._id === idAuthor && ( // Only show delete button if the user is the owner
+                   <strong className="comment-date">
+                     {new Date(comment.createdAt).toLocaleDateString()} {new Date(comment.createdAt).toLocaleTimeString()}
+                  </strong>
+                  {comment.user._id === userAcc && (
                     <button onClick={() => handleDeleteComment(comment._id)}>
                       <FaTrash /> Delete
                     </button>

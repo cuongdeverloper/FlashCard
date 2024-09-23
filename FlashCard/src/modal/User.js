@@ -19,6 +19,10 @@ const userSchema = new mongoose.Schema({
   image:{
     type:String
   },
+  balance: { 
+    type: Number,
+    default: 0
+  },
 }, { timestamps: true });
 
 

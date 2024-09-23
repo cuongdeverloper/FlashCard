@@ -21,6 +21,7 @@ const doLoginWGoogle = () => {
         
         try {
             let dataUser = await upsertSocialMedia(typeAcc, dataRaw);
+            // console.log('da',dataUser)
             return cb(null, dataUser);
         } catch (error) {
             return cb(error);

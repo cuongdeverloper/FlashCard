@@ -10,6 +10,7 @@ const loginWGoogle = () =>{
 const decodeDataGoogle = (token) =>{
     return axios.post(`/decode-token`, { token });
 }
+
 const getAllQuestionPack = () =>{
     return axios.get(`/questionPack`)
 }
@@ -183,6 +184,7 @@ const deleteCommentApi = async (commentId) => {
                 'Authorization': `Bearer ${token}`
             }
         });
+        console.log(response)
         return response; 
     } catch (error) {
         console.error('Error deleting comment:', error);

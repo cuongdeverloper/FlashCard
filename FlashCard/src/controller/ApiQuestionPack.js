@@ -91,4 +91,40 @@ const getAllQuestionPack = async (req, res) => {
     });
   }
 };
-module.exports = { createQuestionPack,getAllQuestionPack };
+const searchQuestionPack = async (req, res) => {
+  const { query } = req.query; 
+
+  try {
+  
+    const questionPacks = await QuestionPack.find({
+      $or: [
+        { title: { $regex: query, $options: 'i' } },    
+        { semester: { $regex: query, $options: 'i' } }, 
+        { subject: { $regex: query, $options: 'i' } }    
+      ]
+    })
+    .populate('teacher', 'name email') 
+    .populate('questions', 'content'); 
+
+ 
+    if (questionPacks.length === 0) {
+      return res.status(404).json({
+        errorCode: 1,
+        message: 'No question packs found'
+      });
+    }
+
+    return res.status(200).json({
+      errorCode: 0,
+      message: 'Question packs found',
+      data: questionPacks
+    });
+  } catch (err) {
+    console.error('Error searching question packs:', err);
+    return res.status(500).json({
+      errorCode: 6,
+      message: 'An error occurred while searching the question packs'
+    });
+  }
+};
+module.exports = { createQuestionPack,getAllQuestionPack,searchQuestionPack };

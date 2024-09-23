@@ -32,7 +32,7 @@ const Layout = () => {
                         <Route index element={<ListQuestionPack />} />
                         <Route path="detailquespack/:packId" element={<DetailQuesPack />} />
                         <Route path="/crud-q" element={<ManageFcQ />}>
-                            <Route path="add-q" element={<ManageAddQuiz />} />
+                            <Route element={<ManageAddQuiz />} />
                         </Route>
                     </Route>
                     <Route path="/login" element={<Login />} />

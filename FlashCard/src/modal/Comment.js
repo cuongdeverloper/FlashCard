@@ -1,3 +1,4 @@
+// models/Comment.js
 const mongoose = require('mongoose');
 
 const commentSchema = new mongoose.Schema({
@@ -11,13 +12,28 @@ const commentSchema = new mongoose.Schema({
     required: true
   },
   image: {
-    type: String // URL to the image if provided
+    type: String 
   },
-  flashcard: { // Updated field name
+  flashcard: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Flashcard', // Reference to Flashcard instead of QuestionPack
+    ref: 'Flashcard',
     required: true
   },
+  replies: [{ 
+    user: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User',
+      required: true
+    },
+    content: {
+      type: String,
+      required: true
+    },
+    createdAt: {
+      type: Date,
+      default: Date.now
+    }
+  }],
   createdAt: {
     type: Date,
     default: Date.now
