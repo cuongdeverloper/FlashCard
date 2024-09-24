@@ -10,13 +10,16 @@ const ResultSearchItem = () => {
     <div className="result-search-container">
       <h2>Search Results for "{query}"</h2>
       {results.length > 0 ? (
-        <ul>
+        <div className="result-list">
           {results.map((result, index) => (
-            <li key={index}>{result.title}</li>
+            <div key={index} className="result-item">
+              <a href="#" className="result-link">{result.title}</a>
+         
+            </div>
           ))}
-        </ul>
+        </div>
       ) : (
-        <p>No results found for "{query}".</p>
+        <p className="no-results">No results found for "{query}".</p>
       )}
     </div>
   );

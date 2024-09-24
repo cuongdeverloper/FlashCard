@@ -7,7 +7,7 @@
     padding-bottom: 100%; // Maintain aspect ratio
 
     @media (min-width: 994px) {
-        height: 180px; // Adjust this height as needed
+        height: 160px; // Giảm chiều cao nếu cần
     }
 
     img {
@@ -40,14 +40,22 @@
 }
 
 .card-list {
-    
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     height: 100%;
-    
+
+    .img-container {
+        flex: 0 0 120px; /* Giảm kích thước cố định cho hình ảnh */
+        margin-right: 1rem; /* Tạo khoảng cách giữa hình ảnh và nội dung card */
+        height: 120px; /* Giảm chiều cao của hình ảnh */
+        
+        img {
+            object-fit: cover; /* Cắt hình ảnh cho vừa với khung */
+            border-radius: 5px;
+        }
+    }
 
     .card-body {
-        
         flex-grow: 1;
         display: flex;
         flex-direction: column;
@@ -56,14 +64,27 @@
 
     .card-title {
         flex: 1; // Ensures that title takes available space
-        height: 60px; // Set a fixed height or min-height
+        height: 50px; // Giảm chiều cao hoặc đặt chiều cao tối thiểu
         overflow: hidden; // Ensure text does not overflow
         text-align: center; // Center-align text
         white-space: nowrap; // Prevents text from wrapping
         text-overflow: ellipsis; // Adds ellipsis when text overflows
     }
-   
 }
+
+.card {
+    flex: 1;
+    margin: 0 ; // Tạo khoảng cách giữa các thẻ
+    max-width: 100%; // Đảm bảo không bị thu hẹp
+    transition: transform 0.3s ease, border-bottom 0.3s ease; // Thêm hiệu ứng chuyển tiếp cho border-bottom
+    
+    &:hover {
+        transform: scale(1.05); // Hiệu ứng phóng to khi hover
+        border-bottom: 5px solid #007bff; // Đường viền dưới khi hover
+        cursor:pointer;
+    }
+}
+
 
 .price {
     display: flex;
@@ -75,7 +96,7 @@
         flex: 1; // Allows the username to grow and fill available space
         display: flex;
         align-items: center; // Vertically centers the text inside the span
-        height: 40px; // Set a specific height for both elements (you can adjust this)
+        height: 40px; // Set a specific height for both elements
         overflow: hidden; // Prevents text overflow if it is too long
         white-space: nowrap; // Ensures text doesn't wrap
         text-overflow: ellipsis; // Adds ellipsis when text overflows
@@ -86,7 +107,6 @@
     .btn-queslength {
         flex-shrink: 0; // Prevents the button from shrinking
         height: 40px;
-        width: auto; // Matches the height of the user-name
         display: flex;
         align-items: center; // Vertically centers text inside the button
         padding: 0 1rem; // Adjusts padding to make the button look balanced
@@ -140,40 +160,42 @@ h1 {
     margin-bottom: 2em;
     text-shadow: 0px 2px 0px rgba(0, 0, 0, 1);
 }
+
 /* ListQuestionPack.scss */
 .carousel-inner {
     .carousel-item {
-      .row {
-        display: flex;
-        justify-content: space-between;
-        padding: 50px;
-      }
-  
-      .col-md-4 {
-        margin-bottom: 1rem;
-      }
-    }
-  }
-  
-  .carousel-control-prev-icon,
-  .carousel-control-next-icon {
-    background-color: #000; /* Adjust as needed */
-  }
-  
-  /* Optional: Add responsiveness */
-  @media (max-width: 767.98px) {
-    .carousel-inner {
-      .carousel-item {
         .row {
-          display: block;
+            display: flex;
+            justify-content: space-between;
+            padding: 10px; // Giảm padding nếu cần
         }
-      }
-    }
-  }
   
-  .card-title.card-title.h5 {
+        .col-md-4 {
+            display: flex; // Đảm bảo các thẻ card hiển thị đúng
+            flex-direction: column; // Thẻ card sẽ dọc theo cột
+            margin-bottom: 1rem; // Tạo khoảng cách giữa các card
+        }
+    }
+}
+
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+    background-color: #000; /* Adjust as needed */
+}
+
+/* Optional: Add responsiveness */
+@media (max-width: 767.98px) {
+    .carousel-inner {
+        .carousel-item {
+            .row {
+                display: block;
+            }
+        }
+    }
+}
+
+.card-title.card-title.h5 {
     height: 48px;
     overflow: hidden;
     color: #ddd;
 }
- 
