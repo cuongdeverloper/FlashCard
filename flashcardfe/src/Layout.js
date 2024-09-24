@@ -9,6 +9,7 @@ import ListQuestionPack from "./components/Question Pack/ListQuestionPack";
 import DetailQuesPack from "./components/Question Pack/Detail QuesPack/DetailQuesPack";
 import ManageFcQ from "./components/ManageFlashCard-Quiz/ManageFcQ";
 import ManageAddQuiz from "./components/ManageFlashCard-Quiz/AddQuiz/MangeAddQuiz";
+import ResultSearchItem from "./components/Page search item/ResultSearchItem";
 
 const Layout = () => {
     return (
@@ -33,6 +34,9 @@ const Layout = () => {
                         <Route path="detailquespack/:packId" element={<DetailQuesPack />} />
                         <Route path="/crud-q" element={<ManageFcQ />}>
                             <Route element={<ManageAddQuiz />} />
+                        </Route>
+                        <Route path="search" element={<ResultSearchItem/>}>
+                            
                         </Route>
                     </Route>
                     <Route path="/login" element={<Login />} />

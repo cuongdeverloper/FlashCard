@@ -224,9 +224,19 @@ const postReplyComment = async (commentId, userId, replyContent) => {
         }
     }
 };
-
+const searchItems = async (query) => {
+    try {
+        const response = await axios.get(`/questionPacks/search`, {
+            params: { query: query }, 
+        });
+        return response
+    } catch (error) {
+        console.error('Error fetching search results:', error);
+        throw error;
+    }
+};
 
 export {LoginApi,loginWGoogle,decodeDataGoogle,getAllQuestionPack,
     getQuestionByQPId,getUserByUserId,createNewQuestionPackApi,
     getUserId,createQuestionToQuestionPackAPI,getAllCommentFlashCard,
-    postComment,deleteCommentApi,postReplyComment}
+    postComment,deleteCommentApi,postReplyComment,searchItems}

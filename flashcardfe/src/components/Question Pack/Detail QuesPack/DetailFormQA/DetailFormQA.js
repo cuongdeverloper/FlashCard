@@ -129,11 +129,11 @@ const DetailFormQA = (props) => {
       const result = await postReplyComment(commentId,userAcc, reply[commentId]);
 
       console.log('cac',result)
-      // if (result && result.errorCode === 0) {
-      //   toast.success("Reply posted successfully");
-      //   setReply({ ...reply, [commentId]: "" }); // Clear reply input for this comment
-      //   await fetchComments(); // Refresh the comments to show the new reply
-      // }
+      if (result && result.errorCode === 0) {
+
+        setReply({ ...reply, [commentId]: "" }); // Clear reply input for this comment
+        await fetchComments(); // Refresh the comments to show the new reply
+      }
     } catch (error) {
       console.error("Error posting reply:", error.message);
     }

@@ -92,10 +92,10 @@ const getAllQuestionPack = async (req, res) => {
   }
 };
 const searchQuestionPack = async (req, res) => {
-  const { query } = req.query; 
+  const { query } = req.query;
 
   try {
-  
+    // Perform the search query with regex on multiple fields
     const questionPacks = await QuestionPack.find({
       $or: [
         { title: { $regex: query, $options: 'i' } },    
@@ -104,21 +104,24 @@ const searchQuestionPack = async (req, res) => {
       ]
     })
     .populate('teacher', 'name email') 
-    .populate('questions', 'content'); 
+    .populate('questions', 'content');
 
- 
+    // If no results are found, return a success response with an empty array
     if (questionPacks.length === 0) {
-      return res.status(404).json({
-        errorCode: 1,
-        message: 'No question packs found'
+      return res.status(200).json({
+        errorCode: 0,
+        message: 'No question packs found',
+        data: [] // Return an empty array
       });
     }
 
+    // Return the found question packs
     return res.status(200).json({
       errorCode: 0,
       message: 'Question packs found',
       data: questionPacks
     });
+
   } catch (err) {
     console.error('Error searching question packs:', err);
     return res.status(500).json({
@@ -127,4 +130,5 @@ const searchQuestionPack = async (req, res) => {
     });
   }
 };
+
 module.exports = { createQuestionPack,getAllQuestionPack,searchQuestionPack };
