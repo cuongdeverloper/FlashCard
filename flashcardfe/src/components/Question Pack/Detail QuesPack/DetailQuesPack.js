@@ -32,7 +32,6 @@ const DetailQuesPack = () => {
       try {
         let response1 = await getUserByUserId(authorId);
         setDataAuthor(response1.data);  
-        console.log('author', response1);
       } catch (error) {
         console.error(error);
       }

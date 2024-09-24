@@ -24,20 +24,21 @@ const HomePage = () => {
         }
     };
     useEffect(() => {
-        // Check if the user cookie exists
-        const userCookie = Cookies.get('user');
-        const accessToken = Cookies.get('accessToken')
-        const refreshToken = Cookies.get('refreshToken')
-        if (userCookie) {
-            const userData = JSON.parse(decodeURIComponent(userCookie));
-            console.log(userData)
-            // dispatch(doLogin({ ...userData, isAuthenticated: true })); // Dispatch action to set user data
-            // navigate('/'); 
-            dispatch(doLoginWGoogle(userData,accessToken,refreshToken))
-            Cookies.remove('user');
+        const accessToken = Cookies.get('accessToken');
+        const refreshToken = Cookies.get('refreshToken');
 
+        // If accessToken is missing or expired, log out
+        if (!accessToken || isTokenExpired(accessToken)) {
+            dispatch(doLogout());
+        } else {
+            const userCookie = Cookies.get('user');
+            if (userCookie) {
+                const userData = JSON.parse(decodeURIComponent(userCookie));
+                dispatch(doLoginWGoogle(userData, accessToken, refreshToken));
+                Cookies.remove('user');
+            }
         }
-    }, [dispatch,navigate]);
+    }, [dispatch, navigate]);
     useEffect(() => {
         const initializeHomePage = async () => {
             // await decodeTokenDataGoogle();

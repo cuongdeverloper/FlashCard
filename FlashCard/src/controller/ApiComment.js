@@ -168,6 +168,36 @@ const deleteComment = async (req, res) => {
       });
   }
 };
+const addReply = async (req, res) => {
+  const { commentId } = req.params;
+  const { user, content } = req.body; 
 
-module.exports = { addComment, getComments, getCommentById, deleteComment };
+  if (!user || !content) {
+    return res.status(400).json({
+      errorCode: 5,
+      message: 'User and content are required fields'
+    });
+  }
 
+  try {
+    const reply = { user, content }; 
+    await Comment.findByIdAndUpdate(
+      commentId,
+      { $push: { replies: reply } },
+      { new: true }
+    );
+
+    return res.status(201).json({
+      errorCode: 0,
+      message: 'Reply added successfully'
+    });
+  } catch (error) {
+    console.error('Error adding reply:', error);
+    return res.status(500).json({
+      errorCode: 6,
+      message: 'An error occurred while adding the reply'
+    });
+  }
+};
+
+module.exports = { addComment, getComments, getCommentById, deleteComment, addReply };

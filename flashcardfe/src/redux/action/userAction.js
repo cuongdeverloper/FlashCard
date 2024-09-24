@@ -21,7 +21,6 @@ export const doLogin = (response) => {
 };
 
 export const doLoginWGoogle = (response,access_token,refresh_token) =>{
-    console.log('Login response:', response); 
     return {
         type: Fetch_User_Success_Google,
         payload: {

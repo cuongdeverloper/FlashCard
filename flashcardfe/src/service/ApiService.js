@@ -192,7 +192,41 @@ const deleteCommentApi = async (commentId) => {
     }
 };
 
+const postReplyComment = async (commentId, userId, replyContent) => {
+    const token = Cookies.get('accessToken');
+
+    if (!token) {
+        const currentUrl = window.location.href; 
+        localStorage.setItem('redirectAfterLogin', currentUrl); 
+        window.open('/login', '_blank'); 
+        return;
+    }
+
+    try {
+        const response = await axios.post(`/questionpack/comment/reply/${commentId}`, {
+            user: userId,
+            content: replyContent
+        }, {
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json' // Set content type to JSON
+            }
+        });
+
+        return response; // Return the response data instead of the whole response object
+    } catch (error) {
+        if (error.response) {
+            console.error('Error posting reply:', error.response.data.message || error.message);
+            throw new Error(error.response.data.message || 'Failed to post reply');
+        } else {
+            console.error('Error posting reply:', error);
+            throw new Error('An unexpected error occurred');
+        }
+    }
+};
+
+
 export {LoginApi,loginWGoogle,decodeDataGoogle,getAllQuestionPack,
     getQuestionByQPId,getUserByUserId,createNewQuestionPackApi,
     getUserId,createQuestionToQuestionPackAPI,getAllCommentFlashCard,
-    postComment,deleteCommentApi}
+    postComment,deleteCommentApi,postReplyComment}

@@ -38,7 +38,7 @@ const userReducer = (state = INITIAL_STATE, action) => {
                     access_token: action.payload.access_token,
                     email: action.payload.email,
                     refresh_token: action.payload.refresh_token,
-                    username: action.payload.name,
+                    username: action.payload.username,
                     role: action.payload.role,
                     phoneNumber: action.payload.phoneNumber,
                     gender: action.payload.gender

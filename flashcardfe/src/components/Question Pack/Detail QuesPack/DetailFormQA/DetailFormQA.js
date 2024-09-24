@@ -1,16 +1,16 @@
 import { useState, useEffect } from "react";
-import { FaTrash, FaUpload } from "react-icons/fa"; // Import upload icon from react-icons
+import { FaTrash, FaUpload, FaReply } from "react-icons/fa"; // Add FaReply icon
 import "./DetailFormQA.scss";
-import { deleteCommentApi, getAllCommentFlashCard, postComment } from "../../../../service/ApiService";
+import { deleteCommentApi, getAllCommentFlashCard, postComment, postReplyComment } from '../../../../service/ApiService'
 import Form from 'react-bootstrap/Form';
-import Cookies from 'js-cookie'; // Import Cookies for token management
-import { useNavigate } from 'react-router-dom'; // Import useNavigate for redirection
+import Cookies from 'js-cookie';
+import { useNavigate } from 'react-router-dom';
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
 
 const DetailFormQA = (props) => {
-  const { dataQuestion, currentQuestionIndex, isAnimating, idAuthor } = props;
-  const navigate = useNavigate(); // Initialize navigate
+  const { dataQuestion, currentQuestionIndex, isAnimating } = props;
+  const navigate = useNavigate();
   const [isFlipped, setIsFlipped] = useState(false);
   const [comments, setComments] = useState([]);
   const [newComment, setNewComment] = useState("");
@@ -20,22 +20,26 @@ const DetailFormQA = (props) => {
   const [file, setFile] = useState(null);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
+  const [reply, setReply] = useState({}); // State to track replies for each comment
+  const [showReplyForm, setShowReplyForm] = useState({}); // State to track which reply form to show
   const userAcc = useSelector(state => state.user.account.id);
+  const isAuthenticated = useSelector(state => state.user.isAuthenticated);
 
   useEffect(() => {
     setIsFlipped(false);
-    console.log('us',userAcc)
   }, [currentQuestionIndex]);
-
+  useEffect(() => {
+    if (isAuthenticated) {
+      fetchComments();
+    }
+  }, [dataQuestion, currentQuestionIndex, page, isAuthenticated]);
   const fetchComments = async () => {
     if (dataQuestion && dataQuestion[currentQuestionIndex]) {
       const flashcardId = dataQuestion[currentQuestionIndex]._id;
-
       setLoadingComments(true);
       try {
         const response = await getAllCommentFlashCard(flashcardId, page);
         setComments(response.data || []);
-        console.log(response.data)
         setTotalPages(response.totalPages || 1);
       } catch (error) {
         console.error("Error fetching comments:", error.message);
@@ -45,42 +49,9 @@ const DetailFormQA = (props) => {
       }
     }
   };
-
-  const handleDeleteComment = async (commentId) => {
-    const token = Cookies.get('accessToken');
-
-    if (!token) {
-        localStorage.setItem('redirectAfterLogin', window.location.href);
-        navigate('/login');
-        return;
-    }
-
-    try {
-        let response = await deleteCommentApi(commentId);
-        console.log(response)
-        if (response && response.errorCode === 0) {
-          toast.success(response.message)
-        }
-        await fetchComments();
-        console.log('Comment deleted successfully');
-    } catch (error) {
-        console.error('Error deleting comment:', error.message);
-    }
-};
-
-  useEffect(() => {
-    fetchComments(); // Initial fetch on mount
-
-  }, [dataQuestion, currentQuestionIndex, page]);
-
-  const handleCardClick = () => {
-    setIsFlipped(!isFlipped);
-  };
-
   const handleCommentChange = (e) => {
     setNewComment(e.target.value);
   };
-
   const handleFileChange = (e) => {
     const selectedFile = e.target.files[0];
     if (selectedFile) {
@@ -88,7 +59,17 @@ const DetailFormQA = (props) => {
       setImageUrl(URL.createObjectURL(selectedFile));
     }
   };
+  const handleNextPage = () => {
+    if (page < totalPages) {
+      setPage(page + 1);
+    }
+  };
 
+  const handlePrevPage = () => {
+    if (page > 1) {
+      setPage(page - 1);
+    }
+  };
   const handleCommentSubmit = async (e) => {
     e.preventDefault();
 
@@ -118,26 +99,67 @@ const DetailFormQA = (props) => {
     }
   };
 
-  const handleNextPage = () => {
-    if (page < totalPages) {
-      setPage(page + 1);
+  useEffect(() => {
+    fetchComments();
+  }, [dataQuestion, currentQuestionIndex, page]);
+
+  const handleReplyChange = (e, commentId) => {
+    setReply({ ...reply, [commentId]: e.target.value });
+  };
+
+  const handleToggleReplyForm = (commentId) => {
+    setShowReplyForm({ ...showReplyForm, [commentId]: !showReplyForm[commentId] });
+  };
+
+  const handleReplySubmit = async (e, commentId) => {
+    e.preventDefault();
+    if (!reply[commentId]?.trim()) return;
+    const token = Cookies.get('accessToken');
+
+    if (!token) {
+      localStorage.setItem('redirectAfterLogin', window.location.href);
+      navigate('/login');
+      return;
+    }
+
+    
+
+    try {
+      console.log('sex',userAcc, reply[commentId], commentId)
+      const result = await postReplyComment(commentId,userAcc, reply[commentId]);
+
+      console.log('cac',result)
+      // if (result && result.errorCode === 0) {
+      //   toast.success("Reply posted successfully");
+      //   setReply({ ...reply, [commentId]: "" }); // Clear reply input for this comment
+      //   await fetchComments(); // Refresh the comments to show the new reply
+      // }
+    } catch (error) {
+      console.error("Error posting reply:", error.message);
     }
   };
 
-  const handlePrevPage = () => {
-    if (page > 1) {
-      setPage(page - 1);
+  const handleDeleteComment = async (commentId) => {
+    const token = Cookies.get('accessToken');
+    if (!token) {
+      localStorage.setItem('redirectAfterLogin', window.location.href);
+      navigate('/login');
+      return;
+    }
+    try {
+      let response = await deleteCommentApi(commentId);
+      if (response && response.errorCode === 0) {
+        toast.success("Comment deleted successfully");
+        await fetchComments();
+      }
+    } catch (error) {
+      console.error('Error deleting comment:', error.message);
     }
   };
- 
 
-
-
-  if (!dataQuestion || !dataQuestion[currentQuestionIndex]) {
-    return <p>Loading questions...</p>;
-  }
-
-  const currentQuestion = dataQuestion[currentQuestionIndex];
+  const handleCardClick = () => {
+    setIsFlipped(!isFlipped);
+  };
 
   return (
     <div className="flashcard-container">
@@ -145,28 +167,24 @@ const DetailFormQA = (props) => {
         className={`flashcard ${isFlipped ? "flipped" : ""} ${isAnimating ? "animating" : ""}`}
         onClick={handleCardClick}
       >
-        <div className="flashcard-front" style={{display:'flex',flexDirection:'column'}}>
-          <p>{currentQuestion.questionText}</p>
-          {currentQuestion.questionImage && (
+        <div className="flashcard-front">
+          <p>{dataQuestion[currentQuestionIndex]?.questionText}</p>
+          {dataQuestion[currentQuestionIndex]?.questionImage && (
             <img
-              src={currentQuestion.questionImage}
+              src={dataQuestion[currentQuestionIndex].questionImage}
               alt="Question"
               style={{ height: "80%", width: "auto" }}
             />
           )}
         </div>
-        <div className="flashcard-back" style={{display:'flex',flexDirection:'column'}}>
-          {currentQuestion.correctAnswers && currentQuestion.correctAnswers.length > 0 ? (
+        <div className="flashcard-back">
+          {dataQuestion[currentQuestionIndex]?.correctAnswers?.length ? (
             <ul>
-              {currentQuestion.correctAnswers.map((correctAnswerIndex, idx) => (
-                <li key={idx}>
-                  {currentQuestion.answers[correctAnswerIndex]}
-                </li>
+              {dataQuestion[currentQuestionIndex].correctAnswers.map((correctAnswerIndex, idx) => (
+                <li key={idx}>{dataQuestion[currentQuestionIndex].answers[correctAnswerIndex]}</li>
               ))}
             </ul>
-          ) : (
-            <p>No correct answers available</p>
-          )}
+          ) : <p>No correct answers available</p>}
         </div>
       </div>
 
@@ -177,48 +195,79 @@ const DetailFormQA = (props) => {
       {showComments && (
         <div className="comments-section">
           <h4>Comments</h4>
-          {loadingComments ? (
-            <p>Loading comments...</p>
-          ) : comments.length > 0 ? (
-            <ul>
-              {comments.map((comment) => (
-                <li key={comment._id}>
-                  <img src={comment.user.image} style={{ height: '50px', width: '50px' }} alt="Author" />
-                  <p><strong>{comment.user.username}:</strong> {comment.content}</p>
-                  {comment.image && (
-                    <img
-                      src={comment.image}
-                      alt="Comment"
-                      style={{ width: '100px', height: 'auto' }}
-                    />
-                  )}
-                   <strong className="comment-date">
-                     {new Date(comment.createdAt).toLocaleDateString()} {new Date(comment.createdAt).toLocaleTimeString()}
-                  </strong>
-                  {comment.user._id === userAcc && (
-                    <button onClick={() => handleDeleteComment(comment._id)}>
-                      <FaTrash /> Delete
-                    </button>
-                  )}
 
-                </li>
-              ))}
-            </ul>
+          {/* If user is not authenticated, show login prompt */}
+          {!isAuthenticated ? (
+            <p>You must log in to see comments.</p>
           ) : (
-            <p>No comments yet.</p>
+            loadingComments ? (
+              <p>Loading comments...</p>
+            ) : comments.length > 0 ? (
+              <ul>
+                {comments.map(comment => (
+                  <li key={comment._id}>
+                    <img src={comment.user.image} alt="Author" style={{ height: '50px', width: '50px' }} />
+                    <p><strong>{comment.user.username}:</strong> {comment.content}</p>
+                    {comment.image && <img src={comment.image} alt="Comment" style={{ width: '100px' }} />}
+                    <strong className="comment-date">
+                      {new Date(comment.createdAt).toLocaleDateString()} {new Date(comment.createdAt).toLocaleTimeString()}
+                    </strong>
+                    {comment.user._id === userAcc && (
+                      <button onClick={() => handleDeleteComment(comment._id)}>
+                        <FaTrash /> Delete
+                      </button>
+                    )}
+
+                    {/* Reply Section */}
+                    <button onClick={() => handleToggleReplyForm(comment._id)}>
+                      <FaReply /> Reply
+                    </button>
+
+                    {showReplyForm[comment._id] && (
+                      <form onSubmit={(e) => handleReplySubmit(e, comment._id)}>
+                        <textarea
+                          value={reply[comment._id] || ""}
+                          onChange={(e) => handleReplyChange(e, comment._id)}
+                          placeholder="Add a reply..."
+                          rows="2"
+                        />
+                        <button type="submit">Reply</button>
+                      </form>
+                    )}
+
+                    {/* Render replies */}
+                    {comment.replies && comment.replies.length > 0 && (
+                      <ul className="replies">
+                        {comment.replies.map((reply) => (
+                          <li key={reply._id}>
+                            <p><strong>{reply.user.username}:</strong> {reply.content}</p>
+                            <strong className="reply-date">
+                              {new Date(reply.createdAt).toLocaleDateString()} {new Date(reply.createdAt).toLocaleTimeString()}
+                            </strong>
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                  </li>
+                ))}
+              </ul>
+            ) : <p>No comments yet.</p>
           )}
 
-          {/* Pagination Controls */}
-          <div className="pagination-controls">
-            <button onClick={handlePrevPage} disabled={page === 1}>
-              Previous
-            </button>
-            <span>Page {page} of {totalPages}</span>
-            <button onClick={handleNextPage} disabled={page === totalPages}>
-              Next
-            </button>
-          </div>
-
+          {/* Pagination */}
+          {isAuthenticated && (
+            <div className="pagination-controls">
+              <button onClick={() => setPage(page - 1)} disabled={page === 1}>
+                Previous
+              </button>
+              <span>Page {page} of {totalPages}</span>
+              <button onClick={() => setPage(page + 1)} disabled={page === totalPages}>
+                Next
+              </button>
+              
+            </div>
+            
+          )}
           <form onSubmit={handleCommentSubmit}>
             <textarea
               value={newComment}
