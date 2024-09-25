@@ -1,6 +1,6 @@
 const express = require('express');
 const { addUser, getUserFromUserId, getId } = require('../controller/ApiUser');
-const { apiLogin } = require('../controller/ApiAuth');
+const { apiLogin, apiRegister } = require('../controller/ApiAuth');
 const { createRefreshToken, createJWT, decodeToken, checkAccessToken } = require('../middleware/JWTAction');
 const passport = require('passport');
 const { createQuestionPack, getAllQuestionPack, searchQuestionPack } = require('../controller/ApiQuestionPack');
@@ -10,7 +10,9 @@ const { addComment, getComments, getCommentById, deleteComment, addReply } = req
 const routerApi = express.Router();
 
 routerApi.get('/id', checkAccessToken, getId)
-routerApi.post('/auth', apiLogin)
+//auth
+routerApi.post('/auth', apiLogin);
+routerApi.post('/register',apiRegister)
 routerApi.get('/auth/google',
     passport.authenticate('google', { scope: ['profile', 'email'] }));
 

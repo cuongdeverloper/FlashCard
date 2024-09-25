@@ -10,6 +10,9 @@ import DetailQuesPack from "./components/Question Pack/Detail QuesPack/DetailQue
 import ManageFcQ from "./components/ManageFlashCard-Quiz/ManageFcQ";
 import ManageAddQuiz from "./components/ManageFlashCard-Quiz/AddQuiz/MangeAddQuiz";
 import ResultSearchItem from "./components/Page search item/ResultSearchItem";
+import PrivateRoute from "./components/routes/PrivateRoute";
+import Forbidden from "./components/Forbident";
+import Register from "./components/auth/Register";
 
 const Layout = () => {
     return (
@@ -32,16 +35,25 @@ const Layout = () => {
                     <Route path="/" element={<HomePage />}>
                         <Route index element={<ListQuestionPack />} />
                         <Route path="detailquespack/:packId" element={<DetailQuesPack />} />
-                        <Route path="/crud-q" element={<ManageFcQ />}>
-                            <Route element={<ManageAddQuiz />} />
+                        <Route
+                            path="/crud-q"
+                            element={<PrivateRoute element={<ManageFcQ />} requiredRole="teacher" />}
+                        >
+                            <Route
+                                path="add-quiz"
+                                element={<PrivateRoute element={<ManageAddQuiz />} requiredRole="teacher" />}
+                            />
                         </Route>
-                        <Route path="search" element={<ResultSearchItem/>}>
-                            
+                        <Route path="/forbidden" element={<Forbidden />} />
+
+                        <Route path="search" element={<ResultSearchItem />}>
+
                         </Route>
                     </Route>
+
                     <Route path="/login" element={<Login />} />
                     <Route path="/logout" element={<Logout />} />
-
+                    <Route path="/register" element={<Register />} />
 
                 </Routes>
             </BrowserRouter>

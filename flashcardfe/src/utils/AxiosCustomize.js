@@ -2,8 +2,6 @@ import axios from 'axios';
 import NProgress from 'nprogress';
 import { isTokenExpired } from './decodeJWT.js';
 import { store } from '../redux/store';
-import { useSelector } from 'react-redux';
-// import { doLogout } from '../redux/actions'; // Uncomment if using a logout action
 
 
 const instance = axios.create({
@@ -17,8 +15,6 @@ instance.interceptors.request.use(
         const state = store.getState();
         const accessToken = state.user.account.access_token;
         if (accessToken && isTokenExpired(accessToken)) {
-            // Token is expired
-            // store.dispatch(doLogout()); // Uncomment if using a logout action
             window.location.href = '/login';
             return Promise.reject(new Error('Access token expired'));
         }
@@ -27,7 +23,7 @@ instance.interceptors.request.use(
             config.headers['Authorization'] = 'Bearer ' + accessToken;
         }
 
-        NProgress.start(); // Start NProgress
+        NProgress.start();
         return config;
     },
     function (error) {

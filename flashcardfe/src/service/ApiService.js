@@ -4,6 +4,31 @@ const LoginApi = (userEmail,userPassword) =>{
     return axios.post('auth', { email: userEmail, password: userPassword });
 
 }
+const registerUser = async (username, email, password, phoneNumber, gender, role, image) => {
+    const formData = new FormData();
+    formData.append('username', username);
+    formData.append('email', email);
+    formData.append('password', password);
+    formData.append('phoneNumber', phoneNumber);
+    formData.append('gender', gender);
+    formData.append('role', role);
+    if (image) {
+        formData.append('image', image);
+    }
+
+    try {
+        const response = await axios.post('/register', formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+        });
+        return response
+    } catch (error) {
+        console.error('Error during registration:', error);
+        throw error;
+    }
+};
+
 const loginWGoogle = () =>{
     return axios.get(`/auth/google/callback`)
 }
@@ -239,4 +264,4 @@ const searchItems = async (query) => {
 export {LoginApi,loginWGoogle,decodeDataGoogle,getAllQuestionPack,
     getQuestionByQPId,getUserByUserId,createNewQuestionPackApi,
     getUserId,createQuestionToQuestionPackAPI,getAllCommentFlashCard,
-    postComment,deleteCommentApi,postReplyComment,searchItems}
+    postComment,deleteCommentApi,postReplyComment,searchItems,registerUser}

@@ -12,6 +12,10 @@ import './HomePage.scss'
 const HomePage = () => {
     const dispatch = useDispatch();
     const isAuthenticated = useSelector(state => state.user.isAuthenticated);
+    const Us = useSelector(state => state.user.account);
+    useEffect(()=>{
+        console.log('u',Us)
+    },[])
     const navigate=useNavigate()
     const isTokenExpired = (token) => {
         try {
