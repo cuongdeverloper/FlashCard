@@ -199,5 +199,55 @@ const addReply = async (req, res) => {
     });
   }
 };
+const deleteReply = async (req, res) => {
+  const { commentId, replyId } = req.params;
+  const userId = req.user.id;
 
-module.exports = { addComment, getComments, getCommentById, deleteComment, addReply };
+  try {
+    const comment = await Comment.findById(commentId);
+
+    // Check if the comment exists
+    if (!comment) {
+      return res.status(404).json({
+        errorCode: 1,
+        message: 'Comment not found'
+      });
+    }
+
+    const replyIndex = comment.replies.findIndex(reply => reply._id.toString() === replyId);
+    // Check if the reply exists
+    if (replyIndex === -1) {
+      return res.status(404).json({
+        errorCode: 2,
+        message: 'Reply not found'
+      });
+    }
+
+    // Check if the user is the owner of the reply
+    if (comment.replies[replyIndex].user.toString() !== userId ) {
+      return res.status(403).json({
+        errorCode: 3,
+        message: 'You are not authorized to delete this reply'
+      });
+    }
+
+    // Remove the reply from the replies array
+    comment.replies.splice(replyIndex, 1);
+    await comment.save();
+
+    return res.status(200).json({
+      errorCode: 0,
+      message: 'Reply deleted successfully'
+    });
+  } catch (error) {
+    console.error('Error deleting reply:', error);
+    return res.status(500).json({
+      errorCode: 6,
+      message: 'An error occurred while deleting the reply'
+    });
+  }
+};
+
+
+
+module.exports = { addComment, getComments, getCommentById, deleteComment, addReply,deleteReply};

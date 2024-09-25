@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { FaTrash, FaUpload, FaReply } from "react-icons/fa"; // Add FaReply icon
 import "./DetailFormQA.scss";
-import { deleteCommentApi, getAllCommentFlashCard, postComment, postReplyComment } from '../../../../service/ApiService'
+import deleteReply, { deleteCommentApi, getAllCommentFlashCard, postComment, postReplyComment } from '../../../../service/ApiService'
 import Form from 'react-bootstrap/Form';
 import Cookies from 'js-cookie';
 import { useNavigate } from 'react-router-dom';
@@ -9,7 +9,7 @@ import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
 
 const DetailFormQA = (props) => {
-  const { dataQuestion, currentQuestionIndex, isAnimating } = props;
+  const { dataQuestion, currentQuestionIndex, isAnimating,idAuthor } = props;
   const navigate = useNavigate();
   const [isFlipped, setIsFlipped] = useState(false);
   const [comments, setComments] = useState([]);
@@ -25,8 +25,13 @@ const DetailFormQA = (props) => {
   const userAcc = useSelector(state => state.user.account.id);
   const isAuthenticated = useSelector(state => state.user.isAuthenticated);
 
+  useEffect(()=>{
+    console.log(userAcc)
+
+  },[])
   useEffect(() => {
     setIsFlipped(false);
+    
   }, [currentQuestionIndex]);
   useEffect(() => {
     if (isAuthenticated) {
@@ -40,6 +45,7 @@ const DetailFormQA = (props) => {
       try {
         const response = await getAllCommentFlashCard(flashcardId, page);
         setComments(response.data || []);
+        console.log(response.data)
         setTotalPages(response.totalPages || 1);
       } catch (error) {
         console.error("Error fetching comments:", error.message);
@@ -89,7 +95,7 @@ const DetailFormQA = (props) => {
       const result = await postComment(userAcc, newComment, flashcardId, file);
       if (result) {
         console.log('Comment posted successfully:', result);
-        await fetchComments(); 
+        await fetchComments();
         setNewComment("");
         setFile(null);
         setImageUrl('');
@@ -122,13 +128,13 @@ const DetailFormQA = (props) => {
       return;
     }
 
-    
+
 
     try {
-      console.log('sex',userAcc, reply[commentId], commentId)
-      const result = await postReplyComment(commentId,userAcc, reply[commentId]);
+      console.log('sex', userAcc, reply[commentId], commentId)
+      const result = await postReplyComment(commentId, userAcc, reply[commentId]);
 
-      console.log('cac',result)
+      console.log('cac', result)
       if (result && result.errorCode === 0) {
 
         setReply({ ...reply, [commentId]: "" }); // Clear reply input for this comment
@@ -161,6 +167,24 @@ const DetailFormQA = (props) => {
     setIsFlipped(!isFlipped);
   };
 
+  const handleDeleteReply = async (commentId, replyId) => {
+    // const token = Cookies.get('accessToken');
+    // if (!token) {
+    //   localStorage.setItem('redirectAfterLogin', window.location.href);
+    //   navigate('/login');
+    //   return;
+    // }
+    try {
+      const response = await deleteReply(commentId, replyId);
+      console.log(response)
+      if (response && response.errorCode === 0) {
+        toast.success(response.message);
+        await fetchComments(); 
+      }
+    } catch (error) {
+      console.error('Error deleting reply:', error.message);
+    }
+  };
   return (
     <div className="flashcard-container">
       <div
@@ -237,13 +261,18 @@ const DetailFormQA = (props) => {
 
                     {/* Render replies */}
                     {comment.replies && comment.replies.length > 0 && (
-                      <ul className="replies">
-                        {comment.replies.map((reply) => (
+                      <ul>
+                        {comment.replies.map(reply => (
                           <li key={reply._id}>
-                            <p><strong>{reply.user.username}:</strong> {reply.content}</p>
-                            <strong className="reply-date">
-                              {new Date(reply.createdAt).toLocaleDateString()} {new Date(reply.createdAt).toLocaleTimeString()}
-                            </strong>
+                            <p><strong>{reply.user}:</strong> {reply.content}</p>
+                            {/* <h3>ru{reply.user} ... </h3>
+                            <h3>ua{`${idAuthor}`}</h3> */}
+                            {(reply.user === userAcc || userAcc === idAuthor) && ( 
+  // Show delete button only if the current user is the author of the reply or the comment author
+  <button onClick={() => handleDeleteReply(comment._id, reply._id)}>
+    <FaTrash /> Delete Reply
+  </button>
+)}
                           </li>
                         ))}
                       </ul>
@@ -264,9 +293,9 @@ const DetailFormQA = (props) => {
               <button onClick={() => setPage(page + 1)} disabled={page === totalPages}>
                 Next
               </button>
-              
+
             </div>
-            
+
           )}
           <form onSubmit={handleCommentSubmit}>
             <textarea

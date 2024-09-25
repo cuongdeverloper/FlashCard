@@ -260,7 +260,32 @@ const searchItems = async (query) => {
         throw error;
     }
 };
+const deleteReply = async (commentId, replyId) => {
+    try {
+        // Retrieve the access token from cookies
+        const token = Cookies.get('accessToken');
 
+        // Ensure the token is available
+        if (!token) {
+            throw new Error('No access token found. Please login again.');
+        }
+
+        // Make the DELETE request to the API
+        const response = await axios.delete(`/questionpack/comment/reply/${commentId}/${replyId}`, {
+            headers: {
+                'Authorization': `Bearer ${token}` 
+            }
+        });
+
+
+        return response
+    } catch (error) {
+        console.error('Error deleting reply:', error.response ? error.response.data : error.message);
+        throw error; // Throw the error to be handled by the caller
+    }
+};
+
+export default deleteReply;
 export {LoginApi,loginWGoogle,decodeDataGoogle,getAllQuestionPack,
     getQuestionByQPId,getUserByUserId,createNewQuestionPackApi,
     getUserId,createQuestionToQuestionPackAPI,getAllCommentFlashCard,
