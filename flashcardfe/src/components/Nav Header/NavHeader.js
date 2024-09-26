@@ -63,7 +63,7 @@ const NavHeader = () => {
             <img style={{ height: "100%", width: "auto" }} src={logoImg} alt="FlashCardLogo Logo" />
           </Navbar.Brand>
           <Navbar.Collapse id="mid-navbar-nav">
-            <form onSubmit={handleSearchSubmit} className="d-flex" style={{ margin: "0", width: "100%", position: "relative" }}>
+            <form onSubmit={handleSearchSubmit} className="d-flex" style={{ margin: "0", width: "100% ", position: "relative" }}>
               <FaSearch id="search-icon" />
               <input
                 placeholder="Searching to faster..."

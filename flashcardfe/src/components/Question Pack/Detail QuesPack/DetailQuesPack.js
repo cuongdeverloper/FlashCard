@@ -73,12 +73,12 @@ const DetailQuesPack = () => {
       <div className="DetailQP-content container-fluid col-9">
         <Breadcrumb className="breadcrumbitem" style={{color:'#fff'}}>
           <Breadcrumb.Item href="/" className="breadCrumb-href">Home</Breadcrumb.Item>
-          {/* Conditionally render location.state.packSemester and packName */}
-          <Breadcrumb.Item href="/us" className="breadCrumb-href">
+          <Breadcrumb.Item href="/us" className="breadCrumb-href semester">
             {location.state?.packSemester || "Unknown Semester"}
           </Breadcrumb.Item>
-          <Breadcrumb.Item active>
-            {location.state?.packName || "Unknown Pack"}
+          <Breadcrumb.Item className="disable-pack"active>
+            <h6>{location.state?.packName || "Unknown Pack"}</h6>
+            
           </Breadcrumb.Item>
         </Breadcrumb>
         <DetailFormQA
@@ -126,13 +126,13 @@ const DetailQuesPack = () => {
           <h4>There are {dataQuestion.length} questions in this course.</h4>
           {dataQuestion.length > 0 && dataQuestion.map((item, index) => (
             <div key={index} className="DQ-table row">
-              <div className="col-4">{item.questionText}</div>
-              <div className="col-4">
+              <div className="question-col col-3 question"><h5>{item.questionText}</h5></div>
+              
+              <div className="answer-col col-9">
                 {item.correctAnswers.map((answerIndex, idx) => (
-                  <div key={answerIndex}>
-                    {item.answers[answerIndex]}
-                    {/* Line break after each correct answer */}
-                    {idx < item.correctAnswers.length - 1 && <br />}
+                  <div key={answerIndex} className="answer">
+                    <h6>{item.answers[answerIndex]}</h6>
+                    <h6>{idx < item.correctAnswers.length - 1 && <br />}</h6>
                   </div>
                 ))}
               </div>

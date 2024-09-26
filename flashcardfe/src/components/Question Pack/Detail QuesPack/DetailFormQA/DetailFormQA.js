@@ -305,7 +305,7 @@ const DetailFormQA = (props) => {
               rows="3"
               required
             />
-            <Form.Group>
+            <Form.Group style={{padding:"10px 0"}}>
               <label htmlFor="file-upload" className="file-upload-label">
                 <FaUpload size={24} style={{ cursor: 'pointer' }} />
               </label>

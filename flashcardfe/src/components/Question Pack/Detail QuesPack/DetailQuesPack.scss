@@ -1,3 +1,41 @@
+
+
+
+
+
+.breadCrumb-href a {
+  background-color: #5d37f5; /* Màu nền */
+  color: #fff; /* Màu chữ */
+  border-radius: 20px; /* Bo tròn góc */
+  padding: 10px 20px; /* Khoảng cách bên trong */ 
+  text-decoration: none; /* Bỏ gạch chân */
+  transition: background-color 0.3s ease; /* Hiệu ứng chuyển màu */
+  position: relative;
+  top : 10px;
+  right: 15px;
+  font-weight: 700;
+}
+
+.breadCrumb-href a:hover {
+  background-color: #3b29b8; /* Màu nền khi hover */
+}
+
+.breadcrumbitem .disable-pack {
+  background-color: #ccc; 
+  border-radius: 20px; /* Bo tròn góc */
+  padding: 10px 20px; /* Khoảng cách bên trong */
+  height: 40px; /* Chiều cao cố định cho breadcrumb */
+  white-space: nowrap; /* Ngăn văn bản xuống dòng */
+  content: none; /* Bỏ dấu phân cách */
+}
+.breadcrumbitem .disable-pack h6 {
+  color: black; 
+  width: 100%;
+}
+
+.breadcrumb-item + .breadcrumb-item::before {
+  content: none; /* Bỏ dấu phân cách */
+}
 .DetailQuesPack-container {
   padding: 20px;
   display: flex;
@@ -15,12 +53,13 @@
   display: flex;
   align-items: center;
   gap: 15px; /* Space between image and text */
-  margin-top: 20px;
+  margin: 40px 0;
+
 }
 
 .DQP-author img {
-  width: 100px; /* Adjust as needed */
-  height: 100px; /* Adjust as needed */
+  width: 80px; /* Adjust as needed */
+  height: 80px; /* Adjust as needed */
   border-radius: 50%; /* Optional: circular image */
   object-fit: cover; /* Ensures image covers the container */
 }
@@ -147,6 +186,20 @@
   width: 100%;
   background-color: #2d1785;
   margin-bottom: 8px;
+  border-radius: 10px;
+  
+  
+}
+.DQ-table .question {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-right:  3px solid #121045;
+  
+}
+.DQ-table .answer{
+  display: flex;
+  padding: 10px 0;
 }
 
 /* Add any additional styles you need here */

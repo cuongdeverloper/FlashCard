@@ -20,7 +20,7 @@ import {
   FaReact,
 } from "react-icons/fa";
 import { GoArrowRight, GoArrowLeft } from "react-icons/go";
-import logoImg from "../../assests/logo.png";
+import logoImg from "../../assests/logo-cut.png";
 //https://react-icons.github.io/react-icons/
 import { useState } from "react";
 import { Link } from "react-router-dom";

@@ -39,7 +39,7 @@ const ListQuestionPack = () => {
   return (
     <div className="ListQuestionPack-container">
       {questionPackData.length > 0 ? (
-        <Carousel id="questionPackCarousel" interval={3000} controls indicators>
+        <Carousel id="questionPackCarousel" interval={3000} controls  indicators={false}>
           {slides.map((slide, slideIndex) => (
             <Carousel.Item key={slideIndex}>
               <div className="row">
