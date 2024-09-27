@@ -55,8 +55,8 @@ button {
   background-color: #007bff !important; 
   color: #fff !important; 
   border: none !important; 
-  padding: 10px 20px !important; 
-  margin: 10px 0 !important; 
+  padding: 10px 18px !important; 
+  margin: 10px 10px !important; 
   border-radius: 5px !important; 
   cursor: pointer !important; 
   transition: background-color 0.3s ease !important; 
@@ -66,98 +66,91 @@ button:hover {
   background-color: #0056b3 !important; 
 }
 
-
 .comments-section {
-  width: 100%;
-  max-width: 600px;
+  
+  max-width: 1000px;
   margin-top: 20px;
 }
 
 .comments-section h4 {
   margin-bottom: 15px;
 }
-
-.comments-section ul {
-  list-style-type: none;
-  padding: 0;
-}
-
 .comments-section li {
   display: flex;
-  flex-direction: column;
-  margin-bottom: 20px; 
+  align-items: flex-start; /* Canh đầu bình luận với avatar */
+  margin-bottom: 20px;
   padding: 15px;
-  border: 1px solid #ddd; 
-  border-radius: 10px; 
-  background-color: #f9f9f9; 
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  background-color: #f0f2f5; /* Màu nền giống Facebook */
   color: black;
 }
 
 .comments-section img {
   border-radius: 50%;
   margin-right: 10px;
+  width: 40px;
+  height: 40px; /* Kích thước avatar nhỏ hơn */
+}
+
+.comment-content {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.comment-content p {
+  background-color: #fff;
+  padding: 10px;
+  border-radius: 15px;
+  margin: 0;
+  word-break: break-word;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
 }
 
 .comment-date {
   font-size: 0.8rem;
-  color: #888;
+  color: #90949c; /* Màu xám nhạt */
   margin-top: 5px;
 }
 
 .reply {
   margin-top: 10px;
-  margin-left: 30px; 
-  padding-left: 15px;
-  border-left: 2px solid #007bff; 
-  
-}
-
-.reply ul {
-  padding: 0;
-  list-style-type: none;
-  
-}
-
-.reply li {
-  padding: 10px 0;
-  margin-bottom: 10px;
-  border-bottom: 1px solid #ddd; /* Phân tách giữa các reply */
-  
-}
-
-.reply li:last-child {
-  border-bottom: none;
-}
-
-.reply p {
-  margin: 0;
+  margin-left: 5px; /* Khoảng cách thụt lề cho reply */
 }
 
 .reply button {
-  background-color: #dc3545;
-  color: white;
+  color: #3b5998; /* Màu xanh của nút reply giống Facebook */
+  background-color: transparent;
   border: none;
-  padding: 5px 10px;
-  border-radius: 5px;
   cursor: pointer;
 }
 
+.reply li {
+  background-color: #fff;
+  border-radius: 15px;
+  margin: 10px 0  ;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  padding: 3px 30px;
+
+}
+
 .reply button:hover {
-  background-color: #c82333;
+  text-decoration: underline;
 }
 
 textarea {
   width: 100%;
   padding: 10px;
-  border-radius: 5px;
-  border: 1px solid #ccc;
+  border-radius: 20px; /* Bo tròn textarea */
+  border: 1px solid #ddd;
   margin-bottom: 10px;
   resize: vertical;
 }
 
 textarea:focus {
   outline: none;
-  border-color: #007bff;
+  border-color: #3b5998;
 }
 
 .FormControl {
