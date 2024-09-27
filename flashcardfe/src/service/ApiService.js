@@ -285,8 +285,32 @@ const deleteReply = async (commentId, replyId) => {
     }
 };
 
-export default deleteReply;
+const getClassById = async() =>{
+    return axios.get('/class')
+}
+const getClassByClassId = async (classId) => {
+    const token = Cookies.get('accessToken');
+
+    if (!token) {
+        throw new Error('No access token found. Please login again.');
+    }
+
+    try {
+        const response = await axios.get(`/class/${classId}`, {
+            headers: {
+                'Authorization': `Bearer ${token}`  
+            }
+        });
+
+        return response; 
+    } catch (error) {
+        console.error('Error fetching class by ID:', error);
+        throw error;
+    }
+};
+
 export {LoginApi,loginWGoogle,decodeDataGoogle,getAllQuestionPack,
     getQuestionByQPId,getUserByUserId,createNewQuestionPackApi,
     getUserId,createQuestionToQuestionPackAPI,getAllCommentFlashCard,
-    postComment,deleteCommentApi,postReplyComment,searchItems,registerUser}
+    postComment,deleteCommentApi,postReplyComment,searchItems,registerUser,
+    deleteReply,getClassById,getClassByClassId}

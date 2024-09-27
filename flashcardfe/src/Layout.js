@@ -13,6 +13,7 @@ import ResultSearchItem from "./components/Page search item/ResultSearchItem";
 import PrivateRoute from "./components/routes/PrivateRoute";
 import Forbidden from "./components/Forbident";
 import Register from "./components/auth/Register";
+import Classes from "./components/Classes/Classes";
 
 const Layout = () => {
     return (
@@ -47,6 +48,9 @@ const Layout = () => {
                         <Route path="/forbidden" element={<Forbidden />} />
 
                         <Route path="search" element={<ResultSearchItem />}>
+                        </Route>
+
+                        <Route path="classes/:classId" element={<Classes />}>
 
                         </Route>
                     </Route>

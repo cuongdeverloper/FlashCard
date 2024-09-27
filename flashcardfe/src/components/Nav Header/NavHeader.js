@@ -16,7 +16,7 @@ const NavHeader = () => {
   const isAuthenticated = useSelector((state) => state.user.isAuthenticated);
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState("");
-  const [searchResults, setSearchResults] = useState([]); // Store search results
+  const [searchResults, setSearchResults] = useState([]); 
   const [openDropdown, setOpenDropdown] = useState(null);
 
   const handleMouseEnter = (dropdownId) => {
@@ -109,7 +109,7 @@ const NavHeader = () => {
                   id="shirt-dropdown"
                   show={openDropdown === "shirt-dropdown"}
                 >
-                  <NavDropdown.Item as={NavLink} to="/shop/product/shirt">
+                  <NavDropdown.Item as={NavLink} to="/classes">
                     Class
                   </NavDropdown.Item>
                   <NavDropdown.Item as={NavLink} to="/crud-q">

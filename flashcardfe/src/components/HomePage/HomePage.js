@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import NavHeader from "../Nav Header/NavHeader"
 import Cookies from 'js-cookie';
 import { jwtDecode } from 'jwt-decode';
-import { decodeDataGoogle } from '../../service/ApiService';
+import { decodeDataGoogle, getClassById } from '../../service/ApiService';
 import { doLogin, doLoginWGoogle, doLogout } from '../../redux/action/userAction';
 import { useDispatch, useSelector } from 'react-redux';
 import ListQuestionPack from '../Question Pack/ListQuestionPack';
@@ -12,7 +12,7 @@ import './HomePage.scss'
 const HomePage = () => {
     const dispatch = useDispatch();
     const isAuthenticated = useSelector(state => state.user.isAuthenticated);
-
+    const [classData,setClassData] = useState([])
     const navigate=useNavigate()
     const isTokenExpired = (token) => {
         try {
@@ -62,11 +62,23 @@ const HomePage = () => {
     //         dispatch(doLogout());
     //     }
     // };
-
+    const getClasses = async()=>{
+        let response = await getClassById()
+        if(response && response.errorCode ===0) {
+            setClassData(response.data)
+        }
+      }
+      useEffect(() => {
+        if (isAuthenticated) {
+            getClasses(); 
+        }
+    }, [isAuthenticated]); 
     return (
         <div className="HomePage-container">
             <div className='Admin-SideBar'>
-            <SideBar/>
+            <SideBar
+                classData={classData}
+            />
                 
                 
             </div>

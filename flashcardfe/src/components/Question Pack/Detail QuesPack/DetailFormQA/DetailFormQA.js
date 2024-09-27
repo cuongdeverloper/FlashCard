@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { FaTrash, FaUpload, FaReply } from "react-icons/fa"; // Add FaReply icon
 import "./DetailFormQA.scss";
-import deleteReply, { deleteCommentApi, getAllCommentFlashCard, postComment, postReplyComment } from '../../../../service/ApiService'
+import { deleteCommentApi, getAllCommentFlashCard, postComment, postReplyComment,deleteReply } from '../../../../service/ApiService'
 import Form from 'react-bootstrap/Form';
 import Cookies from 'js-cookie';
 import { useNavigate } from 'react-router-dom';
