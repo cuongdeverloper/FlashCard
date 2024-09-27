@@ -228,25 +228,28 @@ const DetailFormQA = (props) => {
               <p>Loading comments...</p>
             ) : comments.length > 0 ? (
               <ul>
-                {comments.map(comment => (
-                  <li key={comment._id}>
-                    <img src={comment.user.image} alt="Author" style={{ height: '50px', width: '50px' }} />
+              {comments.map(comment => (
+                <li key={comment._id}>
+                  <img src={comment.user.image} alt="Author" style={{ height: '50px', width: '50px' }} />
+                  <div className="comment-content">
                     <p><strong>{comment.user.username}:</strong> {comment.content}</p>
                     {comment.image && <img src={comment.image} alt="Comment" style={{ width: '100px' }} />}
-                    <strong className="comment-date">
+                    <span className="comment-date">
                       {new Date(comment.createdAt).toLocaleDateString()} {new Date(comment.createdAt).toLocaleTimeString()}
-                    </strong>
+                    </span>
+            
+                    {/* Điều kiện hiển thị nút xóa nếu người dùng là tác giả */}
                     {comment.user._id === userAcc && (
-                      <button onClick={() => handleDeleteComment(comment._id)}>
+                      <button className="delete-button" onClick={()  => handleDeleteComment(comment._id)}>
                         <FaTrash /> Delete
                       </button>
                     )}
-
-                    {/* Reply Section */}
+            
                     <button onClick={() => handleToggleReplyForm(comment._id)}>
                       <FaReply /> Reply
                     </button>
-
+            
+                    {/* Hiển thị form trả lời khi người dùng muốn trả lời */}
                     {showReplyForm[comment._id] && (
                       <form onSubmit={(e) => handleReplySubmit(e, comment._id)}>
                         <textarea
@@ -258,28 +261,31 @@ const DetailFormQA = (props) => {
                         <button type="submit">Reply</button>
                       </form>
                     )}
-
-                    {/* Render replies */}
-                    {comment.replies && comment.replies.length > 0 && (
+                  </div>
+            
+                  {/* Phần hiển thị reply */}
+                  {comment.replies && comment.replies.length > 0 && (
+                    <div className="reply">
                       <ul>
                         {comment.replies.map(reply => (
                           <li key={reply._id}>
                             <p><strong>{reply.user}:</strong> {reply.content}</p>
-                            {/* <h3>ru{reply.user} ... </h3>
-                            <h3>ua{`${idAuthor}`}</h3> */}
-                            {(reply.user === userAcc || userAcc === idAuthor) && ( 
-  // Show delete button only if the current user is the author of the reply or the comment author
-  <button onClick={() => handleDeleteReply(comment._id, reply._id)}>
-    <FaTrash /> Delete Reply
-  </button>
-)}
+            
+                            {/* Hiển thị nút xóa reply nếu người dùng là tác giả hoặc người viết comment */}
+                            {(reply.user === userAcc || userAcc === idAuthor) && (
+                              <button onClick={() => handleDeleteReply(comment._id, reply._id)}>
+                                <FaTrash /> 
+                              </button>
+                            )}
                           </li>
                         ))}
                       </ul>
-                    )}
-                  </li>
-                ))}
-              </ul>
+                    </div>
+                  )}
+                </li>
+              ))}
+            </ul>
+            
             ) : <p>No comments yet.</p>
           )}
 
