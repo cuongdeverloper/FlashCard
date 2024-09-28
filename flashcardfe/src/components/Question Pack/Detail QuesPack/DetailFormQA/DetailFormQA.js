@@ -9,7 +9,7 @@ import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
 
 const DetailFormQA = (props) => {
-  const { dataQuestion, currentQuestionIndex, isAnimating,idAuthor } = props;
+  const { dataQuestion, currentQuestionIndex, isAnimating,idAuthor,idQp } = props;
   const navigate = useNavigate();
   const [isFlipped, setIsFlipped] = useState(false);
   const [comments, setComments] = useState([]);
@@ -27,7 +27,6 @@ const DetailFormQA = (props) => {
 
   useEffect(()=>{
     console.log(userAcc)
-
   },[])
   useEffect(() => {
     setIsFlipped(false);
@@ -153,7 +152,7 @@ const DetailFormQA = (props) => {
       return;
     }
     try {
-      let response = await deleteCommentApi(commentId);
+      let response = await deleteCommentApi(idQp,commentId);
       if (response && response.errorCode === 0) {
         toast.success("Comment deleted successfully");
         await fetchComments();
@@ -168,12 +167,6 @@ const DetailFormQA = (props) => {
   };
 
   const handleDeleteReply = async (commentId, replyId) => {
-    // const token = Cookies.get('accessToken');
-    // if (!token) {
-    //   localStorage.setItem('redirectAfterLogin', window.location.href);
-    //   navigate('/login');
-    //   return;
-    // }
     try {
       const response = await deleteReply(commentId, replyId);
       console.log(response)
@@ -239,7 +232,7 @@ const DetailFormQA = (props) => {
                     </span>
             
                     {/* Điều kiện hiển thị nút xóa nếu người dùng là tác giả */}
-                    {comment.user._id === userAcc && (
+                    {(comment.user._id === userAcc || idAuthor === userAcc )&& (
                       <button className="delete-button" onClick={()  => handleDeleteComment(comment._id)}>
                         <FaTrash /> Delete
                       </button>

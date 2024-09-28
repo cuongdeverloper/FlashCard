@@ -58,7 +58,7 @@ routerApi.post('/question', addQuestionFlashCard)
 routerApi.post('/questionpack/comments', checkAccessToken, addComment)
 routerApi.get('/questionpack/comments/:flashcardId', checkAccessToken, getComments)
 routerApi.get('/questionpack/comment/:commentId', getCommentById)
-routerApi.delete('/questionpack/comment/:commentId', checkAccessToken, deleteComment)
+routerApi.delete('/questionpack/comment/:questionPackId/:commentId', checkAccessToken, deleteComment)
 routerApi.post('/questionpack/comment/reply/:commentId',checkAccessToken,addReply)
 routerApi.delete('/questionpack/comment/reply/:commentId/:replyId', checkAccessToken, deleteReply);
 

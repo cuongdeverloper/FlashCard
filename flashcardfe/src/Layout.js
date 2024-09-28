@@ -14,6 +14,9 @@ import PrivateRoute from "./components/routes/PrivateRoute";
 import Forbidden from "./components/Forbident";
 import Register from "./components/auth/Register";
 import Classes from "./components/Classes/Classes";
+import DocumentsClass from "./components/Classes/Documents/DocumentsClass";
+import StudentsClass from "./components/Classes/Students/StudentsClass";
+import Actions from "./components/Classes/Actions/Actions";
 
 const Layout = () => {
     return (
@@ -51,7 +54,9 @@ const Layout = () => {
                         </Route>
 
                         <Route path="classes/:classId" element={<Classes />}>
-
+                            <Route index element={<DocumentsClass />} />
+                            <Route path="students" element={<StudentsClass />} />
+                            <Route path="actions" element={<Actions />} />
                         </Route>
                     </Route>
 

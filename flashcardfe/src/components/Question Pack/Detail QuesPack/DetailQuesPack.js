@@ -9,6 +9,7 @@ import { Breadcrumb } from "react-bootstrap";
 const DetailQuesPack = () => {
   const params = useParams();
   const [dataQuestion, setDataQuestion] = useState([]);
+  const [idQp,setIdQp] = useState('')
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [isAnimating, setIsAnimating] = useState(false);
   const [dataAuthor, setDataAuthor] = useState(null);
@@ -20,6 +21,7 @@ const DetailQuesPack = () => {
       let response = await getQuestionByQPId(params.packId);
       if (response && response.errorCode === 0) {
         setDataQuestion(response.data.questions);
+        setIdQp(response.data._id)
         setIdAuthor(response.data.teacher);  
       }
     } catch (error) {
@@ -87,6 +89,7 @@ const DetailQuesPack = () => {
           isAnimating={isAnimating} 
           idAuthor={idAuthor}
           dataAuthor={dataAuthor}
+          idQp = {idQp}
         />
         <div className="flashcard-footer">
           <div

@@ -196,7 +196,7 @@ const getAllCommentFlashCard = async (flashcardId, page = 1) => {
     }
 };
 
-const deleteCommentApi = async (commentId) => {
+const deleteCommentApi = async (questionPackId,commentId) => {
     const token = Cookies.get('accessToken');
 
     if (!token) {
@@ -204,7 +204,7 @@ const deleteCommentApi = async (commentId) => {
     }
 
     try {
-        const response = await axios.delete(`/questionpack/comment/${commentId}`, {
+        const response = await axios.delete(`/questionpack/comment/${questionPackId}/${commentId}`, {
             headers: {
                 'Authorization': `Bearer ${token}`
             }

@@ -1,6 +1,7 @@
 const uploadCloud = require('../config/cloudinaryConfig');
 const Comment = require('../modal/Comment');
 const FlashCard = require('../modal/FlashCard');
+const QuestionPack = require('../modal/QuestionPack');
 
 const addComment = async (req, res) => {
     uploadCloud.single('image')(req, res, async (err) => {
@@ -125,32 +126,27 @@ const getCommentById = async (req, res) => {
     }
 };
 const deleteComment = async (req, res) => {
-  const { commentId } = req.params;
+  const {questionPackId, commentId } = req.params;
   const userId = req.user.id; 
 
   try {
       const comment = await Comment.findById(commentId);
-
-      // Check if comment exists
+      const questionPack = await QuestionPack.findById(questionPackId)
       if (!comment) {
           return res.status(404).json({
               errorCode: 1,
               message: 'Comment not found'
           });
       }
-
-      // Check if the user is the owner of the comment
-      if (comment.user.toString() !== userId) {
+      if (comment.user.toString() !== userId && questionPack.teacher.toString() !== userId) {
           return res.status(403).json({
               errorCode: 2,
               message: 'You are not authorized to delete this comment'
           });
       }
 
-      // Delete the comment
       await Comment.findByIdAndDelete(commentId);
 
-      // Optionally: Remove the comment ID from the related flashcard
       await FlashCard.findByIdAndUpdate(
           comment.flashcard,
           { $pull: { comments: commentId } }
@@ -223,7 +219,6 @@ const deleteReply = async (req, res) => {
       });
     }
 
-    // Check if the user is the owner of the reply
     if (comment.replies[replyIndex].user.toString() !== userId ) {
       return res.status(403).json({
         errorCode: 3,
@@ -231,7 +226,6 @@ const deleteReply = async (req, res) => {
       });
     }
 
-    // Remove the reply from the replies array
     comment.replies.splice(replyIndex, 1);
     await comment.save();
 
