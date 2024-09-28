@@ -1,5 +1,5 @@
 const Class = require('../modal/Class');
-const User = require('../modal/User'); // Importing User model
+const User = require('../modal/User');
 
 const createClass = async (req, res) => {
     console.log('Request body:', req.body); 
@@ -83,7 +83,6 @@ const createClass = async (req, res) => {
       const { classId, studentId } = req.body;
   
       const authenticatedUser = req.user;
-        console.log(authenticatedUser)
       // Find the class and check if the authenticated user is the teacher (creator of the class)
       const classData = await Class.findById(classId);
       if (!classData || classData.teacher.toString() !== authenticatedUser.id.toString()) {
@@ -191,4 +190,41 @@ const getClassByClassId = async (req, res) => {
     });
 }
 };
-  module.exports = { createClass, getAllClasses, inviteStudentToClass,getClassesForUser,getClassByClassId };
+const removeQuestionPackFromClass = async (req, res) => {
+  try {
+      const { classId, questionPackId } = req.body; 
+      const authenticatedUser = req.user;
+
+      const classData = await Class.findById(classId);
+      if (!classData || classData.teacher.toString() !== authenticatedUser.id.toString()) {
+          return res.status(403).json({
+              errorCode: 7,
+              message: 'You are not authorized to remove question packs from this class'
+          });
+      }
+
+      if (!classData.questionPacks.includes(questionPackId)) {
+          return res.status(404).json({
+              errorCode: 10,
+              message: 'Question pack not found in this class'
+          });
+      }
+
+      classData.questionPacks = classData.questionPacks.filter(id => id.toString() !== questionPackId);
+      await classData.save();
+
+      return res.status(200).json({
+          errorCode: 0,
+          message: 'Question pack removed successfully',
+          data: classData
+      });
+  } catch (error) {
+      console.error('Error removing question pack from class:', error);
+      return res.status(500).json({
+          errorCode: 6,
+          message: 'An error occurred while removing the question pack from the class'
+      });
+  }
+};
+
+  module.exports = { createClass, getAllClasses, inviteStudentToClass,getClassesForUser,getClassByClassId,removeQuestionPackFromClass };

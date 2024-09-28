@@ -308,9 +308,42 @@ const getClassByClassId = async (classId) => {
         throw error;
     }
 };
+const getQuestionPackByQuestionPackId = async(questionPackId) =>{
+    try {
+        const response = await axios.get(`/questionPacks/${questionPackId}`);
+        return response
+    } catch (error) {
+        console.log(error)
+    }
+    
+}
+const removeQpToClass = async (classId, questionPackId) => {
+    const token = Cookies.get('accessToken');
+
+    if (!token) {
+        throw new Error('No access token found. Please login again.');
+    }
+
+    try {
+        const response = await axios.delete('/class/removeQp', {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            },
+            data: {
+                classId,
+                questionPackId
+            }
+        });
+
+        return response
+    } catch (error) {
+        console.error('Error removing question pack from class:', error);
+        throw error; // Throw the error to be handled by the caller
+    }
+};
 
 export {LoginApi,loginWGoogle,decodeDataGoogle,getAllQuestionPack,
     getQuestionByQPId,getUserByUserId,createNewQuestionPackApi,
     getUserId,createQuestionToQuestionPackAPI,getAllCommentFlashCard,
     postComment,deleteCommentApi,postReplyComment,searchItems,registerUser,
-    deleteReply,getClassById,getClassByClassId}
+    deleteReply,getClassById,getClassByClassId,getQuestionPackByQuestionPackId,removeQpToClass}

@@ -3,10 +3,10 @@ const { addUser, getUserFromUserId, getId } = require('../controller/ApiUser');
 const { apiLogin, apiRegister } = require('../controller/ApiAuth');
 const { createRefreshToken, createJWT, decodeToken, checkAccessToken } = require('../middleware/JWTAction');
 const passport = require('passport');
-const { createQuestionPack, getAllQuestionPack, searchQuestionPack } = require('../controller/ApiQuestionPack');
+const { createQuestionPack, getAllQuestionPack, searchQuestionPack, addQuestionPackToClass, getQuestionPackById } = require('../controller/ApiQuestionPack');
 const { addQuestionFlashCard, getQuestionFlashCardByQuestionPackId } = require('../controller/ApiQuestionFlashCard');
 const { addComment, getComments, getCommentById, deleteComment, addReply, deleteReply } = require('../controller/ApiComment');
-const { createClass, getClassById, getClassesForUser, inviteStudentToClass, getClassByClassId } = require('../controller/ApiClass');
+const { createClass, getClassById, getClassesForUser, inviteStudentToClass, getClassByClassId, removeQuestionPackFromClass } = require('../controller/ApiClass');
 
 const routerApi = express.Router();
 
@@ -47,6 +47,7 @@ routerApi.get('/user/:userId', getUserFromUserId)
 routerApi.post('/questionPack', checkAccessToken, createQuestionPack)
 routerApi.get('/questionPack', getAllQuestionPack)
 routerApi.get('/questionPacks/search', searchQuestionPack)
+routerApi.get('/questionPacks/:questionPackId', getQuestionPackById)
 
 
 routerApi.get('/questionPack/:questionPackId', getQuestionFlashCardByQuestionPackId)
@@ -67,4 +68,7 @@ routerApi.post('/class',checkAccessToken,createClass)
 routerApi.get('/class',checkAccessToken,getClassesForUser);
 routerApi.post('/class/invite',checkAccessToken,inviteStudentToClass)
 routerApi.get('/class/:classId',checkAccessToken,getClassByClassId)
+routerApi.post('/class/questionPackToClass',checkAccessToken,addQuestionPackToClass)
+routerApi.delete('/class/removeQp',checkAccessToken,removeQuestionPackFromClass)
+
 module.exports = { routerApi };

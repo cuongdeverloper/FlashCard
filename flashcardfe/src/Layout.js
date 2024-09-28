@@ -54,7 +54,7 @@ const Layout = () => {
                         </Route>
 
                         <Route path="classes/:classId" element={<Classes />}>
-                            <Route index element={<DocumentsClass />} />
+                            <Route path ="documents" index element={<DocumentsClass />} />
                             <Route path="students" element={<StudentsClass />} />
                             <Route path="actions" element={<Actions />} />
                         </Route>

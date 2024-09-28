@@ -20,8 +20,8 @@ const DetailFormQA = (props) => {
   const [file, setFile] = useState(null);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
-  const [reply, setReply] = useState({}); // State to track replies for each comment
-  const [showReplyForm, setShowReplyForm] = useState({}); // State to track which reply form to show
+  const [reply, setReply] = useState({}); 
+  const [showReplyForm, setShowReplyForm] = useState({});
   const userAcc = useSelector(state => state.user.account.id);
   const isAuthenticated = useSelector(state => state.user.isAuthenticated);
 

@@ -4,10 +4,10 @@ const Comment = require('./Comment');
 const questionPackSchema = new mongoose.Schema({
   title: {
     type: String,
-    required: true // Tên gói đề
+    required: true 
   },
   description: {
-    type: String // Mô tả gói đề
+    type: String 
   },
   teacher: {
     type: mongoose.Schema.Types.ObjectId,
@@ -15,15 +15,15 @@ const questionPackSchema = new mongoose.Schema({
     required: true
   },
   semester: {
-    type: String, // Ví dụ: 'Spring 2024', 'Fall 2023'
+    type: String,
     required: true
   },
   questions: [{
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Flashcard' // Danh sách các câu hỏi flashcard
+    ref: 'Flashcard'
   }],
   subject: {
-    type: String, // Tên môn học liên quan đến gói đề
+    type: String, 
     required: true
   },
   imagePreview:{

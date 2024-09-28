@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const uploadCloud = require("../config/cloudinaryConfig");
 const QuestionPack = require('../modal/QuestionPack');
 const User = require('../modal/User'); // Assuming the User model is imported
+const Class = require('../modal/Class');
 
 const createQuestionPack = async (req, res) => {
   uploadCloud.single('imagePreview')(req, res, async (err) => {
@@ -130,5 +131,86 @@ const searchQuestionPack = async (req, res) => {
     });
   }
 };
+const addQuestionPackToClass = async (req, res) => {
+  try {
+    const { classId, questionPackId } = req.body; 
+    const authenticatedUser = req.user;
 
-module.exports = { createQuestionPack,getAllQuestionPack,searchQuestionPack };
+    const classData = await Class.findById(classId);
+    if (!classData) {
+      return res.status(404).json({
+        errorCode: 1,
+        message: 'Class not found'
+      });
+    }
+
+    if (classData.teacher.toString() !== authenticatedUser.id.toString()) {
+      return res.status(403).json({
+        errorCode: 7,
+        message: 'You are not authorized to add question packs to this class'
+      });
+    }
+
+    const questionPack = await QuestionPack.findById(questionPackId);
+    if (!questionPack) {
+      return res.status(404).json({
+        errorCode: 8,
+        message: 'Question pack not found'
+      });
+    }
+
+    if (classData.questionPacks.includes(questionPackId)) {
+      return res.status(400).json({
+        errorCode: 9,
+        message: 'Question pack is already added to this class'
+      });
+    }
+
+    classData.questionPacks.push(questionPackId);
+    await classData.save();
+
+    return res.status(200).json({
+      errorCode: 0,
+      message: 'Question pack added to the class successfully',
+      data: classData
+    });
+
+  } catch (error) {
+    console.error('Error adding question pack to class:', error);
+    return res.status(500).json({
+      errorCode: 6,
+      message: 'An error occurred while adding the question pack to the class'
+    });
+  }
+};
+const getQuestionPackById = async (req, res) => {
+  try {
+    const { questionPackId } = req.params;
+
+    // Populate the teacher field with username and image
+    const questionPack = await QuestionPack.findById(questionPackId)
+      .populate('teacher', 'username image'); // Adjust fields to return
+
+    if (!questionPack) {
+      return res.status(404).json({
+        errorCode: 1,
+        message: 'Question pack not found'
+      });
+    }
+
+    return res.status(200).json({
+      errorCode: 0,
+      message: 'Question pack retrieved successfully',
+      data: questionPack
+    });
+  } catch (err) {
+    console.error('Error fetching question pack:', err);
+    return res.status(500).json({
+      errorCode: 6,
+      message: 'An error occurred while fetching the question pack'
+    });
+  }
+};
+
+
+module.exports = { createQuestionPack,getAllQuestionPack,searchQuestionPack,addQuestionPackToClass,getQuestionPackById };
