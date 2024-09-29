@@ -234,7 +234,7 @@ const DetailFormQA = (props) => {
                     {/* Điều kiện hiển thị nút xóa nếu người dùng là tác giả */}
                     {(comment.user._id === userAcc || idAuthor === userAcc )&& (
                       <button className="delete-button" onClick={()  => handleDeleteComment(comment._id)}>
-                        <FaTrash /> Delete
+                        <FaTrash /> 
                       </button>
                     )}
             
