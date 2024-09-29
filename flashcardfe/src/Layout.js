@@ -17,6 +17,7 @@ import Classes from "./components/Classes/Classes";
 import DocumentsClass from "./components/Classes/Documents/DocumentsClass";
 import StudentsClass from "./components/Classes/Students/StudentsClass";
 import Actions from "./components/Classes/Actions/Actions";
+import JoinClass from "./components/Joinclass";
 
 const Layout = () => {
     return (
@@ -59,6 +60,7 @@ const Layout = () => {
                             <Route path="actions" element={<Actions />} />
                         </Route>
                     </Route>
+                    <Route path="join-class/:token" element={<JoinClass />} /> 
 
                     <Route path="/login" element={<Login />} />
                     <Route path="/logout" element={<Logout />} />

@@ -6,7 +6,7 @@ const passport = require('passport');
 const { createQuestionPack, getAllQuestionPack, searchQuestionPack, addQuestionPackToClass, getQuestionPackById } = require('../controller/ApiQuestionPack');
 const { addQuestionFlashCard, getQuestionFlashCardByQuestionPackId } = require('../controller/ApiQuestionFlashCard');
 const { addComment, getComments, getCommentById, deleteComment, addReply, deleteReply } = require('../controller/ApiComment');
-const { createClass, getClassById, getClassesForUser, inviteStudentToClass, getClassByClassId, removeQuestionPackFromClass } = require('../controller/ApiClass');
+const { createClass, getClassById, getClassesForUser, inviteStudentToClass, getClassByClassId, removeQuestionPackFromClass, joinClassByInvite } = require('../controller/ApiClass');
 
 const routerApi = express.Router();
 
@@ -70,5 +70,5 @@ routerApi.post('/class/invite',checkAccessToken,inviteStudentToClass)
 routerApi.get('/class/:classId',checkAccessToken,getClassByClassId)
 routerApi.post('/class/questionPackToClass',checkAccessToken,addQuestionPackToClass)
 routerApi.delete('/class/removeQp',checkAccessToken,removeQuestionPackFromClass)
-
+routerApi.get('/join-class/:token', checkAccessToken, joinClassByInvite);  
 module.exports = { routerApi };

@@ -2,18 +2,22 @@ import { useEffect, useState } from "react";
 import { getClassByClassId } from "../../service/ApiService";
 import { Outlet, useNavigate, useParams } from "react-router-dom";
 import './Classes.scss';
-import { Container, Row, Col, Button, Nav, Navbar } from 'react-bootstrap';
+import { Container, Row, Col, Button, Nav, Navbar, Modal } from 'react-bootstrap';
 
 const Classes = () => {
     const [dataClass, setDataClass] = useState({});
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [listQp, setListQp] = useState([]);
-    const [idTeacher,setIdTeacher] = useState('');
-    const [idClass,setIdClass] = useState('')
+    const [idTeacher, setIdTeacher] = useState('');
+    const [idClass, setIdClass] = useState('');
     const params = useParams();
     const classId = params.classId;
+    const [show, setShow] = useState(false);
     const navigate = useNavigate();
+
+    const handleClose = () => setShow(false);
+    const handleShow = () => setShow(true);
 
     const handleGetClassesByClassId = async () => {
         try {
@@ -21,9 +25,9 @@ const Classes = () => {
             const response = await getClassByClassId(classId);
             if (response && response.errorCode === 0) {
                 setDataClass(response.data);
-                setIdClass(response.data._id)
-                setIdTeacher(response.data.teacher._id)
-                setListQp(response.data.questionPacks || []); 
+                setIdClass(response.data._id);
+                setIdTeacher(response.data.teacher._id);
+                setListQp(response.data.questionPacks || []);
             } else {
                 setError("Failed to fetch class data.");
             }
@@ -35,9 +39,19 @@ const Classes = () => {
         }
     };
 
+    const copyToClipboard = () => {
+        navigator.clipboard.writeText(dataClass.invitationLink)
+            .then(() => {
+                alert("Link copied to clipboard!");
+            })
+            .catch(err => {
+                console.error("Failed to copy: ", err);
+            });
+    };
+
     useEffect(() => {
         handleGetClassesByClassId();
-    }, [classId,navigate]);
+    }, [classId, navigate]);
 
     if (loading) {
         return <p>Loading class data...</p>;
@@ -72,21 +86,21 @@ const Classes = () => {
                             <Nav.Link onClick={() => {
                                 if (listQp.length > 0) {
                                     navigate('documents', {
-                                        state: { 
+                                        state: {
                                             listQp: listQp,
-                                            idTeacher:idTeacher,
-                                            idClass:idClass,
-                                         }
+                                            idTeacher: idTeacher,
+                                            idClass: idClass,
+                                        }
                                     });
                                 } else {
                                     console.error("No question packs available.");
                                 }
                             }}>Tài liệu học</Nav.Link>
 
-                            <Nav.Link onClick={() => navigate('students')}>Thành viên</Nav.Link>
-                            <Nav.Link onClick={() => navigate('actions')}>Hoạt động</Nav.Link>
+                            <Nav.Link onClick={() => navigate('students')}>Members</Nav.Link>
+                            <Nav.Link onClick={() => navigate('actions')}>Actions</Nav.Link>
                             <Nav.Link href="#progress">
-                                Tiến độ <span className="locked-icon">&#x1F512;</span>
+                                Progress <span className="locked-icon">&#x1F512;</span>
                             </Nav.Link>
                         </Nav>
                     </Navbar>
@@ -96,11 +110,37 @@ const Classes = () => {
 
                 <Row className="class-actions text-center my-3">
                     <Col>
-                        <Button variant="outline-primary" className="google-invite mx-2">Mời bằng Google</Button>
-                        <Button variant="outline-secondary" className="email-invite mx-2">Mời bằng email</Button>
-                        <Button variant="outline-dark" className="copy-link mx-2">Chép liên kết</Button>
+                        <Button variant="outline-primary" className="google-invite mx-2">Invite Google</Button>
+                        <Button variant="outline-secondary" className="email-invite mx-2">Invite email</Button>
+                        <Button variant="primary" onClick={handleShow} className="copy-link mx-2">Copy link invite</Button>
                     </Col>
                 </Row>
+
+                {/* Modal invite */}
+                <Modal
+                    show={show}
+                    onHide={handleClose}
+                    backdrop="static"
+                    keyboard={false}
+                >
+                    <Modal.Header closeButton>
+                        <Modal.Title>Invite to class</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                        <div>
+                            <span className="invitation-link">{dataClass.invitationLink}</span>
+                            <Button variant="primary" onClick={copyToClipboard} className="copy-button">
+                                Copy Link
+                            </Button>
+                        </div>
+                    </Modal.Body>
+
+                    <Modal.Footer>
+                        <Button variant="secondary" onClick={handleClose}>
+                            Close
+                        </Button>
+                    </Modal.Footer>
+                </Modal>
             </Container>
             <Outlet />
         </>

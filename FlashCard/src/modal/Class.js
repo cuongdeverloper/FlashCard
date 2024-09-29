@@ -21,7 +21,9 @@ const classSchema = new mongoose.Schema({
   createdAt: {
     type: Date,
     default: Date.now
-  }
+  },
+  invitationLink: { type: String }, 
+
 });
 
 module.exports = mongoose.model('Class', classSchema);

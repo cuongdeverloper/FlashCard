@@ -1,54 +1,42 @@
 const Class = require('../modal/Class');
 const User = require('../modal/User');
-
+const crypto = require('crypto');
 const createClass = async (req, res) => {
-    console.log('Request body:', req.body); 
+  try {
+      const name = req.body.name;
+      const students = Array.isArray(req.body.students) ? req.body.students : [];
+      const authenticatedUser = req.user;
+      const creatorId = authenticatedUser.id;
 
-    try {
-        const name = req.body.name;
+      let validStudents = [];
+      if (students.length > 0) {
+          validStudents = await User.find({ _id: { $in: students } });
+          if (validStudents.length !== students.length) {
+              return res.status(400).json({ message: 'One or more user IDs are invalid' });
+          }
+      }
 
-        // Initialize students as an empty array if it's undefined
-        const students = Array.isArray(req.body.students) ? req.body.students : [];
+      const invitationToken = crypto.randomBytes(16).toString('hex');
+      const invitationLink = `${process.env.FRONTEND_URL}/join-class/${invitationToken}`;
 
-        const authenticatedUser = req.user;
-        const creatorId = authenticatedUser.id;
+      const newClass = new Class({
+          name,
+          teacher: creatorId,
+          students: validStudents.map(student => student._id),
+          invitationLink
+      });
 
-        let validStudents = [];
-        if (students.length > 0) {
-            validStudents = await User.find({ 
-                _id: { $in: students }
-            });
+      await newClass.save();
 
-            // Check if all provided users exist
-            if (validStudents.length !== students.length) {
-                return res.status(400).json({
-                    errorCode: 5,
-                    message: 'One or more user IDs are invalid'
-                });
-            }
-        }
-
-        // Create the new class
-        const newClass = new Class({
-            name,
-            teacher: creatorId, 
-            students: validStudents.map(student => student._id) // Store valid student IDs
-        });
-
-        await newClass.save();
-
-        return res.status(201).json({
-            errorCode: 0,
-            message: 'Class created successfully',
-            data: newClass
-        });
-    } catch (error) {
-        console.error('Error creating class:', error);
-        return res.status(500).json({
-            errorCode: 6,
-            message: 'An error occurred while creating the class'
-        });
-    }
+      return res.status(201).json({
+          message: 'Class created successfully',
+          data: newClass,
+          
+      });
+  } catch (error) {
+      console.error('Error creating class:', error);
+      return res.status(500).json({ message: 'An error occurred while creating the class' });
+  }
 };
   
   const getAllClasses = async (req, res) => {
@@ -226,5 +214,33 @@ const removeQuestionPackFromClass = async (req, res) => {
       });
   }
 };
+const joinClassByInvite = async (req, res) => {
+  try {
+    const { token } = req.params;
+    const authenticatedUser = req.user;
 
-  module.exports = { createClass, getAllClasses, inviteStudentToClass,getClassesForUser,getClassByClassId,removeQuestionPackFromClass };
+    const classData = await Class.findOne({ invitationLink: `${process.env.FRONTEND_URL}/join-class/${token}` });
+    if (!classData) {
+      return res.status(404).json({ message: 'Class not found or invalid invite link' });
+    }
+
+    if (authenticatedUser.role !== 'student') {
+      return res.status(403).json({ message: 'Only students can join classes' });
+    }
+
+    if (!classData.students.includes(authenticatedUser.id)) {
+      classData.students.push(authenticatedUser.id);
+      await classData.save();
+    }
+
+    return res.status(200).json({
+      message: 'Successfully joined the class',
+      data: classData
+    });
+  } catch (error) {
+    console.error('Error joining class:', error);
+    return res.status(500).json({ message: 'An error occurred while joining the class' });
+  }
+};
+
+  module.exports = { createClass, getAllClasses, inviteStudentToClass,getClassesForUser,getClassByClassId,removeQuestionPackFromClass,joinClassByInvite };

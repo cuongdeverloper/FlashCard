@@ -341,9 +341,19 @@ const removeQpToClass = async (classId, questionPackId) => {
         throw error; // Throw the error to be handled by the caller
     }
 };
-
+const joinClassByInvite = async(token1) => {
+    const token = Cookies.get('accessToken');
+    if (!token) {
+        throw new Error('No access token found. Please login again.');
+    }
+    return axios.get(`/join-class/${token1}`, {
+        headers: {
+            'Authorization': `Bearer ${token}`  
+        }
+    });
+};
 export {LoginApi,loginWGoogle,decodeDataGoogle,getAllQuestionPack,
     getQuestionByQPId,getUserByUserId,createNewQuestionPackApi,
     getUserId,createQuestionToQuestionPackAPI,getAllCommentFlashCard,
     postComment,deleteCommentApi,postReplyComment,searchItems,registerUser,
-    deleteReply,getClassById,getClassByClassId,getQuestionPackByQuestionPackId,removeQpToClass}
+    deleteReply,getClassById,getClassByClassId,getQuestionPackByQuestionPackId,removeQpToClass,joinClassByInvite}

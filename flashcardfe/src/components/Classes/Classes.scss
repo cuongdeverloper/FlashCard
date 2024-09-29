@@ -36,9 +36,27 @@
             }
         }
     }
+}
 
- 
+.modal-body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
 
+.invitation-link {
+    font-size: 1.2rem; // Adjust font size
+    color: #007bff; // Bootstrap primary color
+    text-decoration: underline; // Underline for the link
+    margin-bottom: 1rem; // Spacing below the link
+    cursor: pointer; // Pointer cursor for better UX
+    transition: color 0.3s ease; // Smooth transition for hover effect
 
-   
+    &:hover {
+        color: #0056b3; // Darker shade on hover
+    }
+}
+
+.copy-button {
+    margin-top: 1rem; // Spacing above the copy button
 }
