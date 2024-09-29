@@ -220,14 +220,20 @@ const joinClassByInvite = async (req, res) => {
     const authenticatedUser = req.user;
 
     const classData = await Class.findOne({ invitationLink: `${process.env.FRONTEND_URL}/join-class/${token}` });
+    
     if (!classData) {
       return res.status(404).json({ message: 'Class not found or invalid invite link' });
     }
 
-    if (authenticatedUser.role !== 'student') {
-      return res.status(403).json({ message: 'Only students can join classes' });
-    }
 
+    const alreadyJoined = classData.students.includes(authenticatedUser.id);
+    
+    if (alreadyJoined || authenticatedUser.id === classData.teacher._id.toString()) {
+      return res.status(200).json({
+        message: 'Your are joined to class',
+        data: classData
+      });
+    }
     if (!classData.students.includes(authenticatedUser.id)) {
       classData.students.push(authenticatedUser.id);
       await classData.save();

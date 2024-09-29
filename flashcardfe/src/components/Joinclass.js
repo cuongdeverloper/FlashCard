@@ -11,11 +11,15 @@ const JoinClass = () => {
     const handleJoinClass = async () => {
       try {
         const response = await joinClassByInvite(token);
-        console.log(response)
         if (response && response.message === 'Successfully joined the class') {
             toast.success('join success')
           navigate(`/classes/${response.data._id}`);
-        } else {
+        } 
+        if(response && response.message === 'Your are joined to class'){
+            toast.warning('Your are joined to class')
+            navigate(`/classes/${response.data._id}`);
+        }
+        else {
           console.error('Failed to join class:', response.message);
         }
       } catch (error) {
