@@ -352,8 +352,21 @@ const joinClassByInvite = async(token1) => {
         }
     });
 };
+
+const getMemberByClassId = async(classId)=>{
+    const token = Cookies.get('accessToken');
+    if (!token) {
+        throw new Error('No access token found. Please login again.');
+    }
+    return axios.get(`/class/getMembers/${classId}`, {
+        headers: {
+            'Authorization': `Bearer ${token}`  
+        }
+    });
+}
 export {LoginApi,loginWGoogle,decodeDataGoogle,getAllQuestionPack,
     getQuestionByQPId,getUserByUserId,createNewQuestionPackApi,
     getUserId,createQuestionToQuestionPackAPI,getAllCommentFlashCard,
     postComment,deleteCommentApi,postReplyComment,searchItems,registerUser,
-    deleteReply,getClassById,getClassByClassId,getQuestionPackByQuestionPackId,removeQpToClass,joinClassByInvite}
+    deleteReply,getClassById,getClassByClassId,getQuestionPackByQuestionPackId,removeQpToClass
+    ,joinClassByInvite,getMemberByClassId}

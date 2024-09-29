@@ -249,4 +249,53 @@ const joinClassByInvite = async (req, res) => {
   }
 };
 
-  module.exports = { createClass, getAllClasses, inviteStudentToClass,getClassesForUser,getClassByClassId,removeQuestionPackFromClass,joinClassByInvite };
+const getAllMembersByClassId = async (req, res) => {
+  try {
+    const { classId } = req.params;  
+    const authenticatedUser = req.user;
+
+    const classData = await Class.findById(classId)
+      .populate('students', 'username email image')  
+      .populate('teacher', 'username email image ');   
+
+    if (!classData) {
+      return res.status(404).json({
+        errorCode: 1,
+        message: 'Class not found'
+      });
+    }
+
+    // Check if the authenticated user is the teacher or a student in the class
+    const isTeacher = classData.teacher._id.toString() === authenticatedUser.id.toString();
+    const isStudent = classData.students.some(student => student._id.toString() === authenticatedUser.id.toString());
+
+    if (!isTeacher && !isStudent) {
+      return res.status(403).json({
+        errorCode: 7,
+        message: 'You are not authorized to view the members of this class'
+      });
+    }
+
+    // Combine teacher and students into a single array
+    const allMembers = {
+      teacher: classData.teacher,
+      students: classData.students
+    };
+
+    return res.status(200).json({
+      errorCode: 0,
+      message: 'Members retrieved successfully',
+      data: allMembers
+    });
+  } catch (err) {
+    console.error('Error fetching all members by class ID:', err);
+    return res.status(500).json({
+      errorCode: 6,
+      message: 'An error occurred while fetching the members'
+    });
+  }
+};
+
+
+  module.exports = { createClass, getAllClasses, inviteStudentToClass,getClassesForUser,
+    getClassByClassId,removeQuestionPackFromClass,joinClassByInvite,getAllMembersByClassId };

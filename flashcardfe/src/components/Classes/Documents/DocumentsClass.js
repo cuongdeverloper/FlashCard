@@ -5,7 +5,7 @@ import { Card, Image } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import { FaTrash } from 'react-icons/fa'; 
 import { toast } from "react-toastify";
-import ModalDeleteDocumentsClass from "./ModalDeleteDocumentsClass"; // Import the modal
+import ModalDeleteDocumentsClass from "./ModalDeleteDocumentsClass"; 
 
 const DocumentsClass = () => {
   const userAcc = useSelector(state => state.user.account.id);
@@ -17,8 +17,8 @@ const DocumentsClass = () => {
   const [dataQp, setDataQp] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [showModal, setShowModal] = useState(false); // State for showing the modal
-  const [selectedQp, setSelectedQp] = useState(null); // Store the selected question pack
+  const [showModal, setShowModal] = useState(false);
+  const [selectedQp, setSelectedQp] = useState(null);
 
   useEffect(() => {
     const fetchQuestionPacks = async () => {
