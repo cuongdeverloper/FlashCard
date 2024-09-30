@@ -20,6 +20,7 @@ import Actions from "./components/Classes/Actions/Actions";
 import JoinClass from "./components/Joinclass";
 import  io  from "socket.io-client";
 import Cookies from 'js-cookie';
+import ViewProfile from "./components/Userprofile.js/profile";
 
 const Layout = () => {
     useEffect(()=>{
@@ -29,7 +30,7 @@ const Layout = () => {
             }
         })
         socketConnection.on('onlineUser',(data)=>{
-            console.log(data)
+            console.log('ou',data)
         })
         return()=>{
             socketConnection.disconnect()
@@ -80,7 +81,7 @@ const Layout = () => {
                     <Route path="/login" element={<Login />} />
                     <Route path="/logout" element={<Logout />} />
                     <Route path="/register" element={<Register />} />
-
+                    <Route path="/userprofile" element={<ViewProfile />} />
                 </Routes>
             </BrowserRouter>
         </Suspense>

@@ -137,7 +137,7 @@ const NavHeader = () => {
                   Login
                 </NavLink>
               )}
-              <Nav.Link onClick={() => navigate("/user")}>
+              <Nav.Link onClick={() => navigate("/userprofile")}>
                 <IoPersonCircle />
               </Nav.Link>
 
