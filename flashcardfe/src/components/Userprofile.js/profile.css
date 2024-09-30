@@ -1,0 +1,20 @@
+.profile-container {
+    max-width: 600px;
+    margin: 0 auto;
+  }
+  
+  .profile-card {
+    border: none;
+  }
+  
+  .profile-img {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+  
+  .card {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  

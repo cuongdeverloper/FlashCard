@@ -25,7 +25,7 @@ import { setOnlineUser } from "./redux/action/userAction";
 
 const Layout = () => {
     const dispatch = useDispatch();
-    let userOnline =  useSelector(state => state?.user?.account?.onlineUser)
+    let userOnline =  useSelector(state => state?.user?.onlineUser)
     console.log(userOnline)
     useEffect(()=>{
         const socketConnection = io('http://localhost:6868/',{

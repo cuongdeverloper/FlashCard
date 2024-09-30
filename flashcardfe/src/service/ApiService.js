@@ -63,7 +63,7 @@ const getUserId = async () => {
                 'Authorization': `Bearer ${token}`
             }
         });
-
+        console.log('Response from /id:', response.data);
         return response;
     } catch (error) {
         console.error('Error fetching user ID:', error);
