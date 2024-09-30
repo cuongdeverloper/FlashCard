@@ -16,16 +16,20 @@ io.on('connection',(socket)=>{
     console.log('connect User',socket.id);
     const token = socket.handshake.auth.token
     const user = decodeToken(token) ;
-    // console.log('tk',user);
+    if(user){
+    onlineUser.add(user?.id);
+    socket.join(user?.id);
+    io.emit('onlineUser',Array.from(onlineUser))
+    }
 
     //create a room:
-    socket.join(user?.id);
-    onlineUser.add(user?.id);
-    io.emit('onlineUser',Array.from(onlineUser))
+    
     //disconnect
     socket.on('disconnect',()=>{
         onlineUser.delete(user?.id)
         console.log('disconnect user', socket.id)
+        io.emit('onlineUser',Array.from(onlineUser))
+
     })
 })
 module.exports = {
