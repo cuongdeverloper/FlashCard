@@ -27,7 +27,7 @@ const Layout = () => {
     const dispatch = useDispatch();
     useEffect(()=>{
         const token = Cookies.get('accessToken');
-        const socketConnection = io('http://localhost:6868/',{
+        const socketConnection = io('http://localhost:6868',{
             auth:{
                 token:token
             }

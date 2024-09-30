@@ -8,7 +8,7 @@ const app = express();
 const server = http.createServer(app);
 const io = new Server(server,{
     cors :{
-        origin :process.env.FRONTEND_URL,
+        origin :'http://localhost:7070',
         credentials: true,
     }
 })
@@ -18,8 +18,8 @@ io.on('connection',(socket)=>{
     const token = socket.handshake.auth.token
     const user = decodeToken(token) ;
     if(user){
-    onlineUser.add(user?.id);
-    socket.join(user?.id);
+    onlineUser.add(user.id);
+    socket.join(user.id);
     io.emit('onlineUser',Array.from(onlineUser))
     }
 console.log('as',process.env.FRONTEND_URL)
