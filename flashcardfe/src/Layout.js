@@ -1,4 +1,4 @@
-import React, { Suspense } from "react";
+import React, { Suspense, useEffect } from "react";
 import { ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import { BrowserRouter, Route, Routes } from "react-router-dom";
@@ -18,8 +18,23 @@ import DocumentsClass from "./components/Classes/Documents/DocumentsClass";
 import StudentsClass from "./components/Classes/Students/StudentsClass";
 import Actions from "./components/Classes/Actions/Actions";
 import JoinClass from "./components/Joinclass";
+import  io  from "socket.io-client";
+import Cookies from 'js-cookie';
 
 const Layout = () => {
+    useEffect(()=>{
+        const socketConnection = io('http://localhost:6868/',{
+            auth:{
+                token:Cookies.get('accessToken')
+            }
+        })
+        socketConnection.on('onlineUser',(data)=>{
+            console.log(data)
+        })
+        return()=>{
+            socketConnection.disconnect()
+        }
+    },[])
     return (
         <Suspense fallback={<div>Loading...</div>}>
             <ToastContainer

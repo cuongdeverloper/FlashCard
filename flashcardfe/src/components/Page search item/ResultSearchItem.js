@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Card } from "react-bootstrap"; // Import Card from Bootstrap
 import { useLocation, useNavigate } from "react-router-dom"; // Import useNavigate
 import './ResultSearchItem.scss';
@@ -18,7 +18,7 @@ const ResultSearchItem = () => {
               key={index} 
               className="mb-3 result-card" 
               style={{ backgroundColor: '#2E3856' }} 
-              onClick={() => navigate(`/detail/${result.id}`)} // Chuyển hướng khi nhấn vào Card
+              onClick={() => navigate(`/detailquespack/${result._id}`)} 
             >
               <div className="row no-gutters">
                 <div className="col-md-4 card-div">

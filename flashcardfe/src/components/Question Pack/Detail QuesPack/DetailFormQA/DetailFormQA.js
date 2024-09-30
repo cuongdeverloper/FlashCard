@@ -44,7 +44,7 @@ const DetailFormQA = (props) => {
       try {
         const response = await getAllCommentFlashCard(flashcardId, page);
         setComments(response.data || []);
-        console.log(response.data)
+        console.log(response)
         setTotalPages(response.totalPages || 1);
       } catch (error) {
         console.error("Error fetching comments:", error.message);
@@ -262,7 +262,7 @@ const DetailFormQA = (props) => {
                       <ul>
                         {comment.replies.map(reply => (
                           <li key={reply._id}>
-                            <p><strong>{reply.user}:</strong> {reply.content}</p>
+                            <p><strong>{reply.user.username}:</strong> {reply.content}</p>
             
                             {/* Hiển thị nút xóa reply nếu người dùng là tác giả hoặc người viết comment */}
                             {(reply.user === userAcc || userAcc === idAuthor) && (

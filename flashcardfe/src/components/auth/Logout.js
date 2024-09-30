@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { doLogout } from '../../redux/action/userAction';
-import Cookies from 'js-cookie'; // Import js-cookie for cookie handling
+import Cookies from 'js-cookie'; 
+import { useNavigate } from 'react-router-dom';
 
 const Logout = () => {
     const dispatch = useDispatch();
+    const navigate = useNavigate()
 
     const handleLogout = () => {
         dispatch(doLogout());
@@ -14,15 +16,14 @@ const Logout = () => {
         // Remove tokens from cookies (if they were set there)
         Cookies.remove('accessToken');
         Cookies.remove('refreshToken');
-
+            navigate('/')
     };
-
+useEffect(()=>{
+    handleLogout()
+},[])
     return (
-        <div className="Logout-container">
-            <button className="btn btn-warning" onClick={handleLogout}>
-                Logout
-            </button>
-        </div>
+       <>
+       </>
     );
 };
 

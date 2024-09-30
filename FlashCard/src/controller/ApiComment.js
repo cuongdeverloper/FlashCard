@@ -63,21 +63,23 @@ const addComment = async (req, res) => {
 
     try {
         const comments = await Comment.find({ flashcard: flashcardId })
-            .sort({ createdAt: -1 }) // Sort by createdAt in descending order
-            .skip((page - 1) * limit)  // Calculate offset
-            .limit(parseInt(limit))    // Limit number of results
+            .sort({ createdAt: -1 }) 
+            .skip((page - 1) * limit)  
+            .limit(parseInt(limit))    
             .populate({
                 path: 'user',
                 select: 'username email phoneNumber gender image role type' 
-            });
-
+            }).populate({
+              path: 'replies.user',  // Populate replies user field
+              select: 'username'    // Only select the username of the reply user
+          });
         const totalComments = await Comment.countDocuments({ flashcard: flashcardId });
         res.status(200).json({
             errorCode: 0,
             message: 'Comments retrieved successfully',
             data: comments.map(comment => ({
                 ...comment.toObject(),
-                isOwner: comment.user.toString() === req.user.id // Check if the comment's user ID matches the current user's ID
+                isOwner: comment.user.toString() === req.user.id 
             })),
             total: totalComments,
             page: parseInt(page),

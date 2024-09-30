@@ -49,19 +49,21 @@
   transform: rotateY(0deg);
 }
 
-button {
-  background-color: #007bff !important;
-  color: #fff !important;
-  border: none !important;
-  padding: 10px 18px !important;
-  margin: 10px 10px !important;
-  border-radius: 5px !important;
-  cursor: pointer !important;
-  transition: background-color 0.3s ease !important;
-}
-
-button:hover {
-  background-color: #0056b3 !important;
+.flashcard-container{
+  button {
+    background-color: #007bff !important;
+    color: #fff !important;
+    border: none !important;
+    padding: 10px 18px !important;
+    margin: 10px 10px !important;
+    border-radius: 5px !important;
+    cursor: pointer !important;
+    transition: background-color 0.3s ease !important;
+  }
+  
+  button:hover {
+    background-color: #0056b3 !important;
+  }
 }
 
 .comments-section {
