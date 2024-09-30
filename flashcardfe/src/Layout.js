@@ -20,8 +20,13 @@ import Actions from "./components/Classes/Actions/Actions";
 import JoinClass from "./components/Joinclass";
 import  io  from "socket.io-client";
 import Cookies from 'js-cookie';
+import { useDispatch, useSelector } from "react-redux";
+import { setOnlineUser } from "./redux/action/userAction";
 
 const Layout = () => {
+    const dispatch = useDispatch();
+    let userOnline =  useSelector(state => state?.user?.account?.onlineUser)
+    console.log(userOnline)
     useEffect(()=>{
         const socketConnection = io('http://localhost:6868/',{
             auth:{
@@ -29,7 +34,8 @@ const Layout = () => {
             }
         })
         socketConnection.on('onlineUser',(data)=>{
-            console.log(data)
+            console.log('ou',data)
+            dispatch(setOnlineUser(data));        
         })
         return()=>{
             socketConnection.disconnect()

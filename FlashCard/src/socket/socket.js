@@ -23,7 +23,8 @@ io.on('connection',(socket)=>{
     onlineUser.add(user?.id);
     io.emit('onlineUser',Array.from(onlineUser))
     //disconnect
-    io.on('disconnect',()=>{
+    socket.on('disconnect',()=>{
+        onlineUser.delete(user?.id)
         console.log('disconnect user', socket.id)
     })
 })

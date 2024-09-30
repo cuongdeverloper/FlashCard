@@ -2,12 +2,15 @@ import { useEffect, useState } from "react";
 import { Accordion } from "react-bootstrap";
 import { useParams } from "react-router-dom";
 import { getMemberByClassId } from "../../../service/ApiService";
+import { useSelector } from "react-redux";
+import { HiStatusOnline } from "react-icons/hi";
 
 const StudentsClass = () => {
     const { classId } = useParams();
     const [members, setMembers] = useState({ teacher: {}, students: [] });
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    let userOnline =  useSelector(state => state?.user?.account?.onlineUser)
 
     useEffect(() => {
         handleGetMember();
@@ -59,10 +62,14 @@ const StudentsClass = () => {
                                     />
                                 )}
                                 <div>
-                                    <strong>{member.username || member.email}</strong>
+                                    <strong>{member.username}{userOnline.includes(member._id) && (
+                                            <HiStatusOnline style={{ color: 'green', marginLeft: '10px' }} />
+                                        )}
+                                    </strong>
                                     <p>Email: {member.email}</p>
                                 </div>
                             </div>
+                            
                             <span>{member._id === members.teacher._id ? 'Teacher' : 'Student'}</span>
                         </div>
                     ))}

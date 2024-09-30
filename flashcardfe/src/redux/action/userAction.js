@@ -1,9 +1,8 @@
 export const Fetch_User_Success = 'FETCH_USER_SUCCESS';
 export const Fetch_User_LogOut = 'FETCH_USER_LOGOUT';
 export const Fetch_User_Success_Google = 'FETCH_USER_SUCCESS_GOOGLE';
-
+export const Set_Online_Users = 'SET_ONLINE_USERS';
 export const doLogin = (response) => {
-    console.log('Login response:', response); 
     const data = response.data; 
     return {
         type: Fetch_User_Success,
@@ -38,5 +37,11 @@ export const doLoginWGoogle = (response,access_token,refresh_token) =>{
 export const doLogout = () => {
     return {
         type: Fetch_User_LogOut,
+    };
+};
+export const setOnlineUser = (onlineUsers) => {
+    return {
+        type: Set_Online_Users,
+        payload: onlineUsers
     };
 };
