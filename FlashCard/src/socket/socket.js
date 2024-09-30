@@ -8,7 +8,9 @@ const app = express();
 const server = http.createServer(app);
 const io = new Server(server,{
     cors :{
-        origin :process.env.FRONTEND_URL
+        origin :process.env.FRONTEND_URL,
+        methods: ["GET", "POST"],
+        credentials: true,
     }
 })
 const onlineUser = new Set();
@@ -21,7 +23,7 @@ io.on('connection',(socket)=>{
     socket.join(user?.id);
     io.emit('onlineUser',Array.from(onlineUser))
     }
-
+console.log('as',process.env.FRONTEND_URL)
     //create a room:
     
     //disconnect

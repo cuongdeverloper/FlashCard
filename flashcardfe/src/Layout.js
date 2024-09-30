@@ -26,11 +26,13 @@ import { setOnlineUser } from "./redux/action/userAction";
 const Layout = () => {
     const dispatch = useDispatch();
     useEffect(()=>{
+        const token = Cookies.get('accessToken');
         const socketConnection = io('http://localhost:6868/',{
             auth:{
-                token:Cookies.get('accessToken')
+                token:token
             }
         })
+
         socketConnection.on('onlineUser',(data)=>{
             console.log('ou',data)
             dispatch(setOnlineUser(data));        
@@ -38,7 +40,7 @@ const Layout = () => {
         return()=>{
             socketConnection.disconnect()
         }
-    },[])
+    },[dispatch])
     return (
         <Suspense fallback={<div>Loading...</div>}>
             <ToastContainer
