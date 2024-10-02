@@ -1,5 +1,5 @@
 const express = require('express');
-const { addUser, getUserFromUserId, getId } = require('../controller/ApiUser');
+const { addUser, getUserFromUserId, getId, searchUser, getAllUsers } = require('../controller/ApiUser');
 const { apiLogin, apiRegister } = require('../controller/ApiAuth');
 const { createRefreshToken, createJWT, decodeToken, checkAccessToken } = require('../middleware/JWTAction');
 const passport = require('passport');
@@ -7,6 +7,7 @@ const { createQuestionPack, getAllQuestionPack, searchQuestionPack, addQuestionP
 const { addQuestionFlashCard, getQuestionFlashCardByQuestionPackId } = require('../controller/ApiQuestionFlashCard');
 const { addComment, getComments, getCommentById, deleteComment, addReply, deleteReply } = require('../controller/ApiComment');
 const { createClass, getClassesForUser, inviteStudentToClass, getClassByClassId, removeQuestionPackFromClass, joinClassByInvite, getStudentsByClassId, getAllMembersByClassId } = require('../controller/ApiClass');
+const { sendMessage, getMessages } = require('../controller/ApiMessage');
 
 const routerApi = express.Router();
 
@@ -42,7 +43,8 @@ routerApi.post('/decode-token', (req, res) => {
 //APiUser
 routerApi.post('/user', addUser)
 routerApi.get('/user/:userId', getUserFromUserId)
-
+routerApi.get('/searchUser',checkAccessToken,searchUser)
+routerApi.get('/users',checkAccessToken,getAllUsers)
 //Api QuestionPack
 routerApi.post('/questionPack', checkAccessToken, createQuestionPack)
 routerApi.get('/questionPack', getAllQuestionPack)
@@ -72,5 +74,10 @@ routerApi.post('/class/questionPackToClass',checkAccessToken,addQuestionPackToCl
 routerApi.delete('/class/removeQp',checkAccessToken,removeQuestionPackFromClass)
 routerApi.get('/class/getMembers/:classId', checkAccessToken, getAllMembersByClassId);  
 routerApi.get('/join-class/:token', checkAccessToken, joinClassByInvite);  
+
+
+// message:
+routerApi.post('/messages/:id', checkAccessToken, sendMessage);
+routerApi.get('/messages/:id', checkAccessToken, getMessages);
 
 module.exports = { routerApi };

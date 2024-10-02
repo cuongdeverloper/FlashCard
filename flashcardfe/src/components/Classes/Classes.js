@@ -63,7 +63,7 @@ const Classes = () => {
 
     return (
         <>
-            <Container className="Classes-container" style={{zIndex:'1000'}}>
+            <Container className="Classes-container" style={{zIndex:'100'}}>
                 <Row className="header-banner bg-light py-4">
                     <Col>
                         <h3 className="mb-2">Bắt đầu một hoạt động trong lớp</h3>

@@ -59,7 +59,8 @@ const apiLogin = async (req, res) => {
         role: userRecord.role,
         email: userRecord.email,
         phoneNumber: userRecord.phoneNumber,
-        gender: userRecord.gender
+        gender: userRecord.gender,
+        image:userRecord.image
       }
     });
   } catch (error) {

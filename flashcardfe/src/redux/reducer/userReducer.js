@@ -1,4 +1,4 @@
-import { Fetch_User_Success, Fetch_User_Success_Google, Set_Online_Users } from "../action/userAction";
+import { Fetch_User_Success, Fetch_User_Success_Google, Set_Online_Users, Set_Socket_Connection } from "../action/userAction";
 import { Fetch_User_LogOut } from "../action/userAction";
 const INITIAL_STATE = {
     account: {
@@ -8,7 +8,9 @@ const INITIAL_STATE = {
         refresh_token: '',
         username: '',
         role: '',
-        onlineUser: [] 
+        onlineUser: null,
+        socketConnection: null,
+        image:''
     },
     isAuthenticated: false
 };
@@ -16,34 +18,13 @@ const INITIAL_STATE = {
 const userReducer = (state = INITIAL_STATE, action) => {
     switch (action.type) {
         case Fetch_User_Success:
-            return {
-                ...state,
-                account: {
-                    id: action.payload.id,
-                    access_token: action.payload.access_token,
-                    email: action.payload.email,
-                    refresh_token: action.payload.refresh_token,
-                    username: action.payload.username,
-                    role: action.payload.role,
-                    phoneNumber: action.payload.phoneNumber,
-                    gender: action.payload.gender,
-                    onlineUser: state.account.onlineUser // retain online users
-                },
-                isAuthenticated: true,
-            };
         case Fetch_User_Success_Google:
             return {
                 ...state,
                 account: {
-                    id: action.payload.id,
-                    access_token: action.payload.access_token,
-                    email: action.payload.email,
-                    refresh_token: action.payload.refresh_token,
-                    username: action.payload.username,
-                    role: action.payload.role,
-                    phoneNumber: action.payload.phoneNumber,
-                    gender: action.payload.gender,
-                    onlineUser: state.account.onlineUser // retain online users
+                    ...state.account,
+                    ...action.payload, // Cập nhật các thông tin tài khoản từ payload
+                    onlineUser: state.account.onlineUser // Giữ lại onlineUser
                 },
                 isAuthenticated: true,
             };
@@ -52,31 +33,23 @@ const userReducer = (state = INITIAL_STATE, action) => {
                 ...state,
                 account: {
                     ...state.account,
-                    onlineUser: action.payload 
+                    onlineUser: action.payload
                 }
             };
         case Fetch_User_LogOut:
             return {
                 ...state,
-                account: {
-                    id: '',
-                    access_token: '',
-                    email: '',
-                    refresh_token: '',
-                    username: '',
-                    role: '',
-                    phoneNumber: '',
-                    gender: '',
-                    onlineUser: []
-                },
+                account: INITIAL_STATE.account, // Reset tài khoản về giá trị ban đầu
                 isAuthenticated: false,
             };
-            case Fetch_User_LogOut:
-                return {
-                    ...state,
-                    account: {},
-                    onlineUser: [], // Reset online users on logout
-                };
+        case Set_Socket_Connection:
+            return {
+                ...state,
+                account: {
+                    ...state.account,
+                    socketConnection: action.payload
+                }
+            };
         default:
             return state;
     }

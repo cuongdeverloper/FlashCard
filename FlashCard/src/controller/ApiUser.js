@@ -30,11 +30,10 @@ const addUser = async (req, res) => {
         image
       });
 
-      // Save user to the database
       await newUser.save();
       res.status(201).json({ message: 'User registered successfully', user: newUser });
     } catch (error) {
-      if (error.code === 11000) { // Duplicate value error code
+      if (error.code === 11000) { 
         return res.status(400).json({ message: 'Username or email already exists.' });
       }
       res.status(500).json({ message: 'Error registering user', error });
@@ -67,4 +66,54 @@ const getId = async(req,res) =>{
     data: req.user
   });
 }
-module.exports = { addUser,getUserFromUserId,getId };
+const searchUser = async (req, res) => {
+  try {
+    const { query } = req.query; 
+
+    if (!query) {
+      return res.status(400).json({ message: 'Search query is required.' });
+    }
+
+    const users = await User.find({
+      $or: [
+        { username: { $regex: query, $options: 'i' } },
+        { email: { $regex: query, $options: 'i' } },
+        { phoneNumber: { $regex: query, $options: 'i' } }
+      ]
+    });
+
+    if (users.length === 0) {
+      return res.status(404).json({ message: 'No users found.' });
+    }
+
+    return res.status(200).json({
+      errorCode: 0,
+      message: 'Search completed successfully',
+      data: users
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({
+      errorCode: 7,
+      message: 'An error occurred during the search operation'
+    });
+  }
+};
+const getAllUsers = async (req, res) => {
+  try {
+    const users = await User.find(); 
+
+    return res.status(200).json({
+      errorCode: 0,
+      message: 'Fetched all users successfully',
+      data: users
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({
+      errorCode: 7,
+      message: 'An error occurred while fetching users'
+    });
+  }
+};
+module.exports = { addUser,getUserFromUserId,getId,searchUser,getAllUsers };

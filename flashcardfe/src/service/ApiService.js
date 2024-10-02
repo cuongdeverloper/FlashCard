@@ -46,7 +46,29 @@ const getUserByUserId = (userId) =>{
     return axios.get(`/user/${userId}`)
 }
 
+const getAllUserApi = async()=>{
+    try {
+        const token = Cookies.get('accessToken');
 
+        // Check if the token exists
+        if (!token) {
+            console.warn('No access token found');
+            return null; 
+        }
+
+        // Proceed with the API request if the token exists
+        const response = await axios.get('/users', {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
+       
+        return response;
+    } catch (error) {
+        console.error('Error fetching user ID:', error);
+        return null;
+    }
+}
 const getUserId = async () => {
     try {
         const token = Cookies.get('accessToken');
@@ -364,9 +386,71 @@ const getMemberByClassId = async(classId)=>{
         }
     });
 }
+const searchUserId = async(query)=>{
+    const token = Cookies.get('accessToken');
+    if (!token) {
+        throw new Error('No access token found. Please login again.');
+    }
+    const response = await axios.get('/searchUser', {
+        params: { query },
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+      return response
+}
+
+const sendMess = async (userId, messageContent) => {
+    try {
+        const token = Cookies.get('accessToken');
+        
+        if (!token) {
+            throw new Error('No access token found. Please login again.');
+        }
+        console.log("User ID:", userId);
+        console.log("Message Content:", messageContent);
+        
+        const response = await axios.post(`/messages/${userId}`, {
+            message: messageContent 
+        }, {
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json' 
+            }
+        });
+
+        return response
+    } catch (error) {
+        console.error('Error sending message:', error);
+        throw error; // Propagate the error to be handled by the caller
+    }
+};
+const getMessagesApi = async (userId) => {
+    try {
+        const token = Cookies.get('accessToken');
+
+        // Check if the token exists
+        if (!token) {
+            throw new Error('No access token found. Please login again.');
+        }
+
+        // Make the GET request to fetch messages for the specific user
+        const response = await axios.get(`/messages/${userId}`, {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
+
+        return response
+    } catch (error) {
+        console.error('Error fetching messages:', error);
+        throw error; // Propagate the error to be handled by the caller
+    }
+};
+
 export {LoginApi,loginWGoogle,decodeDataGoogle,getAllQuestionPack,
     getQuestionByQPId,getUserByUserId,createNewQuestionPackApi,
     getUserId,createQuestionToQuestionPackAPI,getAllCommentFlashCard,
     postComment,deleteCommentApi,postReplyComment,searchItems,registerUser,
     deleteReply,getClassById,getClassByClassId,getQuestionPackByQuestionPackId,removeQpToClass
-    ,joinClassByInvite,getMemberByClassId}
+    ,joinClassByInvite,getMemberByClassId,searchUserId,getAllUserApi,sendMess,getMessagesApi}
