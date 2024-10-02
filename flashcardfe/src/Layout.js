@@ -22,6 +22,8 @@ import  io  from "socket.io-client";
 import Cookies from 'js-cookie';
 import { useDispatch, useSelector } from "react-redux";
 import { setOnlineUser } from "./redux/action/userAction";
+import ViewProfile from "./components/Userprofile.js/profile";
+
 
 const Layout = () => {
     const dispatch = useDispatch();
@@ -86,7 +88,7 @@ const Layout = () => {
                     <Route path="/login" element={<Login />} />
                     <Route path="/logout" element={<Logout />} />
                     <Route path="/register" element={<Register />} />
-
+                    <Route path="/userprofile" element={<ViewProfile />} />
                 </Routes>
             </BrowserRouter>
         </Suspense>

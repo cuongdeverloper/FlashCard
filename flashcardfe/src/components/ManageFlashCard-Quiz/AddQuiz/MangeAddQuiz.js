@@ -386,9 +386,11 @@ const ManageAddQuiz = () => {
                         </div>
                     ))}
                 </div>
+                <div className="button-group">
+    <Button variant="primary" onClick={handleAddQuestion}>Add Question</Button>
+    <Button variant="success" onClick={handleCreateQP}>Create Question Pack</Button>
+</div>
 
-                <Button variant="primary" onClick={handleAddQuestion}>Add Question</Button>
-                <Button variant="success" onClick={handleCreateQP}>Create Question Pack</Button>
             </Form>
         </div>
     );
