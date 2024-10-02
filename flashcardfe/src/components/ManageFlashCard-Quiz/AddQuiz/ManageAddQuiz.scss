@@ -2,31 +2,98 @@
     max-width: 800px;
     margin: 0 auto;
     padding: 20px;
-    color: #f9f9f9;
+    color: #333;
+    
+     // Các trường input bên trong container
+     input.form-control {
+        background-color: inherit;  // Để màu nền giống với thành phần cha
+        border: none;  // Bỏ các border mặc định
+        border-bottom: 2px solid #fff;  // Border dưới màu trắng
+        padding: 10px;  // Đảm bảo padding hợp lý
+        color: #fff;  // Màu chữ
 
+        &:focus {
+            border-bottom: 2px solid #f39c12;  // Border màu vàng khi focus
+            outline: none;  // Loại bỏ outline mặc định của input
+            box-shadow: 0 2px 4px rgba(243, 156, 18, 0.5);  // Thêm shadow nhẹ khi focus
+            transition: border-bottom 0.3s ease, box-shadow 0.3s ease;  // Hiệu ứng mượt mà
+        }
+        &::placeholder {
+            color: #fff;
+        }
+    }
+    input[type="file"] {
+        border-radius: 5px;
+        border: 1px solid #ddd;  // Nếu cần giữ viền giống các input khác
+        padding: 10px;
+        background-color: #f9f9f9;  // Màu nền giống input thông thường
+
+        // Ẩn nút chọn tệp mặc định và thay thế bằng label có style riêng
+        ::file-selector-button {
+            border-radius: 5px;
+            background-color: #007bff;  // Màu nền nút upload
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            font-weight: 700;
+
+            &:hover {
+                background-color: #0056b3;  // Màu nút khi hover
+            }
+        }
+    }
+
+    // Các trường textarea
+    textarea.form-control {
+        background-color: inherit;
+        border: none;
+        border-bottom: 2px solid #fff;
+        padding: 10px;
+        color: #333;
+
+        &:focus {
+            border-bottom: 2px solid #f39c12;  // Đổi màu border khi focus
+            outline: none;
+            box-shadow: 0 2px 4px rgba(243, 156, 18, 0.5);
+            transition: border-bottom 0.3s ease, box-shadow 0.3s ease;
+        }
+    }
     h1 {
         text-align: center;
-        margin-bottom: 20px;
-        color: #2c3e50;
+        margin-bottom: 30px;
+        color: #fff;
+        font-size: 2rem;
+    }
+
+    .form-group {
+        margin-bottom: 1.5rem;
     }
 
     .question-block {
-        padding: 20px;
+        padding: 25px;
         border: 1px solid #ddd;
         border-radius: 8px;
         background-color: #f9f9f9;
-        margin-bottom: 30px;
-
+        margin-bottom: 40px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        
         .question-header, .answer-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .question-header {
+            margin-bottom: 20px;
         }
 
         .delete-icon {
             color: #e74c3c;
             cursor: pointer;
             transition: color 0.3s;
+            font-size: 20px;
 
             &:hover {
                 color: #c0392b;
@@ -34,10 +101,97 @@
         }
 
         .answer-block {
-            margin-top: 15px;
+            margin-top: 20px;
+        }
+
+        .answer-header {
+            margin-bottom: 10px;
+        }
+
+        .answer-block .form-check {
+            margin-left: 20px;
+        }
+
+        .form-control {
+            border-radius: 5px;
+            padding: 10px;
+            margin-bottom: 10px;
         }
     }
-}
-.mb-3.question-block {
-    background: rgba(255, 255, 255, 0.15);
+
+    .mb-3.question-block {
+        background: rgba(255, 255, 255, 0.1);
+    }
+
+    .button-group {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 30px;
+    
+        .btn {
+            width: auto;
+            padding:  10px 20px;  // Thu nhỏ nút
+            font-weight: 700;
+        }
+    
+        .btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
+    
+            &:hover {
+                background-color: #0056b3;
+                border-color: #004085;
+            }
+        }
+    
+        .btn-success {
+            background-color: #28a745;
+            border-color: #28a745;
+    
+            &:hover {
+                background-color: #218838;
+                border-color: #1e7e34;
+            }
+        }
+        .btn-success {
+            background-color: #28a745;
+            border-color: #28a745;
+
+            &:hover {
+                background-color: #218838;
+                border-color: #1e7e34;
+            }
+        }
+    }
+
+    .form-label {
+        font-weight: 600;
+        color: #fff;
+    }
+
+    .image-preview {
+        margin-top: 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        img {
+            max-width: 100px;
+            border-radius: 5px;
+            margin-right: 20px;
+        }
+
+        .btn-danger {
+            background-color: #dc3545;
+            border-color: #dc3545;
+            padding: 5px 15px;
+            font-size: 0.875rem;
+        }
+
+        .btn-danger:hover {
+            background-color: #c82333;
+            border-color: #bd2130;
+        }
+    }
 }

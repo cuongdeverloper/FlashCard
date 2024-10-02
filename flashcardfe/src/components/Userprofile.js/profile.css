@@ -1,20 +1,76 @@
-.profile-container {
-    max-width: 600px;
-    margin: 0 auto;
-  }
-  
-  .profile-card {
-    border: none;
-  }
-  
-  .profile-img {
-    width: 150px;
-    height: 150px;
-    border-radius: 50%;
-    object-fit: cover;
-  }
-  
-  .card {
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  }
-  
+
+.navbar-breadcrumb {
+  background-color: #5d37f5; /* Màu nền */
+  border-radius: 20px; /* Bo tròn góc */
+  padding: 10px 20px; /* Khoảng cách bên trong */ 
+  text-decoration: none; /* Bỏ gạch chân */
+  transition: background-color 0.3s ease; /* Hiệu ứng chuyển màu */
+  font-weight: 700;
+}
+.navbar-breadcrumb .breadcrum-userprofile-home {
+  background-color: #5d37f5; /* Màu nền */
+  color: #fff; /* Màu chữ */
+  border-radius: 20px; /* Bo tròn góc */
+  padding: 10px 20px; /* Khoảng cách bên trong */ 
+  text-decoration: none; /* Bỏ gạch chân */
+  transition: background-color 0.3s ease; /* Hiệu ứng chuyển màu */
+  font-weight: 700;
+} 
+.breadCrumb-href .breadcrum-userprofile-home:hover {
+  background-color: #34333b; /* Màu nền khi hover */
+}
+
+/* Profile card style */
+.profile-card {
+  border: none;
+  background-color: #1e1e66; /* Màu nền cho card */
+}
+
+/* Profile image */
+.profile-img {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+/* Upload button style */
+.upload-btn-wrapper {
+  position: relative;
+  overflow: hidden;
+  display: inline-block;
+  margin-left: 10px;
+}
+
+.upload-btn-wrapper input[type="file"] {
+  font-size: 100px;
+  position: absolute;
+  left: 0;
+  top: 0;
+  opacity: 0;
+}
+
+/* Style for card */
+
+
+/* Các style cho button */
+.btn-warning {
+  color: white;
+  background-color: #f0ad4e;
+  border-color: #f0ad4e;
+}
+
+.btn-warning:hover {
+  background-color: #ec971f;
+  border-color: #d58512;
+}
+
+.btn-success {
+  background-color: #5cb85c;
+  border-color: #4cae4c;
+}
+
+.btn-success:hover {
+  background-color: #449d44;
+  border-color: #398439;
+}

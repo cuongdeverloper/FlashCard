@@ -73,46 +73,59 @@
 }
 
 .card {
+    position: relative;  // Đảm bảo .btn-queslength có thể được căn chỉnh tuyệt đối trong card
     flex: 1;
-    margin: 0 ; // Tạo khoảng cách giữa các thẻ
-    max-width: 100%; // Đảm bảo không bị thu hẹp
-    transition: transform 0.3s ease, border-bottom 0.3s ease; // Thêm hiệu ứng chuyển tiếp cho border-bottom
-    
+    margin: 0;
+    max-width: 100%;
+    transition: transform 0.3s ease, border-bottom 0.3s ease;
+
     &:hover {
-        transform: scale(1.05); // Hiệu ứng phóng to khi hover
-        border-bottom: 5px solid #007bff; // Đường viền dưới khi hover
-        cursor:pointer;
+        transform: scale(1.05);
+        border-bottom: 5px solid #007bff;
+        cursor: pointer;
     }
-}
 
-
-.price {
-    display: flex;
-    justify-content: space-between;
-    align-items: center; // Ensures both elements align properly
-    gap: 0.5rem; // Adds some spacing between the two elements
-
-    .user-name {
-        flex: 1; // Allows the username to grow and fill available space
+    .price {
         display: flex;
-        align-items: center; // Vertically centers the text inside the span
-        height: 40px; // Set a specific height for both elements
-        overflow: hidden; // Prevents text overflow if it is too long
-        white-space: nowrap; // Ensures text doesn't wrap
-        text-overflow: ellipsis; 
-        color: #fff;
-        font-weight: 700;
+        justify-content: space-between;
+        align-items: center;
+        gap: 0.5rem;
+        margin-top: 10px;  // Giữ khoảng cách nếu cần thiết giữa phần thân và nút
+
+        .user-name {
+            flex: 1;
+            color: #fff;
+            font-weight: 700;
+            height: 40px;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+        }
+
+        .btn-queslength {
+            flex-shrink: 0;
+            height: 40px;
+            padding: 0 1rem;
+            border-radius: 30px;
+        }
     }
 
     .btn-queslength {
-        flex-shrink: 0; // Prevents the button from shrinking
+        position: absolute;  // Cố định vị trí của button
+        bottom: 10px;  // Cách dưới 10px
+        right: 10px;  // Cách phải 10px
         height: 40px;
-        display: flex;
-        align-items: center; // Vertically centers text inside the button
-        padding: 0 1rem; // Adjusts padding to make the button look balanced
+        padding: 0 1rem;
         border-radius: 30px;
+        background-color: #007bff;
+        color: white;
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
 }
+
+
 
 .multi-item-carousel {
     .carousel-inner {

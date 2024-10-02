@@ -22,11 +22,20 @@ import DocumentsClass from "./components/Classes/Documents/DocumentsClass";
 import StudentsClass from "./components/Classes/Students/StudentsClass";
 import Actions from "./components/Classes/Actions/Actions";
 import JoinClass from "./components/Joinclass";
+<<<<<<< HEAD
 
 import { setOnlineUser, setSocketConnection } from "./redux/action/userAction";
 import MessagePage from "./components/message/MessagePage";
 import UserMessage from "./components/message/UserMessage";
 import { store } from "./redux/store";
+=======
+import  io  from "socket.io-client";
+import Cookies from 'js-cookie';
+import { useDispatch, useSelector } from "react-redux";
+import { setOnlineUser } from "./redux/action/userAction";
+import ViewProfile from "./components/Userprofile.js/profile";
+
+>>>>>>> c62fd4fcf788eb829263f346c315c1ff3f795628
 
 const Layout = () => {
     const dispatch = useDispatch();
@@ -86,10 +95,14 @@ const Layout = () => {
                     <Route path="/login" element={<Login />} />
                     <Route path="/logout" element={<Logout />} />
                     <Route path="/register" element={<Register />} />
+<<<<<<< HEAD
                     <Route path="/messagePage" element={<MessagePage />} >
                         <Route path=":userId" element={<UserMessage />} />
                     </Route>
 
+=======
+                    <Route path="/userprofile" element={<ViewProfile />} />
+>>>>>>> c62fd4fcf788eb829263f346c315c1ff3f795628
                 </Routes>
             </BrowserRouter>
         </Suspense>
