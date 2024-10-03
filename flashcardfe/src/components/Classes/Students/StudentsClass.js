@@ -4,14 +4,14 @@ import { useParams } from "react-router-dom";
 import { getMemberByClassId } from "../../../service/ApiService";
 import { useSelector } from "react-redux";
 import { HiStatusOnline } from "react-icons/hi";
+import { useSocketContext } from "../../../context/SocketContext";
 
 const StudentsClass = () => {
     const { classId } = useParams();
     const [members, setMembers] = useState({ teacher: {}, students: [] });
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    let userOnline =  useSelector(state => state?.user?.account?.onlineUser)
-
+    const { onlineUsers } = useSocketContext();
     useEffect(() => {
         handleGetMember();
     }, []);
@@ -62,7 +62,8 @@ const StudentsClass = () => {
                                     />
                                 )}
                                 <div>
-                                    <strong>{member.username}{userOnline.includes(member._id) && (
+                                    <strong>{member.username}
+                                        {onlineUsers.includes(member._id) && (
                                             <HiStatusOnline style={{ color: 'green', marginLeft: '10px' }} />
                                         )}
                                     </strong>

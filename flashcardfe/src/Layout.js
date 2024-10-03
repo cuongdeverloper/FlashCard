@@ -25,6 +25,7 @@ import JoinClass from "./components/Joinclass";
 
 import MessagePage from "./components/message/MessagePage";
 import UserMessage from "./components/message/UserMessage";
+import ViewProfile from "./components/Userprofile.js/profile";
 
 
 const Layout = () => {
@@ -89,6 +90,8 @@ const Layout = () => {
                         <Route path=":userId" element={<UserMessage />} />
                     </Route>
 
+
+                    <Route path="/userprofile" element={<ViewProfile/>}/>
                 </Routes>
             </BrowserRouter>
         </Suspense>
