@@ -9,8 +9,8 @@ const useListenMessages = () => {
 
     useEffect(() => {
         const handleNewMessage = (newMessage) => {
-            // Check if the new message already exists in the messages array
-            if (!messages.find(msg => msg._id === newMessage._id)) {
+            // Ensure messages is an array before checking for duplicates
+            if (Array.isArray(messages) && !messages.find(msg => msg._id === newMessage._id)) {
                 // Set shouldShake property to trigger animation
                 newMessage.shouldShake = true;
 
@@ -27,9 +27,10 @@ const useListenMessages = () => {
         socket?.on("newMessage", handleNewMessage);
 
         return () => {
+            // Cleanup the listener on component unmount
             socket?.off("newMessage", handleNewMessage);
         };
-    }, [socket, setMessages]);
+    }, [socket, setMessages, messages]); // Include messages in the dependency array
 
 };
 

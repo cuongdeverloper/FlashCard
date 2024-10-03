@@ -8,7 +8,7 @@ const UserMessage = () => {
     const { selectedConversation, setSelectedConversation } = UseConversation();
 
     useEffect(() => {
-        return () => setSelectedConversation(null); // Reset selected conversation on unmount
+        return () => setSelectedConversation(null);
     }, [setSelectedConversation]);
 
     return (
@@ -22,13 +22,13 @@ const UserMessage = () => {
                         <span className='label-text'>To:</span>{" "}
                         <span className='text-gray-900 font-bold'>{selectedConversation.username}</span>
                     </div>
-                    <Messages selectedConversation={selectedConversation} /> {/* Pass selectedConversation as a prop */}
+                    <Messages conversationId={selectedConversation.id} />
                     <MessageInput />
                 </>
             )}
         </div>
     );
-};
+}
 
 export default UserMessage;
 

@@ -7,15 +7,10 @@ const app = express();
 
 // Socket connection
 const server = http.createServer(app);
-<<<<<<< HEAD
-const io = new Server(server, {
-    cors: {
-        origin: '*',
-=======
+
 const io = new Server(server,{
     cors :{
         origin :'*',
->>>>>>> c62fd4fcf788eb829263f346c315c1ff3f795628
         credentials: true,
         methods: ["GET", "POST"]
     }
