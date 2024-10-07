@@ -20,7 +20,7 @@ const Quiz = () => {
     const [quizFinished, setQuizFinished] = useState(false);
     const [showModalResult, setShowModalResult] = useState(false);
     const [examId, setExamId] = useState('');
-    const [timeLeft, setTimeLeft] = useState(5);
+    const [timeLeft, setTimeLeft] = useState(0);
 
     const questionRefs = useRef([]);
     useEffect(() => {
@@ -44,6 +44,7 @@ const Quiz = () => {
             const response = await getQuizByQuizId(quizId);
             setExamId(response.exam._id);
             setQuizData(response.exam);
+            setTimeLeft(response.exam.duration)
         } catch (error) {
             setError('Failed to fetch the quiz');
         } finally {
