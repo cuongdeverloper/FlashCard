@@ -7,7 +7,8 @@ import useListenMessages from "./hooks/UseListenMessage";
 const MessageInput = () => {
     const [message, setMessage] = useState("");
     const { loading, sendMessage } = useSendMessage();
-    useListenMessages()
+    useListenMessages();
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         if (!message) return;
@@ -24,9 +25,7 @@ const MessageInput = () => {
                     value={message}
                     onChange={(e) => setMessage(e.target.value)}
                     className='bg-gray-700 border-gray-600 text-black'
-                    style={{ borderColor: 'gray', zIndex: 1 }} // Add zIndex if needed
                 />
-
                 <Button type='submit' variant='outline-secondary'>
                     {loading ? <Spinner as="span" animation="border" size="sm" /> : <BsSend />}
                 </Button>

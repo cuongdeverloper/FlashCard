@@ -32,7 +32,7 @@ const ManageAddQuiz = () => {
     const [descriptionQP, setDescriptionQP] = useState(initQP.description);
     const [semesterQP, setSemesterQP] = useState(initQP.semester);
     const [subjectQP, setSubjectQP] = useState(initQP.subject);
-    const [imagePreviewQP, setImagePreviewQP] = useState(initQP.imagePreview);
+    const [imagePreview, setImagePreview] = useState(initQP.imagePreview);
     const [userId, setUserId] = useState('');
 
     const handleSemesterChange = (event) => {
@@ -177,9 +177,9 @@ const ManageAddQuiz = () => {
                 userId, 
                 semesterQP, 
                 subjectQP, 
-                imagePreviewQP
+                imagePreview
             );
-        
+        console.log(response)
             if (response && response._id) {
                 const questionPackId = response._id;
                 toast.success('Question pack created successfully!');
@@ -214,6 +214,17 @@ const ManageAddQuiz = () => {
         } catch (error) {
             console.error('Error creating question pack:', error);
             toast.error('An error occurred while creating the question pack.');
+        }
+    };
+    const handleImageChange = (event) => {
+        const file = event.target.files[0];
+        if (file) {
+            const imageUrl = URL.createObjectURL(file);
+            setQuestionPack((prev) => ({
+                ...prev,
+                imagePreview: imageUrl, // Set the preview URL for display
+            }));
+            setImagePreview(file); // Store the file for upload
         }
     };
     
@@ -300,24 +311,17 @@ const ManageAddQuiz = () => {
 
                 <Row className="mb-3">
                     <Col md={12}>
-                        <Form.Group>
-                            <Form.Label>Image Preview</Form.Label>
-                            {questionPack.imagePreview ? (
-                                <>
-                                    <img src={questionPack.imagePreview} alt="Preview" width="100" />
-                                    <Button variant="danger" onClick={handleRemoveImage}>Remove Image</Button>
-                                </>
-                            ) : (
-                                <Form.Control
-                                    type="file"
-                                    accept="image/*"
-                                    onChange={(event) => setQuestionPack({
-                                        ...questionPack,
-                                        imagePreview: URL.createObjectURL(event.target.files[0])
-                                    })}
-                                />
-                            )}
-                        </Form.Group>
+                    <Form.Group>
+    <Form.Label>Image Preview</Form.Label>
+    <Form.Control
+        type="file"
+        accept="image/*"
+        onChange={(event) => handleImageChange(event)}
+    />
+    {questionPack.imagePreview && (
+        <img src={questionPack.imagePreview} alt="Preview" width="100" />
+    )}
+</Form.Group>
                     </Col>
                 </Row>
 

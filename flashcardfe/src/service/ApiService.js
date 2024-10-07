@@ -85,15 +85,13 @@ const getUserId = async () => {
                 'Authorization': `Bearer ${token}`
             }
         });
-        console.log('Response from /id:', response.data);
         return response;
     } catch (error) {
         console.error('Error fetching user ID:', error);
         return null;
     }
 };
-
-const createNewQuestionPackApi = async (title, description, teacher, semester, subject, imagePreviewQP) => {
+const createNewQuestionPackApi = async (title, description, teacher, semester, subject, imageFile) => {
     const token = Cookies.get('accessToken');
 
     if (!token) {
@@ -104,15 +102,15 @@ const createNewQuestionPackApi = async (title, description, teacher, semester, s
         // Get the current user's ID to use as author
         const author = await getUserId();
 
-        const FormData = require('form-data');
         const form = new FormData();
         form.append('title', title);
         form.append('description', description);
         form.append('teacher', teacher);
         form.append('semester', semester);
         form.append('subject', subject);
-        form.append('imagePreviewQP', imagePreviewQP);
-        form.append('author', author); // Add author to form data
+        if (imageFile) {
+            form.append('imagePreview', imageFile); // Append the actual file
+        }
 
         const response = await axios.post('/questionPack', form, {
             headers: {
@@ -126,6 +124,7 @@ const createNewQuestionPackApi = async (title, description, teacher, semester, s
         throw error;
     }
 };
+
 const createQuestionToQuestionPackAPI = async (questionText, image, answers, correctAnswers, questionPackId) => {
     const token = Cookies.get('accessToken');
 
@@ -447,10 +446,58 @@ const getMessagesApi = async (userId) => {
         throw error; // Propagate the error to be handled by the caller
     }
 };
+const getQuizByQuizId = async(questionPackId) =>{
+    try {
+        const token = Cookies.get('accessToken');
+
+        // Check if the token exists
+        if (!token) {
+            throw new Error('No access token found. Please login again.');            
+        }
+        const response = await axios.get(`/exam/${questionPackId}`, {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
+        return response
+    } catch (error) {
+        
+    }
+}
+const postSubmitExam = async (examId,answers) => {
+    try {
+        const token = Cookies.get('accessToken');
+
+        if (!token) {
+            throw new Error('No access token found. Please login again.');
+        }
+
+        const response = await axios.post('/finish', {
+            examId: examId,
+            answers: answers 
+        }, {
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            }
+        });
+
+        // Check for success response
+        if (response) {
+            return response
+        } else {
+            throw new Error(response.data.error || 'Failed to submit exam.');
+        }
+    } catch (error) {
+        console.error('Error submitting exam:', error);
+    }
+};
+
 
 export {LoginApi,loginWGoogle,decodeDataGoogle,getAllQuestionPack,
     getQuestionByQPId,getUserByUserId,createNewQuestionPackApi,
     getUserId,createQuestionToQuestionPackAPI,getAllCommentFlashCard,
     postComment,deleteCommentApi,postReplyComment,searchItems,registerUser,
     deleteReply,getClassById,getClassByClassId,getQuestionPackByQuestionPackId,removeQpToClass
-    ,joinClassByInvite,getMemberByClassId,searchUserId,getAllUserApi,sendMess,getMessagesApi}
+    ,joinClassByInvite,getMemberByClassId,searchUserId,getAllUserApi,sendMess,getMessagesApi
+,getQuizByQuizId,postSubmitExam}

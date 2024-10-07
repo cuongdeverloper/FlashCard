@@ -15,7 +15,7 @@ const createQuestionPack = async (req, res) => {
 
     const { title, description, teacher, semester, questions, subject } = req.body;
     const imagePreview = req.file ? req.file.path : null;
-
+console.log('img',imagePreview)
     // Validate required fields
     if (!title || !teacher || !semester || !subject) {
       return res.status(400).json({
@@ -187,9 +187,14 @@ const getQuestionPackById = async (req, res) => {
   try {
     const { questionPackId } = req.params;
 
-    // Populate the teacher field with username and image
+    // Populate the teacher field and questions
     const questionPack = await QuestionPack.findById(questionPackId)
-      .populate('teacher', 'username image'); // Adjust fields to return
+      .populate('teacher', 'username image')
+      .populate({
+        path: 'questions',
+        model: 'Flashcard',
+        select: 'questionText answers correctAnswers',
+      });
 
     if (!questionPack) {
       return res.status(404).json({
@@ -198,10 +203,23 @@ const getQuestionPackById = async (req, res) => {
       });
     }
 
+    // Transform the flashcards to include correct answer values
+    const transformedQuestions = questionPack.questions.map(flashcard => {
+      const correctAnswerValues = flashcard.correctAnswers.map(index => flashcard.answers[index]);
+      return {
+        questionText: flashcard.questionText,
+        answers: flashcard.answers,
+        correctAnswers: correctAnswerValues, // Return the actual values of correct answers
+      };
+    });
+
     return res.status(200).json({
       errorCode: 0,
       message: 'Question pack retrieved successfully',
-      data: questionPack
+      data: {
+        ...questionPack._doc, // Spread operator to copy existing question pack properties
+        questions: transformedQuestions // Use the transformed questions
+      }
     });
   } catch (err) {
     console.error('Error fetching question pack:', err);
@@ -211,6 +229,7 @@ const getQuestionPackById = async (req, res) => {
     });
   }
 };
+
 
 
 module.exports = { createQuestionPack,getAllQuestionPack,searchQuestionPack,addQuestionPackToClass,getQuestionPackById };

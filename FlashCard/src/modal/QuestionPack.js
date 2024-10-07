@@ -33,7 +33,12 @@ const questionPackSchema = new mongoose.Schema({
    createdAt: {
     type: Date,
     default: Date.now
-  }
+  },
+  classId: { 
+    type: mongoose.Schema.Types.ObjectId, 
+    ref: 'Class', 
+    default: null 
+  },
 });
 
 module.exports = mongoose.model('QuestionPack', questionPackSchema);

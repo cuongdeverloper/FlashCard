@@ -4,6 +4,8 @@ import "react-pro-sidebar/dist/css/styles.css";
 import { ProSidebar, Menu, MenuItem, SubMenu, SidebarHeader, SidebarFooter, SidebarContent } from "react-pro-sidebar";
 import { FaHome, FaFolderOpen, FaRegLaughWink, FaGithub } from "react-icons/fa";
 import { GoArrowRight, GoArrowLeft } from "react-icons/go";
+import { FaRegMessage } from "react-icons/fa6";
+
 import logoImg from "../../assests/logo-cut.png";
 import "./Sidebar.scss";
 
@@ -53,6 +55,8 @@ const SideBar = (props) => {
     <MenuItem icon={<FaFolderOpen />}>Your flashcard</MenuItem>
     <hr />
     <MenuItem icon={<FaFolderOpen />}>Your classes</MenuItem>
+    <MenuItem icon={<FaRegMessage  />}>
+    <Link to="/messagePage" className="">Your Message</Link></MenuItem>
     {classData.map((classItem) => (
       <MenuItem key={classItem._id}> 
         <Link to={`/classes/${classItem._id}`} className="nav-link">{classItem.name}</Link>

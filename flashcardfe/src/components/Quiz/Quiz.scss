@@ -1,0 +1,64 @@
+.quiz-container {
+    display: flex;
+}
+
+.quiz-left-sidebar {
+    width: 20%;
+    background-color: #f8f9fa;
+    padding: 10px;
+    border-right: 1px solid #dee2e6;
+}
+
+.question-list {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+.question-link {
+    cursor: pointer;
+    padding: 10px;
+    margin-bottom: 5px;
+    border: 1px solid #dee2e6;
+    text-align: center;
+    border-radius: 4px;
+}
+
+.question-link:hover {
+    background-color: #e9ecef;
+}
+
+.correct {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+.incorrect {
+    background-color: #f8d7da;
+    color: #721c24;
+}
+
+.quiz-content {
+    width: 80%;
+    padding: 20px;
+}
+
+.result-item {
+    margin-bottom: 15px;
+}
+.answer-option {
+    padding: 10px; /* Padding around each answer option */
+    border: 1px solid #dee2e6; /* Border for styling */
+    border-radius: 4px; /* Rounded corners */
+    margin-bottom: 5px; /* Space between answer options */
+    cursor: pointer; /* Cursor changes to pointer */
+    transition: background-color 0.3s; /* Smooth transition for hover effects */
+}
+
+.answer-option:hover {
+    background-color: #f1f1f1; /* Change background color on hover */
+}
+
+.answer-option.selected {
+    background-color: #d4edda; /* Change background for selected answer */
+    border-color: #c3e6cb; /* Change border color for selected answer */
+}

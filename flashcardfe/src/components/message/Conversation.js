@@ -14,7 +14,7 @@ const Conversation = ({ conversation, lastIdx, emoji }) => {
     };
 
     const { onlineUsers } = useSocketContext();
-    const isOnline = onlineUsers.includes(conversation._id); // Fixed typo here
+    const isOnline = onlineUsers.includes(conversation._id);
 
     return (
         <>
@@ -23,7 +23,7 @@ const Conversation = ({ conversation, lastIdx, emoji }) => {
                 onClick={() => handleCardClick(conversation)}
             >
                 <Card.Body className="d-flex align-items-center">
-                    <div className="avatar me-3 position-relative"> {/* Added position-relative */}
+                    <div className="avatar me-3 position-relative">
                         <img
                             src={conversation.image}
                             alt='user avatar'
@@ -34,7 +34,6 @@ const Conversation = ({ conversation, lastIdx, emoji }) => {
                             <span className="position-absolute top-0 start-100 translate-middle p-1 bg-success border border-light rounded-circle" style={{ width: '20px', height: '20px' }} />
                         )}
                     </div>
-
                     <div className="flex-grow-1">
                         <div className="d-flex justify-content-between align-items-center">
                             <p className='mb-0'>{conversation.username}</p>
@@ -43,7 +42,6 @@ const Conversation = ({ conversation, lastIdx, emoji }) => {
                     </div>
                 </Card.Body>
             </Card>
-
             {!lastIdx && <div className='divider my-0 py-0 h-1' />}
         </>
     );

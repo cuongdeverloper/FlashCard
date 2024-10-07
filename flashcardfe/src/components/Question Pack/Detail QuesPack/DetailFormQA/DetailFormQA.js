@@ -25,9 +25,6 @@ const DetailFormQA = (props) => {
   const userAcc = useSelector(state => state.user.account.id);
   const isAuthenticated = useSelector(state => state.user.isAuthenticated);
 
-  useEffect(()=>{
-    console.log(userAcc)
-  },[])
   useEffect(() => {
     setIsFlipped(false);
     
@@ -44,7 +41,6 @@ const DetailFormQA = (props) => {
       try {
         const response = await getAllCommentFlashCard(flashcardId, page);
         setComments(response.data || []);
-        console.log(response)
         setTotalPages(response.totalPages || 1);
       } catch (error) {
         console.error("Error fetching comments:", error.message);

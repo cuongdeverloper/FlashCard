@@ -8,6 +8,8 @@ const { addQuestionFlashCard, getQuestionFlashCardByQuestionPackId } = require('
 const { addComment, getComments, getCommentById, deleteComment, addReply, deleteReply } = require('../controller/ApiComment');
 const { createClass, getClassesForUser, inviteStudentToClass, getClassByClassId, removeQuestionPackFromClass, joinClassByInvite, getStudentsByClassId, getAllMembersByClassId } = require('../controller/ApiClass');
 const { sendMessage, getMessages } = require('../controller/ApiMessage');
+const { addExam, getExam, getExamByQuestionPack } = require('../controller/ApiExam');
+const { submitExam } = require('../controller/ApiResult');
 
 const routerApi = express.Router();
 
@@ -80,4 +82,12 @@ routerApi.get('/join-class/:token', checkAccessToken, joinClassByInvite);
 routerApi.post('/messages/:id', checkAccessToken, sendMessage);
 routerApi.get('/messages/:id', checkAccessToken, getMessages);
 
+
+//Quiz
+routerApi.post('/quiz',checkAccessToken,addExam)
+routerApi.get('/quiz/:examId', checkAccessToken, getExam);
+routerApi.get('/exam/:questionPackId', checkAccessToken, getExamByQuestionPack);
+
+//result
+routerApi.post('/finish',checkAccessToken,submitExam)
 module.exports = { routerApi };

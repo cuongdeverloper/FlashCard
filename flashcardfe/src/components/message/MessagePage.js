@@ -11,7 +11,7 @@ const MessagePage = () => {
     const { loading, conversations } = UseGetConversations();
     return (
         <div style={{ display: 'flex', flexDirection: 'row' }}>
-            {/* <SearchInput/> */}
+            
             <div className="Left-ctn"  >
                 {/* <form onSubmit={handleSearch}>
                     <input
@@ -35,7 +35,7 @@ const MessagePage = () => {
 
                     </div>
                 )} */}
-
+<SearchInput/>
                 {conversations.map((conversation, idx) => (
                     <Conversation
                         key={conversation._id}

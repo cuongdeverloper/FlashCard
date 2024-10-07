@@ -26,6 +26,7 @@ import JoinClass from "./components/Joinclass";
 import MessagePage from "./components/message/MessagePage";
 import UserMessage from "./components/message/UserMessage";
 import ViewProfile from "./components/Userprofile.js/profile";
+import Quiz from "./components/Quiz/Quiz";
 
 
 const Layout = () => {
@@ -81,15 +82,18 @@ const Layout = () => {
                             <Route path="students" element={<StudentsClass />} />
                             <Route path="actions" element={<Actions />} />
                         </Route>
+                        <Route path="/messagePage" element={<MessagePage />} >
+                        <Route path=":userId" element={<UserMessage />} />
+                    </Route>
                     </Route>
                     <Route path="join-class/:token" element={<JoinClass />} />
                     <Route path="/login" element={<Login />} />
                     <Route path="/logout" element={<Logout />} />
                     <Route path="/register" element={<Register />} />
-                    <Route path="/messagePage" element={<MessagePage />} >
-                        <Route path=":userId" element={<UserMessage />} />
-                    </Route>
+                   
+                    <Route path="/quiz/:quizId"  element={<Quiz />} >
 
+                    </Route>
 
                     <Route path="/userprofile" element={<ViewProfile/>}/>
                 </Routes>

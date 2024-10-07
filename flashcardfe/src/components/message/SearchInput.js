@@ -4,6 +4,7 @@ import UseConversation from "./zustand/UseConversation";
 import { useState } from "react";
 import { IoSearchSharp } from "react-icons/io5";
 import { searchUserId } from "../../service/ApiService";
+import { Form, Button, InputGroup, ListGroup } from "react-bootstrap";
 
 const SearchInput = () => {
     const [search, setSearch] = useState("");
@@ -13,7 +14,6 @@ const SearchInput = () => {
 
     const handleSearch = async () => {
         if (search.length < 3) {
-            // Only search if the input has at least 3 characters
             setResults([]); // Clear results if search is too short
             return;
         }
@@ -29,10 +29,8 @@ const SearchInput = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        // Prevent submitting if there are no results or the search is empty
         if (!search || results.length === 0) return;
 
-        // Check if the first result matches the search input
         const conversation = results.find((user) =>
             user.fullName.toLowerCase().includes(search.toLowerCase())
         );
@@ -62,31 +60,42 @@ const SearchInput = () => {
     };
 
     return (
-        <div className="relative">
-            <form onSubmit={handleSubmit} className="flex items-center gap-2">
-                <input
-                    type="text"
-                    placeholder="Search…"
-                    className="input input-bordered rounded-full"
-                    value={search}
-                    onChange={handleChange}
-                />
-                <button type="submit" className="btn btn-circle bg-sky-500 text-white">
-                    <IoSearchSharp className="w-6 h-6 outline-none" />
-                </button>
-            </form>
+        <div style={{ position: "relative" }}>
+            <Form onSubmit={handleSubmit}>
+                <InputGroup>
+                    <Form.Control
+                        type="text"
+                        placeholder="Search…"
+                        value={search}
+                        onChange={handleChange}
+                    />
+                    <Button type="submit" variant="primary">
+                        <IoSearchSharp />
+                    </Button>
+                </InputGroup>
+            </Form>
+
             {results.length > 0 && (
-                <ul className="absolute z-10 w-full bg-white border border-gray-300 rounded-lg shadow-md mt-1 max-h-48 overflow-auto">
+                <ListGroup
+                    style={{
+                        position: "absolute",
+                        zIndex: 10,
+                        width: "100%",
+                        marginTop: "0.5rem",
+                        maxHeight: "12rem",
+                        overflowY: "auto",
+                    }}
+                >
                     {results.map((user) => (
-                        <li
+                        <ListGroup.Item
                             key={user._id} // Ensure 'id' is unique for each user
-                            className="px-4 py-2 hover:bg-gray-200 cursor-pointer"
+                            action
                             onClick={() => handleSelect(user)}
                         >
                             {user.username}
-                        </li>
+                        </ListGroup.Item>
                     ))}
-                </ul>
+                </ListGroup>
             )}
         </div>
     );

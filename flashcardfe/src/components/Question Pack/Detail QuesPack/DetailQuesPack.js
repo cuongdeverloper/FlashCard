@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
-import { useLocation, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { getQuestionByQPId, getUserByUserId } from "../../../service/ApiService";
 import "./DetailQuesPack.scss";
 import DetailFormQA from "./DetailFormQA/DetailFormQA";
 import { FaRegArrowAltCircleLeft, FaRegArrowAltCircleRight, FaShareAlt, FaSave, FaEllipsisH } from "react-icons/fa";
-import { Breadcrumb } from "react-bootstrap";
+import { Breadcrumb, Button } from "react-bootstrap";
 
 const DetailQuesPack = () => {
   const params = useParams();
@@ -14,13 +14,17 @@ const DetailQuesPack = () => {
   const [isAnimating, setIsAnimating] = useState(false);
   const [dataAuthor, setDataAuthor] = useState(null);
   const [idAuthor, setIdAuthor] = useState('');
+  const [semester,setSemester]=useState('');
+  const [title,setTitle] = useState('')
   const location = useLocation();
-
+  const navigate = useNavigate()
   const getQuestionByQuestionPack = async () => {
     try {
       let response = await getQuestionByQPId(params.packId);
       if (response && response.errorCode === 0) {
         setDataQuestion(response.data.questions);
+        setSemester(response.data.semester)
+        setTitle(response.data.title)
         setIdQp(response.data._id)
         setIdAuthor(response.data.teacher);  
       }
@@ -76,13 +80,14 @@ const DetailQuesPack = () => {
         <Breadcrumb className="breadcrumbitem" style={{color:'#fff'}}>
           <Breadcrumb.Item href="/" className="breadCrumb-href">Home</Breadcrumb.Item>
           <Breadcrumb.Item href="/us" className="breadCrumb-href semester">
-            {location.state?.packSemester || "Unknown Semester"}
+            {semester || "Unknown Semester"}
           </Breadcrumb.Item>
           <Breadcrumb.Item className="disable-pack"active>
-            <h6>{location.state?.packName || "Unknown Pack"}</h6>
+            <h6>{title || "Unknown Pack"}</h6>
             
           </Breadcrumb.Item>
         </Breadcrumb>
+        <Button className="btn btn-secondary" onClick={()=> navigate(`/quiz/${idQp}`)}>Do quiz</Button>
         <DetailFormQA
           dataQuestion={dataQuestion}
           currentQuestionIndex={currentQuestionIndex}
