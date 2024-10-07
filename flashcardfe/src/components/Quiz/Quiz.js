@@ -20,7 +20,7 @@ const Quiz = () => {
     const [quizFinished, setQuizFinished] = useState(false);
     const [showModalResult, setShowModalResult] = useState(false);
     const [examId, setExamId] = useState('');
-    const [timeLeft, setTimeLeft] = useState(0);
+    const [timeLeft, setTimeLeft] = useState();
 
     const questionRefs = useRef([]);
     useEffect(() => {
@@ -247,7 +247,7 @@ const Quiz = () => {
                             </div>
                         ))}
                         <div className="quiz-footer">
-                                     
+                                      
                                         <span className="quiz-timer">Time left: {formatTime(timeLeft)}</span>
                                     </div>
                         <Button variant="danger" className="mt-4" type="submit">Finish Quiz</Button>
