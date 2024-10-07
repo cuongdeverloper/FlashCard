@@ -20,8 +20,25 @@ const Quiz = () => {
     const [quizFinished, setQuizFinished] = useState(false);
     const [showModalResult, setShowModalResult] = useState(false);
     const [examId, setExamId] = useState('');
-    const questionRefs = useRef([]);
+    const [timeLeft, setTimeLeft] = useState(5);
 
+    const questionRefs = useRef([]);
+    useEffect(() => {
+        let timer;
+        if (quizStarted && timeLeft > 0 && !quizFinished) {
+            timer = setInterval(() => {
+                setTimeLeft((prevTime) => prevTime - 1);
+            }, 1000);
+        } else if (timeLeft === 0 || quizFinished) {
+            handleSubmit();
+        }
+        return () => clearInterval(timer);
+    }, [quizStarted, timeLeft, quizFinished]);
+    const formatTime = (seconds) => {
+        const minutes = Math.floor(seconds / 60);
+        const remainingSeconds = seconds % 60;
+        return `${minutes}:${remainingSeconds < 10 ? '0' : ''}${remainingSeconds}`;
+    };
     const fetchQuiz = async () => {
         try {
             const response = await getQuizByQuizId(quizId);
@@ -228,6 +245,10 @@ const Quiz = () => {
                                 </Row>
                             </div>
                         ))}
+                        <div className="quiz-footer">
+                                     
+                                        <span className="quiz-timer">Time left: {formatTime(timeLeft)}</span>
+                                    </div>
                         <Button variant="danger" className="mt-4" type="submit">Finish Quiz</Button>
                     </Form>
                 )}
@@ -241,6 +262,7 @@ const Quiz = () => {
                     countCorrect: correctCount,
                 }}
             />
+            
         </div>
     );
 };
