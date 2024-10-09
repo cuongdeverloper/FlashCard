@@ -39,8 +39,28 @@ const decodeDataGoogle = (token) =>{
 const getAllQuestionPack = () =>{
     return axios.get(`/questionPack`)
 }
-const getQuestionByQPId = (questionPackId) =>{
-    return axios.get(`/questionPack/${questionPackId}`)
+const getQuestionByQPId = async(questionPackId) =>{
+    try {
+        const token = Cookies.get('accessToken');
+
+        // Check if the token exists
+        if (!token) {
+            console.warn('No access token found');
+            return null; 
+        }
+
+        // Proceed with the API request if the token exists
+        const response = await axios.get(`/questionPack/${questionPackId}`, {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
+       
+        return response;
+    } catch (error) {
+        console.error('Error fetching user ID:', error);
+        return null;
+    }
 }
 const getUserByUserId = (userId) =>{
     return axios.get(`/user/${userId}`)
@@ -91,7 +111,7 @@ const getUserId = async () => {
         return null;
     }
 };
-const createNewQuestionPackApi = async (title, description, teacher, semester, subject, imageFile) => {
+const createNewQuestionPackApi = async (title, description, teacher, semester, subject, imagePreview) => {
     const token = Cookies.get('accessToken');
 
     if (!token) {
@@ -108,8 +128,8 @@ const createNewQuestionPackApi = async (title, description, teacher, semester, s
         form.append('teacher', teacher);
         form.append('semester', semester);
         form.append('subject', subject);
-        if (imageFile) {
-            form.append('imagePreview', imageFile); // Append the actual file
+        if (imagePreview) {
+            form.append('imagePreview', imagePreview); // Append the actual file
         }
 
         const response = await axios.post('/questionPack', form, {
@@ -125,7 +145,7 @@ const createNewQuestionPackApi = async (title, description, teacher, semester, s
     }
 };
 
-const createQuestionToQuestionPackAPI = async (questionText, image, answers, correctAnswers, questionPackId) => {
+const createQuestionToQuestionPackAPI = async (questionText, questionImage, answers, correctAnswers, questionPackId) => {
     const token = Cookies.get('accessToken');
 
     if (!token) {
@@ -136,8 +156,8 @@ const createQuestionToQuestionPackAPI = async (questionText, image, answers, cor
         const formData = new FormData();
         formData.append('questionText', questionText);
         formData.append('questionPackId', questionPackId);
-        if (image) {
-            formData.append('image', image);
+        if (questionImage) {
+            formData.append('imagePreview', questionImage);
         }
 
         formData.append('answers', JSON.stringify(answers)); 
@@ -492,12 +512,73 @@ const postSubmitExam = async (examId,answers) => {
         console.error('Error submitting exam:', error);
     }
 };
+const updateQuestion = async (flashcardId, questionData) => {
+    try {
+        const token = Cookies.get('accessToken');
 
+        // Check if the token exists
+        if (!token) {
+            throw new Error('No access token found. Please login again.');
+        }
 
+        // Make the PUT request to update the question
+        const response = await axios.put(`/flashcard/${flashcardId}`, questionData, {
+            headers: {
+                'Authorization': `Bearer ${token}`,
+             
+            }
+        });
+
+        return response; // Return the response data
+    } catch (error) {
+        console.error('Error updating question:', error);
+        throw error; // Propagate the error to be handled by the caller
+    }
+};
+const getQuestionPackOfTeacher = async (teacherId) => {
+    try {
+        const token = Cookies.get('accessToken');
+
+        // Check if the token exists
+        if (!token) {
+            throw new Error('No access token found. Please login again.');
+        }
+
+        // Make the GET request to fetch messages for the specific user
+        const response = await axios.get(`/getQp4Teacher/${teacherId}`, {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
+
+        return response
+    } catch (error) {
+        console.error('Error fetching messages:', error);
+        throw error; // Propagate the error to be handled by the caller
+    }
+};
+const updateQuestionPack = async (questionPackId, updatedData) => {
+    try {
+        const token = Cookies.get('accessToken');
+        if (!token) throw new Error('No access token found. Please login again.');
+
+        const response = await axios.put(`/questionpack/${questionPackId}`, updatedData, {
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            }
+        });
+
+        return response; 
+    } catch (error) {
+        console.error('Error updating question pack:', error);
+        throw error; // Propagate error to the caller
+    }
+};
 export {LoginApi,loginWGoogle,decodeDataGoogle,getAllQuestionPack,
     getQuestionByQPId,getUserByUserId,createNewQuestionPackApi,
     getUserId,createQuestionToQuestionPackAPI,getAllCommentFlashCard,
     postComment,deleteCommentApi,postReplyComment,searchItems,registerUser,
     deleteReply,getClassById,getClassByClassId,getQuestionPackByQuestionPackId,removeQpToClass
     ,joinClassByInvite,getMemberByClassId,searchUserId,getAllUserApi,sendMess,getMessagesApi
-,getQuizByQuizId,postSubmitExam}
+,getQuizByQuizId,postSubmitExam,getQuestionPackOfTeacher,updateQuestion,updateQuestionPack}

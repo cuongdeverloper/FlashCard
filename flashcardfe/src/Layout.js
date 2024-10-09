@@ -27,6 +27,7 @@ import MessagePage from "./components/message/MessagePage";
 import UserMessage from "./components/message/UserMessage";
 import ViewProfile from "./components/Userprofile.js/profile";
 import Quiz from "./components/Quiz/Quiz";
+import MyManage from "./components/My manage/MyManage";
 
 
 const Layout = () => {
@@ -46,8 +47,8 @@ const Layout = () => {
     //     });
     //     console.log(socketConnection)
     //     // dispatch(setSocketConnection(socketConnection));    
-        
-        
+
+
     //     return () => {
     //         socketConnection.disconnect();
     //     }
@@ -83,19 +84,21 @@ const Layout = () => {
                             <Route path="actions" element={<Actions />} />
                         </Route>
                         <Route path="/messagePage" element={<MessagePage />} >
-                        <Route path=":userId" element={<UserMessage />} />
-                    </Route>
+                            <Route path=":userId" element={<UserMessage />} />
+                        </Route>
+                        <Route path="/MyManage/:userId" element={<MyManage />} ></Route>
+
                     </Route>
                     <Route path="join-class/:token" element={<JoinClass />} />
                     <Route path="/login" element={<Login />} />
                     <Route path="/logout" element={<Logout />} />
                     <Route path="/register" element={<Register />} />
-                   
-                    <Route path="/quiz/:quizId"  element={<Quiz />} >
+
+                    <Route path="/quiz/:quizId" element={<Quiz />} >
 
                     </Route>
 
-                    <Route path="/userprofile" element={<ViewProfile/>}/>
+                    <Route path="/userprofile" element={<ViewProfile />} />
                 </Routes>
             </BrowserRouter>
         </Suspense>

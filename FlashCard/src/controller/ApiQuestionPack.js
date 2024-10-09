@@ -13,9 +13,9 @@ const createQuestionPack = async (req, res) => {
       });
     }
 
-    const { title, description, teacher, semester, questions, subject } = req.body;
+    const { title, description, teacher, semester, questions, subject, classId, isPublic } = req.body;
     const imagePreview = req.file ? req.file.path : null;
-console.log('img',imagePreview)
+
     // Validate required fields
     if (!title || !teacher || !semester || !subject) {
       return res.status(400).json({
@@ -23,7 +23,6 @@ console.log('img',imagePreview)
         message: 'All required fields must be provided'
       });
     }
-
 
     try {
       // Check if the authenticated user is a teacher
@@ -35,7 +34,7 @@ console.log('img',imagePreview)
         });
       }
 
-      // Check if the provided teacher ID exists in the User collection and has the role of "teacher"
+      // Check if the provided teacher ID exists and is a teacher
       const teacherUser = await User.findById(teacher);
       if (!teacherUser || teacherUser.role !== 'teacher') {
         return res.status(404).json({
@@ -44,19 +43,31 @@ console.log('img',imagePreview)
         });
       }
 
+      // Check if classId is provided and valid
+      let classInfo = null;
+      if (classId) {
+        classInfo = await Class.findById(classId);
+        if (!classInfo) {
+          return res.status(404).json({
+            errorCode: 9,
+            message: 'Class not found'
+          });
+        }
+      }
 
       // Create the new question pack
       const newQuestionPack = new QuestionPack({
         title,
         description,
-        teacher: new mongoose.Types.ObjectId(teacher), 
+        teacher: new mongoose.Types.ObjectId(teacher),
         semester,
         questions: questions ? questions.map(q => mongoose.Types.ObjectId(q)) : [],
         subject,
-        imagePreview
+        imagePreview,
+        classId: classInfo ? new mongoose.Types.ObjectId(classId) : null,
+        isPublic: isPublic === true 
       });
 
-      // Save the question pack to the database
       await newQuestionPack.save();
 
       return res.status(201).json({
@@ -73,15 +84,18 @@ console.log('img',imagePreview)
     }
   });
 };
+
 const getAllQuestionPack = async (req, res) => {
   try {
-    // Retrieve all question packs from the database
-    const questionPacks = await QuestionPack.find().populate('teacher', 'name email').populate('questions', 'content');
+    // Retrieve all public question packs from the database (isPublic = true)
+    const questionPacks = await QuestionPack.find({ isPublic: true })
+      .populate('teacher', 'name email') // populate the teacher's name and email
+      .populate('questions', 'content'); // populate the questions' content
 
-    // Send the question packs as the response
+    // Send the public question packs as the response
     return res.status(200).json({
       errorCode: 0,
-      message: 'Question packs retrieved successfully',
+      message: 'Public question packs retrieved successfully',
       data: questionPacks
     });
   } catch (err) {
@@ -92,6 +106,7 @@ const getAllQuestionPack = async (req, res) => {
     });
   }
 };
+
 const searchQuestionPack = async (req, res) => {
   const { query } = req.query;
 
@@ -186,7 +201,7 @@ const addQuestionPackToClass = async (req, res) => {
 const getQuestionPackById = async (req, res) => {
   try {
     const { questionPackId } = req.params;
-
+    const userId= req.user.id
     // Populate the teacher field and questions
     const questionPack = await QuestionPack.findById(questionPackId)
       .populate('teacher', 'username image')
@@ -202,7 +217,14 @@ const getQuestionPackById = async (req, res) => {
         message: 'Question pack not found'
       });
     }
-
+if((!questionPack.isPublic && questionPack.classId === null )){
+  if (questionPack.teacher._id.toString() !== userId) {
+    return res.status(200).json({
+      errorCode: 2,
+      message: 'Access denied: Only the teacher can view this question pack.'
+    });
+  }
+}
     // Transform the flashcards to include correct answer values
     const transformedQuestions = questionPack.questions.map(flashcard => {
       const correctAnswerValues = flashcard.correctAnswers.map(index => flashcard.answers[index]);
@@ -230,6 +252,118 @@ const getQuestionPackById = async (req, res) => {
   }
 };
 
+const getAllQuestionPacksForTeacher = async (req, res) => {
+  try {
+    const { teacherId } = req.params; 
+
+    const authenticatedUser = req.user;
+
+    if (authenticatedUser.role !== 'teacher' && authenticatedUser.role !== 'admin') {
+      return res.status(403).json({
+        errorCode: 7,
+        message: 'You are not authorized to view question packs'
+      });
+    }
+
+    const questionPacks = await QuestionPack.find({ teacher: teacherId })
 
 
-module.exports = { createQuestionPack,getAllQuestionPack,searchQuestionPack,addQuestionPackToClass,getQuestionPackById };
+    if (questionPacks.length === 0) {
+      return res.status(200).json({
+        errorCode: 0,
+        message: 'No question packs found for this teacher',
+        data: []
+      });
+    }
+
+    return res.status(200).json({
+      errorCode: 0,
+      message: 'Question packs retrieved successfully',
+      data: questionPacks
+    });
+  } catch (err) {
+    console.error('Error fetching question packs for teacher:', err);
+    return res.status(500).json({
+      errorCode: 6,
+      message: 'An error occurred while fetching the question packs'
+    });
+  }
+};
+
+
+const updateQuestionPack = async (req, res) => {
+  uploadCloud.single('imagePreview')(req, res, async (err) => {
+    if (err) {
+      return res.status(400).json({
+        errorCode: 4,
+        message: `Upload Error: ${err.message}`
+      });
+    }
+
+    const { title, description, semester, subject, classId, isPublic } = req.body;
+    const { questionpackId } = req.params;  // Extract the questionPackId properly
+    const imagePreview = req.file ? req.file.path : null;
+
+    // Validate required fields
+    if (!title || !semester || !subject) {
+      return res.status(400).json({
+        errorCode: 5,
+        message: 'All required fields must be provided'
+      });
+    }
+
+    try {
+      // Find the question pack by its ID
+      const questionPack = await QuestionPack.findById(questionpackId);
+      if (!questionPack) {
+        return res.status(404).json({
+          errorCode: 9,
+          message: 'Question pack not found'
+        });
+      }
+
+      // If classId is provided, check if the class is valid
+      let classInfo = null;
+      if (classId) {
+        classInfo = await Class.findById(classId);
+        if (!classInfo) {
+          return res.status(404).json({
+            errorCode: 9,
+            message: 'Class not found'
+          });
+        }
+      }
+
+      // Update the question pack fields
+      questionPack.title = title;
+      questionPack.description = description || questionPack.description;
+      questionPack.semester = semester;
+      questionPack.subject = subject;
+      questionPack.imagePreview = imagePreview || questionPack.imagePreview;  
+      questionPack.classId = classInfo ? new mongoose.Types.ObjectId(classId) : questionPack.classId;
+
+      // Convert isPublic to a boolean if it is passed as a string
+      if (isPublic !== undefined) {
+        questionPack.isPublic = (isPublic === 'true' || isPublic === true);  // Convert to boolean
+      }
+
+      await questionPack.save();
+
+      return res.status(200).json({
+        errorCode: 0,
+        message: 'Question pack updated successfully',
+        data: questionPack
+      });
+    } catch (saveError) {
+      console.error('Error updating question pack:', saveError);
+      return res.status(500).json({
+        errorCode: 6,
+        message: 'An error occurred while updating the question pack'
+      });
+    }
+  });
+};
+
+
+module.exports = { createQuestionPack,getAllQuestionPack,searchQuestionPack,
+  addQuestionPackToClass,getQuestionPackById,getAllQuestionPacksForTeacher,updateQuestionPack };

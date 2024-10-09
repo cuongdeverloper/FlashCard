@@ -3,13 +3,13 @@ const { addUser, getUserFromUserId, getId, searchUser, getAllUsers } = require('
 const { apiLogin, apiRegister } = require('../controller/ApiAuth');
 const { createRefreshToken, createJWT, decodeToken, checkAccessToken } = require('../middleware/JWTAction');
 const passport = require('passport');
-const { createQuestionPack, getAllQuestionPack, searchQuestionPack, addQuestionPackToClass, getQuestionPackById } = require('../controller/ApiQuestionPack');
-const { addQuestionFlashCard, getQuestionFlashCardByQuestionPackId } = require('../controller/ApiQuestionFlashCard');
+const { createQuestionPack, getAllQuestionPack, searchQuestionPack, addQuestionPackToClass, getQuestionPackById, getAllQuestionPacksForTeacher, updateQuestionPack } = require('../controller/ApiQuestionPack');
+const { addQuestionFlashCard, getQuestionFlashCardByQuestionPackId, updateFlashcard } = require('../controller/ApiQuestionFlashCard');
 const { addComment, getComments, getCommentById, deleteComment, addReply, deleteReply } = require('../controller/ApiComment');
 const { createClass, getClassesForUser, inviteStudentToClass, getClassByClassId, removeQuestionPackFromClass, joinClassByInvite, getStudentsByClassId, getAllMembersByClassId } = require('../controller/ApiClass');
 const { sendMessage, getMessages } = require('../controller/ApiMessage');
 const { addExam, getExam, getExamByQuestionPack } = require('../controller/ApiExam');
-const { submitExam } = require('../controller/ApiResult');
+const { submitExam, getExamResults } = require('../controller/ApiResult');
 
 const routerApi = express.Router();
 
@@ -51,13 +51,13 @@ routerApi.get('/users',checkAccessToken,getAllUsers)
 routerApi.post('/questionPack', checkAccessToken, createQuestionPack)
 routerApi.get('/questionPack', getAllQuestionPack)
 routerApi.get('/questionPacks/search', searchQuestionPack)
-routerApi.get('/questionPacks/:questionPackId', getQuestionPackById)
+routerApi.get('/questionPacks/:questionPackId', checkAccessToken,getQuestionPackById)
+routerApi.put('/questionpack/:questionpackId',checkAccessToken,updateQuestionPack);
 
-
-routerApi.get('/questionPack/:questionPackId', getQuestionFlashCardByQuestionPackId)
+routerApi.get('/questionPack/:questionPackId', checkAccessToken,getQuestionFlashCardByQuestionPackId)
 //Api questionFC
-routerApi.post('/question', addQuestionFlashCard)
-
+routerApi.post('/question',checkAccessToken, addQuestionFlashCard)
+routerApi.put('/flashcard/:flashcardId', checkAccessToken,updateFlashcard);
 
 //Api comment
 routerApi.post('/questionpack/comments', checkAccessToken, addComment)
@@ -90,4 +90,7 @@ routerApi.get('/exam/:questionPackId', checkAccessToken, getExamByQuestionPack);
 
 //result
 routerApi.post('/finish',checkAccessToken,submitExam)
+routerApi.get('/results/:examId',checkAccessToken,getExamResults)
+//teacher
+routerApi.get('/getQp4Teacher/:teacherId',checkAccessToken,getAllQuestionPacksForTeacher)
 module.exports = { routerApi };

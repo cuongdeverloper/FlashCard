@@ -9,7 +9,8 @@ const connection = require('./config/database.js');
 const { routerApi } = require('./routes/api.js');
 const doLoginWGoogle = require('./controller/social/GoogleController.js');
 const {app,server} = require('./socket/socket.js')
-
+const bodyParser = require('body-parser');
+const uploadCloud = require('./config/cloudinaryConfig.js');
 // const app = express();
 const port = process.env.PORT || 8888;
 const hostname = process.env.HOST_NAME || 'localhost';
@@ -18,7 +19,7 @@ const hostname = process.env.HOST_NAME || 'localhost';
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
-
+app.use(bodyParser.json());
 app.use(session({
     secret: 'your-secret-key', // Replace with your secret key
     resave: false,

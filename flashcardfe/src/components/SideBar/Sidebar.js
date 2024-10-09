@@ -8,8 +8,11 @@ import { FaRegMessage } from "react-icons/fa6";
 
 import logoImg from "../../assests/logo-cut.png";
 import "./Sidebar.scss";
+import { useSelector } from "react-redux";
 
 const SideBar = (props) => {
+  const userInfor = useSelector((state) => state.user.account.id);
+
   const { classData } = props;
   const [collapsed, setCollapsed] = useState(true);
   const [toggled, setToggled] = useState(false);
@@ -48,35 +51,37 @@ const SideBar = (props) => {
       </SidebarHeader>
 
       <SidebarContent>
-  <Menu iconShape="square">
-    <MenuItem icon={<FaHome />}>
-      <Link to="/" className="nav-link">Home</Link>
-    </MenuItem>
-    <MenuItem icon={<FaFolderOpen />}>Your flashcard</MenuItem>
-    <hr />
-    <MenuItem icon={<FaFolderOpen />}>Your classes</MenuItem>
-    <MenuItem icon={<FaRegMessage  />}>
-    <Link to="/messagePage" className="">Your Message</Link></MenuItem>
-    {classData.map((classItem) => (
-      <MenuItem key={classItem._id}> 
-        <Link to={`/classes/${classItem._id}`} className="nav-link">{classItem.name}</Link>
-      </MenuItem>
-    ))}
-  </Menu>
-  <Menu iconShape="circle">
-    <SubMenu icon={<FaRegLaughWink />} title="Admin Manage">
-      <MenuItem>
-        <Link to="User" className="nav-link">User</Link>
-      </MenuItem>
-      <MenuItem>
-        <Link to="Product" className="nav-link">Product</Link>
-      </MenuItem>
-      <MenuItem>
-        <Link to="manage-question" className="nav-link">Manage Questions</Link>
-      </MenuItem>
-    </SubMenu>
-  </Menu>
-</SidebarContent>
+        <Menu iconShape="square">
+          <MenuItem icon={<FaHome />}>
+            <Link to="/" className="nav-link">Home</Link>
+          </MenuItem>
+          <MenuItem icon={<FaFolderOpen />}>
+            <Link to={`/MyManage/${userInfor}`} className="nav-link">Your flashcard</Link>
+          </MenuItem>
+          <hr />
+          <MenuItem icon={<FaFolderOpen />}>Your classes</MenuItem>
+          <MenuItem icon={<FaRegMessage />}>
+            <Link to="/messagePage" className="">Your Message</Link></MenuItem>
+          {classData.map((classItem) => (
+            <MenuItem key={classItem._id}>
+              <Link to={`/classes/${classItem._id}`} className="nav-link">{classItem.name}</Link>
+            </MenuItem>
+          ))}
+        </Menu>
+        <Menu iconShape="circle">
+          <SubMenu icon={<FaRegLaughWink />} title="Admin Manage">
+            <MenuItem>
+              <Link to="User" className="nav-link">User</Link>
+            </MenuItem>
+            <MenuItem>
+              <Link to="Product" className="nav-link">Product</Link>
+            </MenuItem>
+            <MenuItem>
+              <Link to="manage-question" className="nav-link">Manage Questions</Link>
+            </MenuItem>
+          </SubMenu>
+        </Menu>
+      </SidebarContent>
 
 
       <SidebarFooter style={{ textAlign: "center" }}>

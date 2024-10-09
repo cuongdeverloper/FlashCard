@@ -21,7 +21,12 @@ const DetailQuesPack = () => {
   const getQuestionByQuestionPack = async () => {
     try {
       let response = await getQuestionByQPId(params.packId);
+      console.log('re',response)
+      if(response && response.errorCode === 2 ){
+        navigate('/forbidden')
+      }
       if (response && response.errorCode === 0) {
+       
         setDataQuestion(response.data.questions);
         setSemester(response.data.semester)
         setTitle(response.data.title)

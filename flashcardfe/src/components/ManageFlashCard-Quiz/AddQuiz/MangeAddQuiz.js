@@ -110,7 +110,7 @@ const ManageAddQuiz = () => {
 
     const handleQuestionImageUpload = (questionIndex, file) => {
         const updatedQuestions = [...questionPack.questions];
-        updatedQuestions[questionIndex].image = URL.createObjectURL(file);
+        updatedQuestions[questionIndex].image = file;
         setQuestionPack({
             ...questionPack,
             questions: updatedQuestions
@@ -201,7 +201,8 @@ const ManageAddQuiz = () => {
                         formattedQuestion.correctAnswers,
                         questionPackId
                     );
-        
+                    console.log('img',formattedQuestion.image)
+                    console.log('qs',questionResponse)
                     if (questionResponse && questionResponse.errorCode === 0) {
                         toast.success('Question added successfully!');
                     } else {
@@ -348,7 +349,7 @@ const ManageAddQuiz = () => {
 
                             {question.image && (
                                 <>
-                                    <img src={question.image} alt="Question" width="100" />
+                                    <img  src={URL.createObjectURL(question.image)}  alt="Question" width="100" />
                                     <Button variant="danger" onClick={() => handleQuestionRemoveImage(index)}>Remove Image</Button>
                                 </>
                             )}

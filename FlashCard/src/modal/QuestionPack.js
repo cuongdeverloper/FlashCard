@@ -7,11 +7,11 @@ const questionPackSchema = new mongoose.Schema({
     required: true 
   },
   description: {
-    type: String 
+    type: String
   },
   teacher: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'User', 
+    ref: 'User',
     required: true
   },
   semester: {
@@ -23,22 +23,25 @@ const questionPackSchema = new mongoose.Schema({
     ref: 'Flashcard'
   }],
   subject: {
-    type: String, 
+    type: String,
     required: true
   },
-  imagePreview:{
-    type:String
+  imagePreview: {
+    type: String
   },
-
-   createdAt: {
+  createdAt: {
     type: Date,
     default: Date.now
   },
-  classId: { 
-    type: mongoose.Schema.Types.ObjectId, 
-    ref: 'Class', 
-    default: null 
+  classId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Class',
+    default: null
   },
+  isPublic: {
+    type: Boolean,
+    default: false
+  }
 });
 
 module.exports = mongoose.model('QuestionPack', questionPackSchema);
