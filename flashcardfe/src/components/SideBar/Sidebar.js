@@ -87,17 +87,7 @@ const SideBar = (props) => {
       <SidebarFooter style={{ textAlign: "center" }}>
         <Menu>
           <MenuItem>
-            <a
-              href="https://github.com/azouaoui-med/react-pro-sidebar"
-              target="_blank"
-              className="sidebar-btn"
-              rel="noopener noreferrer"
-            >
-              <FaGithub />
-              <span style={{ whiteSpace: "nowrap", textOverflow: "ellipsis", overflow: "hidden" }}>
-                GitHub
-              </span>
-            </a>
+
           </MenuItem>
         </Menu>
       </SidebarFooter>

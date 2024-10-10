@@ -78,6 +78,7 @@
     margin: 0;
     max-width: 100%;
     transition: transform 0.3s ease, border-bottom 0.3s ease;
+    
 
     &:hover {
         transform: scale(1.05);
@@ -141,11 +142,14 @@
             }
         }
         .carousel-item-next {
+     
             left: 33%;
         }
         .carousel-item-prev {
+            
             left: -33%;
         }
+
         @media all and (transform-3d), (-webkit-transform-3d) {
             > .carousel-item {
                 transition: 500ms ease-in-out all;
@@ -155,10 +159,21 @@
         }
     }
     .carousel-control-prev, .carousel-control-next {
-        background-image: none;
+        opacity: 0.5; /* Điều chỉnh độ trong suốt của nút */
+        transition: opacity 0.3s ease-in-out;
     }
+
 }
 
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+    background-color: #a0a0a000 !important; /* Làm nền trong suốt */
+    
+}
+.carousel-control-prev:hover,
+.carousel-control-next:hover {
+    opacity: 1; /* Tăng độ trong suốt khi hover */
+}
 // non-related styling:
 body {
     background: #333;
@@ -211,4 +226,9 @@ h1 {
     height: 48px;
     overflow: hidden;
     color: #ddd;
+}
+
+.questionpack-h2{
+    margin: 10px 20px;
+    color: #fff;
 }

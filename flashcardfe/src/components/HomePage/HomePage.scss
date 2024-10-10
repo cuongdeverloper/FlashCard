@@ -1,3 +1,9 @@
+@import url('https://fonts.googleapis.com/css2?family=Afacad+Flux:wght@100..1000&display=swap');
+
+* {
+    font-family: "Afacad Flux", sans-serif;
+}
+
 .HomePage-container{
     display: flex;
     height: 100vh; /* Full viewport height */
@@ -14,19 +20,28 @@
         }
     }
 }
-.Homepage-content {
-    flex: 1; /* Allow content to take up remaining space */
-    display: flex;
-    flex-direction: column;
-    max-width: 100%;
-    position: relative;
-    overflow-y: auto; /* Enable vertical scrolling if content overflows */
-    background: #121045;
-    .Header-container {
-        position: sticky;
-        top: 0;
-        z-index: 1;
+    .Homepage-content {
+        flex: 1; /* Allow content to take up remaining space */
+        display: flex;
+        flex-direction: column;
+        max-width: 100%;
+        position: relative;
+        overflow-y: auto; /* Enable vertical scrolling if content overflows */
+        height: 100vh; /* Full viewport height */
+        background: #121045;
+        flex-grow: 1;
+        .Header-container {
+            position: sticky;
+            top: 0;
+            z-index: 1;
+        }
     }
+.Homepage-footer {
+    background-color: #2E3856;
+    color: #ddd;
+    text-align: center;
+    width: 100%;
+    margin-top: auto; /* Đẩy footer xuống dưới cùng */
 }
 
 .ManageUser-container {

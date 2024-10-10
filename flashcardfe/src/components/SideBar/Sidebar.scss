@@ -20,4 +20,15 @@
 }
 
 
-
+/* Apply background color specifically to the Home MenuItem */
+.pro-sidebar .pro-sidebar-content .home-menu-item .nav-link {
+    background-color: transparent !important; /* Transparent background */
+    color: #fff; /* White text color */
+  }
+  
+  /* Change background on hover for Home menu item */
+  .pro-sidebar .pro-sidebar-content .home-menu-item:hover .nav-link {
+    background-color: #007bff !important; /* Blue background on hover */
+    color: #fff; /* White text color */
+  }
+  

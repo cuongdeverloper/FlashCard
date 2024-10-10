@@ -28,6 +28,7 @@ import UserMessage from "./components/message/UserMessage";
 import ViewProfile from "./components/Userprofile.js/profile";
 import Quiz from "./components/Quiz/Quiz";
 import MyManage from "./components/My manage/MyManage";
+import MyClass from "./components/Myclass-homepage/myclass";
 
 
 const Layout = () => {
@@ -72,6 +73,7 @@ const Layout = () => {
                 <Routes>
                     <Route path="/" element={<HomePage />}>
                         <Route index element={<ListQuestionPack />} />
+                        <Route path="my-class" element={<MyClass/>} /> 
                         <Route path="detailquespack/:packId" element={<DetailQuesPack />} />
                         <Route path="/crud-q" element={<PrivateRoute element={<ManageFcQ />} requiredRole="teacher" />}>
                             <Route path="add-quiz" element={<PrivateRoute element={<ManageAddQuiz />} requiredRole="teacher" />} />

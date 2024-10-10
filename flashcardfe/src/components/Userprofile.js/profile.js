@@ -3,6 +3,7 @@ import "./profile.css";
 import { useSelector } from "react-redux";
 import { FaUpload } from "react-icons/fa";
 import { toast } from "react-toastify"; // Import toast
+import Footer from "../footer/footer";
 
 const ViewProfile = () => {
   const [userProfile, setUserProfile] = useState(null);
@@ -210,6 +211,7 @@ const ViewProfile = () => {
         </div>
       </div>
     </div>
+    
   );
 };
 

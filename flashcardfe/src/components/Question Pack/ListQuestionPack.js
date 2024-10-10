@@ -2,12 +2,17 @@ import { Button, Card, Carousel } from "react-bootstrap";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { getAllQuestionPack, getUserByUserId } from "../../service/ApiService";
+import {  useSelector } from 'react-redux';
 import "./ListQuestionPack.scss";
+import MyClass from "../Myclass-homepage/myclass";
+import Footer from "../footer/footer";
+import Banner from "../Banner/banner";
 
 const ListQuestionPack = () => {
   const [questionPackData, setQuestionPackData] = useState([]);
   const [userNames, setUserNames] = useState({});
   const navigate = useNavigate();
+  const isAuthenticated = useSelector(state => state.user.isAuthenticated);
 
   const fetchQuestionPacks = async () => {
     const response = await getAllQuestionPack();
@@ -39,7 +44,9 @@ const ListQuestionPack = () => {
   }
 
   return (
+    
     <div className="ListQuestionPack-container">
+      <h2 className="questionpack-h2">Flashcard</h2>
       {questionPackData.length > 0 ? (
         <Carousel
           id="questionPackCarousel"
@@ -54,7 +61,9 @@ const ListQuestionPack = () => {
                   <div className="col-md-4" key={pack._id}>
                     <Card
                       className="mb-3"
-                      style={{ backgroundColor: "#2E3856" }}
+                      style={{   backgroundColor: "#1E1E40",
+                      boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.2)",
+                    }}
                       onClick={() => {
                         navigate(`/detailquespack/${pack._id}`, {
                           state: {
@@ -99,6 +108,10 @@ const ListQuestionPack = () => {
       ) : (
         <p>No question packs available.</p>
       )}
+      <Banner></Banner>
+      {isAuthenticated ? <MyClass /> : <div></div>}
+     
+      <Footer></Footer>
     </div>
   );
 };

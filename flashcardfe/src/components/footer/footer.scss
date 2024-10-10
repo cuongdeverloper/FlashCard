@@ -1,0 +1,68 @@
+.footer {
+    background-color: #2E3856;
+    color: #ddd;
+    padding: 10px 20px; /* Giảm padding cho footer */
+    text-align: center;
+  
+    .footer-content {
+      display: flex;
+      justify-content: space-between;
+      padding: 10px 0; /* Giảm padding giữa các phần trong footer */
+  
+      .footer-section {
+        width: 45%;
+  
+        h4 {
+          color: white;
+     
+          font-size: 1.2rem; /* Kích thước chữ nhỏ hơn */
+        }
+  
+        ul {
+          list-style-type: none;
+          padding: 0;
+  
+          li {
+            margin-bottom: 8px; /* Giảm khoảng cách giữa các mục */
+            font-size: 1rem; /* Giảm kích thước font chữ */
+  
+            svg {
+              margin-right: 8px; /* Giảm khoảng cách giữa icon và text */
+              color: #007bff;
+            }
+  
+            a {
+              color: #007bff;
+              text-decoration: none;
+              transition: color 0.3s ease;
+  
+              &:hover {
+                color: #fff;
+              }
+  
+              i {
+                margin-right: 8px; /* Giảm khoảng cách icon trong liên kết */
+              }
+            }
+          }
+        }
+      }
+    }
+  
+    .footer-bottom {
+      font-size: 0.8rem; /* Giảm kích thước chữ trong phần bản quyền */
+      color: #ccc;
+    }
+  
+    @media (max-width: 768px) {
+      .footer-content {
+        flex-direction: column;
+        align-items: center;
+  
+        .footer-section {
+          width: 100%;
+          margin-bottom: 10px; /* Giảm khoảng cách giữa các phần trong footer */
+        }
+      }
+    }
+  }

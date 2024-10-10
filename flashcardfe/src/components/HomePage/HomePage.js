@@ -9,6 +9,7 @@ import ListQuestionPack from '../Question Pack/ListQuestionPack';
 import { Outlet, useNavigate } from "react-router-dom"
 import SideBar from '../SideBar/Sidebar';
 import './HomePage.scss'
+import Footer from '../footer/footer';
 const HomePage = () => {
     const dispatch = useDispatch();
     const isAuthenticated = useSelector(state => state.user.isAuthenticated);
@@ -74,7 +75,8 @@ const HomePage = () => {
         }
     }, [isAuthenticated]); 
     return (
-        <div className="HomePage-container">
+        <>
+                <div className="HomePage-container">
             <div className='Admin-SideBar'>
             <SideBar
                 classData={classData}
@@ -87,11 +89,13 @@ const HomePage = () => {
             <Outlet/>
                 
             </div>
-            <div className='Homepage-footer'>
 
-            </div>
 
         </div>
+                    <div className='Homepage-footer'>
+                    
+                </div></>
+
     )
 }
 export default HomePage

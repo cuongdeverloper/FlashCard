@@ -265,7 +265,7 @@ const ManageAddQuiz = () => {
                         <Form.Group>
                             <Form.Label>Description</Form.Label>
                             <Form.Control
-                                as="textarea"
+                                     type="text"                   
                                 rows={1}
                                 name="description"
                                 placeholder="Enter description"
