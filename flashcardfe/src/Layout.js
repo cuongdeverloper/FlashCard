@@ -28,6 +28,9 @@ import UserMessage from "./components/message/UserMessage";
 import ViewProfile from "./components/Userprofile.js/profile";
 import Quiz from "./components/Quiz/Quiz";
 import MyManage from "./components/My manage/MyManage";
+import EnterOTPRegister from "./components/auth/EnterOTPRegister";
+import RequestPasswordReset from "./components/auth/reset password/RequestPasswordReset";
+import ResetPassword from "./components/auth/reset password/ResetPassword";
 
 
 const Layout = () => {
@@ -70,7 +73,9 @@ const Layout = () => {
             />
             <BrowserRouter>
                 <Routes>
+                    
                     <Route path="/" element={<HomePage />}>
+                       
                         <Route index element={<ListQuestionPack />} />
                         <Route path="detailquespack/:packId" element={<DetailQuesPack />} />
                         <Route path="/crud-q" element={<PrivateRoute element={<ManageFcQ />} requiredRole="teacher" />}>
@@ -93,9 +98,11 @@ const Layout = () => {
                     <Route path="/login" element={<Login />} />
                     <Route path="/logout" element={<Logout />} />
                     <Route path="/register" element={<Register />} />
-
+                    <Route path="/otp-verify" element={<EnterOTPRegister />} />
+                    <Route path="/forgot-password" element={<RequestPasswordReset />} />
+                    <Route path="/reset-password" element={<ResetPassword />} />
                     <Route path="/quiz/:quizId" element={<Quiz />} >
-
+                    
                     </Route>
 
                     <Route path="/userprofile" element={<ViewProfile />} />

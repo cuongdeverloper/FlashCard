@@ -1,6 +1,6 @@
 const express = require('express');
 const { addUser, getUserFromUserId, getId, searchUser, getAllUsers } = require('../controller/ApiUser');
-const { apiLogin, apiRegister } = require('../controller/ApiAuth');
+const { apiLogin, apiRegister, verifyOtp, resendOTPVerificationCode, requestPasswordReset, resetPassword } = require('../controller/ApiAuth');
 const { createRefreshToken, createJWT, decodeToken, checkAccessToken } = require('../middleware/JWTAction');
 const passport = require('passport');
 const { createQuestionPack, getAllQuestionPack, searchQuestionPack, addQuestionPackToClass, getQuestionPackById, getAllQuestionPacksForTeacher, updateQuestionPack } = require('../controller/ApiQuestionPack');
@@ -93,4 +93,9 @@ routerApi.post('/finish',checkAccessToken,submitExam)
 routerApi.get('/results/:examId',checkAccessToken,getExamResults)
 //teacher
 routerApi.get('/getQp4Teacher/:teacherId',checkAccessToken,getAllQuestionPacksForTeacher)
+
+routerApi.post('/verify-otp', verifyOtp);
+
+routerApi.post('/rqreset-password', requestPasswordReset);
+routerApi.post('/reset-password', resetPassword);
 module.exports = { routerApi };
