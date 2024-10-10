@@ -8,7 +8,7 @@ const addUser = async (req, res) => {
     }
 
     const { username, password, role, email, phoneNumber, gender } = req.body;
-    const image = req.file ? req.file.path : null; // Retrieve the uploaded image URL
+    const image = req.file ? req.file.path : null; 
 
     if (!username || !password || !role || !email || !phoneNumber || !gender) {
       return res.status(400).json({ message: 'All fields are required.' });

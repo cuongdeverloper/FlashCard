@@ -11,7 +11,16 @@ const createJWT = (payload) => {
         return null;
     }
 };
-
+const createJWTResetPassword = (payload) => {
+    const key = process.env.JWT_SECRET;
+    const options = { expiresIn: '5m' };
+    try {
+        return jwt.sign(payload, key, options);
+    } catch (error) {
+        console.error('Error creating JWT:', error);
+        return null;
+    }
+};
 const createRefreshToken = (payload) => {
     const key = process.env.REFRESH_TOKEN_SECRET;
     const options = { expiresIn: process.env.REFRESH_TOKEN_EXPIRES_IN };
@@ -80,5 +89,6 @@ module.exports = {
     verifyAccessToken,
     verifyRefreshToken,
     checkAccessToken,
-    decodeToken
+    decodeToken,
+    createJWTResetPassword
 };

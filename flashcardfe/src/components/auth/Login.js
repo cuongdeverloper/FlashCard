@@ -156,7 +156,7 @@ const Login = () =>{
                         </button>
                     </div>
                     <div className="Login-body-forgotPassword">
-                        <a href='#'>Forgot password</a>
+                        <a onClick={()=>navigate('/forgot-password')}>Forgot password</a>
                     </div>
                     <div className="Login-header-donthaveyet" onClick={()=> navigate('/register')}>
                         <label>Don't have an account yet?</label>

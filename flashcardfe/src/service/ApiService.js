@@ -1,6 +1,6 @@
 import axios from '../utils/AxiosCustomize';
 import Cookies from 'js-cookie';
-const LoginApi = (userEmail,userPassword) =>{
+const LoginApi = (userEmail, userPassword) => {
     return axios.post('auth', { email: userEmail, password: userPassword });
 
 }
@@ -29,24 +29,24 @@ const registerUser = async (username, email, password, phoneNumber, gender, role
     }
 };
 
-const loginWGoogle = () =>{
+const loginWGoogle = () => {
     return axios.get(`/auth/google/callback`)
 }
-const decodeDataGoogle = (token) =>{
+const decodeDataGoogle = (token) => {
     return axios.post(`/decode-token`, { token });
 }
 
-const getAllQuestionPack = () =>{
+const getAllQuestionPack = () => {
     return axios.get(`/questionPack`)
 }
-const getQuestionByQPId = async(questionPackId) =>{
+const getQuestionByQPId = async (questionPackId) => {
     try {
         const token = Cookies.get('accessToken');
 
         // Check if the token exists
         if (!token) {
             console.warn('No access token found');
-            return null; 
+            return null;
         }
 
         // Proceed with the API request if the token exists
@@ -55,25 +55,25 @@ const getQuestionByQPId = async(questionPackId) =>{
                 'Authorization': `Bearer ${token}`
             }
         });
-       
+
         return response;
     } catch (error) {
         console.error('Error fetching user ID:', error);
         return null;
     }
 }
-const getUserByUserId = (userId) =>{
+const getUserByUserId = (userId) => {
     return axios.get(`/user/${userId}`)
 }
 
-const getAllUserApi = async()=>{
+const getAllUserApi = async () => {
     try {
         const token = Cookies.get('accessToken');
 
         // Check if the token exists
         if (!token) {
             console.warn('No access token found');
-            return null; 
+            return null;
         }
 
         // Proceed with the API request if the token exists
@@ -82,7 +82,7 @@ const getAllUserApi = async()=>{
                 'Authorization': `Bearer ${token}`
             }
         });
-       
+
         return response;
     } catch (error) {
         console.error('Error fetching user ID:', error);
@@ -96,7 +96,7 @@ const getUserId = async () => {
         // Check if the token exists
         if (!token) {
             console.warn('No access token found');
-            return null; 
+            return null;
         }
 
         // Proceed with the API request if the token exists
@@ -160,8 +160,8 @@ const createQuestionToQuestionPackAPI = async (questionText, questionImage, answ
             formData.append('imagePreview', questionImage);
         }
 
-        formData.append('answers', JSON.stringify(answers)); 
-        formData.append('correctAnswers', JSON.stringify(correctAnswers)); 
+        formData.append('answers', JSON.stringify(answers));
+        formData.append('correctAnswers', JSON.stringify(correctAnswers));
         const response = await axios.post('/question', formData);
 
         return response;
@@ -183,7 +183,7 @@ const getAllCommentFlashCard = async (flashcardId, page = 1) => {
 
     try {
         const response = await axios.get(`/questionpack/comments/${flashcardId}?page=${page}`, {
-            
+
             headers: {
                 'Authorization': `Bearer ${token}`
             }
@@ -195,7 +195,7 @@ const getAllCommentFlashCard = async (flashcardId, page = 1) => {
     }
 };
 
-  const postComment = async (userId, commentContent, flashcardId, file) => {
+const postComment = async (userId, commentContent, flashcardId, file) => {
     try {
         // Retrieve the token from cookies or local storage
         const token = Cookies.get('accessToken'); // Adjust if using a different method
@@ -237,7 +237,7 @@ const getAllCommentFlashCard = async (flashcardId, page = 1) => {
     }
 };
 
-const deleteCommentApi = async (questionPackId,commentId) => {
+const deleteCommentApi = async (questionPackId, commentId) => {
     const token = Cookies.get('accessToken');
 
     if (!token) {
@@ -251,10 +251,10 @@ const deleteCommentApi = async (questionPackId,commentId) => {
             }
         });
         console.log(response)
-        return response; 
+        return response;
     } catch (error) {
         console.error('Error deleting comment:', error);
-        throw error; 
+        throw error;
     }
 };
 
@@ -262,9 +262,9 @@ const postReplyComment = async (commentId, userId, replyContent) => {
     const token = Cookies.get('accessToken');
 
     if (!token) {
-        const currentUrl = window.location.href; 
-        localStorage.setItem('redirectAfterLogin', currentUrl); 
-        window.open('/login', '_blank'); 
+        const currentUrl = window.location.href;
+        localStorage.setItem('redirectAfterLogin', currentUrl);
+        window.open('/login', '_blank');
         return;
     }
 
@@ -293,7 +293,7 @@ const postReplyComment = async (commentId, userId, replyContent) => {
 const searchItems = async (query) => {
     try {
         const response = await axios.get(`/questionPacks/search`, {
-            params: { query: query }, 
+            params: { query: query },
         });
         return response
     } catch (error) {
@@ -314,7 +314,7 @@ const deleteReply = async (commentId, replyId) => {
         // Make the DELETE request to the API
         const response = await axios.delete(`/questionpack/comment/reply/${commentId}/${replyId}`, {
             headers: {
-                'Authorization': `Bearer ${token}` 
+                'Authorization': `Bearer ${token}`
             }
         });
 
@@ -326,7 +326,7 @@ const deleteReply = async (commentId, replyId) => {
     }
 };
 
-const getClassById = async() =>{
+const getClassById = async () => {
     return axios.get('/class')
 }
 const getClassByClassId = async (classId) => {
@@ -339,24 +339,24 @@ const getClassByClassId = async (classId) => {
     try {
         const response = await axios.get(`/class/${classId}`, {
             headers: {
-                'Authorization': `Bearer ${token}`  
+                'Authorization': `Bearer ${token}`
             }
         });
 
-        return response; 
+        return response;
     } catch (error) {
         console.error('Error fetching class by ID:', error);
         throw error;
     }
 };
-const getQuestionPackByQuestionPackId = async(questionPackId) =>{
+const getQuestionPackByQuestionPackId = async (questionPackId) => {
     try {
         const response = await axios.get(`/questionPacks/${questionPackId}`);
         return response
     } catch (error) {
         console.log(error)
     }
-    
+
 }
 const removeQpToClass = async (classId, questionPackId) => {
     const token = Cookies.get('accessToken');
@@ -382,30 +382,30 @@ const removeQpToClass = async (classId, questionPackId) => {
         throw error; // Throw the error to be handled by the caller
     }
 };
-const joinClassByInvite = async(token1) => {
+const joinClassByInvite = async (token1) => {
     const token = Cookies.get('accessToken');
     if (!token) {
         throw new Error('No access token found. Please login again.');
     }
     return axios.get(`/join-class/${token1}`, {
         headers: {
-            'Authorization': `Bearer ${token}`  
+            'Authorization': `Bearer ${token}`
         }
     });
 };
 
-const getMemberByClassId = async(classId)=>{
+const getMemberByClassId = async (classId) => {
     const token = Cookies.get('accessToken');
     if (!token) {
         throw new Error('No access token found. Please login again.');
     }
     return axios.get(`/class/getMembers/${classId}`, {
         headers: {
-            'Authorization': `Bearer ${token}`  
+            'Authorization': `Bearer ${token}`
         }
     });
 }
-const searchUserId = async(query)=>{
+const searchUserId = async (query) => {
     const token = Cookies.get('accessToken');
     if (!token) {
         throw new Error('No access token found. Please login again.');
@@ -413,28 +413,28 @@ const searchUserId = async(query)=>{
     const response = await axios.get('/searchUser', {
         params: { query },
         headers: {
-          Authorization: `Bearer ${token}`
+            Authorization: `Bearer ${token}`
         }
-      });
-      return response
+    });
+    return response
 }
 
 const sendMess = async (userId, messageContent) => {
     try {
         const token = Cookies.get('accessToken');
-        
+
         if (!token) {
             throw new Error('No access token found. Please login again.');
         }
         console.log("User ID:", userId);
         console.log("Message Content:", messageContent);
-        
+
         const response = await axios.post(`/messages/${userId}`, {
-            message: messageContent 
+            message: messageContent
         }, {
             headers: {
                 'Authorization': `Bearer ${token}`,
-                'Content-Type': 'application/json' 
+                'Content-Type': 'application/json'
             }
         });
 
@@ -466,13 +466,13 @@ const getMessagesApi = async (userId) => {
         throw error; // Propagate the error to be handled by the caller
     }
 };
-const getQuizByQuizId = async(questionPackId) =>{
+const getQuizByQuizId = async (questionPackId) => {
     try {
         const token = Cookies.get('accessToken');
 
         // Check if the token exists
         if (!token) {
-            throw new Error('No access token found. Please login again.');            
+            throw new Error('No access token found. Please login again.');
         }
         const response = await axios.get(`/exam/${questionPackId}`, {
             headers: {
@@ -481,10 +481,10 @@ const getQuizByQuizId = async(questionPackId) =>{
         });
         return response
     } catch (error) {
-        
+
     }
 }
-const postSubmitExam = async (examId,answers) => {
+const postSubmitExam = async (examId, answers) => {
     try {
         const token = Cookies.get('accessToken');
 
@@ -494,7 +494,7 @@ const postSubmitExam = async (examId,answers) => {
 
         const response = await axios.post('/finish', {
             examId: examId,
-            answers: answers 
+            answers: answers
         }, {
             headers: {
                 'Authorization': `Bearer ${token}`,
@@ -525,7 +525,7 @@ const updateQuestion = async (flashcardId, questionData) => {
         const response = await axios.put(`/flashcard/${flashcardId}`, questionData, {
             headers: {
                 'Authorization': `Bearer ${token}`,
-             
+
             }
         });
 
@@ -569,16 +569,56 @@ const updateQuestionPack = async (questionPackId, updatedData) => {
             }
         });
 
-        return response; 
+        return response;
     } catch (error) {
         console.error('Error updating question pack:', error);
         throw error; // Propagate error to the caller
     }
 };
-export {LoginApi,loginWGoogle,decodeDataGoogle,getAllQuestionPack,
-    getQuestionByQPId,getUserByUserId,createNewQuestionPackApi,
-    getUserId,createQuestionToQuestionPackAPI,getAllCommentFlashCard,
-    postComment,deleteCommentApi,postReplyComment,searchItems,registerUser,
-    deleteReply,getClassById,getClassByClassId,getQuestionPackByQuestionPackId,removeQpToClass
-    ,joinClassByInvite,getMemberByClassId,searchUserId,getAllUserApi,sendMess,getMessagesApi
-,getQuizByQuizId,postSubmitExam,getQuestionPackOfTeacher,updateQuestion,updateQuestionPack}
+const sendOTPApi = async (userId, otp) => {
+    try {
+        const response = await axios.post('/verify-otp', { userId, OTP: otp });  // Use 'OTP' to match the backend
+        return response
+    } catch (error) {
+        console.error("Error verifying OTP:", error.response ? error.response.data : error.message);
+        return { errorCode: 1, message: 'Failed to verify OTP' }; // Improved error handling
+    }
+};
+
+
+const reSendOtpApi = async (email) => {
+    try {
+        const response = await axios.post('/resend-otp', { email });
+        return response;
+    } catch (error) {
+        console.error("Error resending OTP:", error);
+        return { errorCode: 1, message: 'Failed to resend OTP' };
+    }
+}
+const requestPasswordResetApi = async (email) => {
+    try {
+        const response = await axios.post('/rqreset-password', { email });
+        return response;
+    } catch (error) {
+        console.log(error)
+    }
+
+};
+
+const resetPasswordApi = async (token, newPassword) => {
+    try {
+        const response = await axios.post('/reset-password', { token, newPassword });
+        return response;
+    } catch (error) {
+        console.log(error)
+    }
+};
+export {
+    LoginApi, loginWGoogle, decodeDataGoogle, getAllQuestionPack,
+    getQuestionByQPId, getUserByUserId, createNewQuestionPackApi,
+    getUserId, createQuestionToQuestionPackAPI, getAllCommentFlashCard,
+    postComment, deleteCommentApi, postReplyComment, searchItems, registerUser,
+    deleteReply, getClassById, getClassByClassId, getQuestionPackByQuestionPackId, removeQpToClass
+    , joinClassByInvite, getMemberByClassId, searchUserId, getAllUserApi, sendMess, getMessagesApi
+    , getQuizByQuizId, postSubmitExam, getQuestionPackOfTeacher, updateQuestion, updateQuestionPack, reSendOtpApi, sendOTPApi, requestPasswordResetApi, resetPasswordApi
+}

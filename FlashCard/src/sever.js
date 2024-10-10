@@ -11,6 +11,7 @@ const doLoginWGoogle = require('./controller/social/GoogleController.js');
 const {app,server} = require('./socket/socket.js')
 const bodyParser = require('body-parser');
 const uploadCloud = require('./config/cloudinaryConfig.js');
+const { sendMail } = require('./config/mailSendConfig.js');
 // const app = express();
 const port = process.env.PORT || 8888;
 const hostname = process.env.HOST_NAME || 'localhost';
@@ -55,6 +56,7 @@ app.use(session({
     try {
       await connection();
       doLoginWGoogle();
+      // sendMail("trungthanhle2004@gmail.com","This is CUong","con cac thanh den xi")
       server.listen(port, hostname, () => {
         console.log(`Backend app listening on http://${hostname}:${port}`);
       });

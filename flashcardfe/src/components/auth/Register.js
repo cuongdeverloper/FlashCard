@@ -1,15 +1,16 @@
 import { useEffect, useState } from "react";
-import { FaBackward, FaFacebookF, FaGoogle, FaInstagram } from "react-icons/fa";
+import { FaBackward } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { ImSpinner9 } from "react-icons/im";
 import './Register.scss';
 import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
+import { registerUser, reSendOtpApi } from "../../service/ApiService";
 import Cookies from "js-cookie";
-import { registerUser } from "../../service/ApiService";
 
 const Register = () => {
     const [isLoadingRegister, setIsLoadingRegister] = useState(false);
+    const [isLoadingResend, setIsLoadingResend] = useState(false);
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -17,7 +18,7 @@ const Register = () => {
     const [gender, setGender] = useState('');
     const [image, setImage] = useState(null);
     const [isFormValid, setIsFormValid] = useState(false);
-    const [role,setRole] = useState('student')
+    const [role, setRole] = useState('student');
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const isAuthenticated = useSelector(state => state.user.isAuthenticated);
@@ -38,12 +39,30 @@ const Register = () => {
 
     const handleRegister = async () => {
         setIsLoadingRegister(true);
-    //    username, email, password, phoneNumber, gender, role, image
-       let response = await registerUser(username,email,password,phoneNumber,gender,role,image)
-       if(response && response.errorCode ===0) {
-        toast.success(response.message);
-        navigate('/login')
-       }
+        let response = await registerUser(username, email, password, phoneNumber, gender, role, image);
+        setIsLoadingRegister(false);
+        console.log(response)
+        if (response && response.errorCode !== 0){
+            toast.error(response.message)
+        }
+        if (response && response.errorCode === 0) {
+            toast.success(response.message);
+            
+            navigate('/otp-verify', { state: { userId: response.data.id } });
+        } else {
+            toast.error(response.message);
+        }
+    };
+
+    const handleResendOTP = async () => {
+        setIsLoadingResend(true);
+        const response = await reSendOtpApi(email); 
+        setIsLoadingResend(false);
+        if (response && response.errorCode === 0) {
+            toast.success(response.message);
+        } else {
+            toast.error(response.message);
+        }
     };
 
     useEffect(() => {
@@ -56,9 +75,7 @@ const Register = () => {
             <div className="Register-body">
                 <form>
                     <div className="Register-header">
-                        <span onClick={() => navigate('/')}>
-                            <FaBackward className="back-icon" /> Go back home
-                        </span>
+                        <span onClick={() => navigate('/')}><FaBackward className="back-icon" /> Go back home</span>
                     </div>
                     <h1 className='form-title'>REGISTER</h1>
                     <div className="Register-body-form mb-2">
@@ -140,6 +157,17 @@ const Register = () => {
                             {isLoadingRegister && <ImSpinner9 className="loaderIcon" />}
                             REGISTER
                         </button>
+                    </div>
+                    <div className="Register-body-buttonResendOTP">
+                        {/* <button
+                            type='button'
+                            className='btn-resend btn btn-secondary'
+                            onClick={handleResendOTP}
+                            disabled={!email}
+                        >
+                            {isLoadingResend && <ImSpinner9 className="loaderIcon" />}
+                            RESEND OTP
+                        </button> */}
                     </div>
                     <div className="Register-header-alreadyHaveAccount">
                         <label>Already have an account?</label>
