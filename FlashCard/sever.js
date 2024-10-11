@@ -40,9 +40,12 @@ app.use(session({
   
   // Use your view engine configuration if rendering views
   configViewEngine(app);
-  
+ 
   // API routes
   app.use('/', routerApi);
+  routerApi.get('/example', (req, res) => {
+    res.send('This is an example route');
+  });
 //   app.use('/', ApiNodejs);
   
   // Error handling middleware
