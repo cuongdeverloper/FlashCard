@@ -22,10 +22,10 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(session({
-    secret: 'your-secret-key',
+    secret: 'your-secret-key', // Replace with your secret key
     resave: false,
     saveUninitialized: true,
-    cookie: { secure: false }
+    cookie: { secure: false } // Set to true if using HTTPS
   }));
   
   // Initialize passport
@@ -33,14 +33,11 @@ app.use(session({
   app.use(passport.session()); // Enable passport session support
   
   // Configure CORS
-  // app.use(cors({
-  //   origin: 'http://localhost:7070',
-  //   credentials: true,
-  // }));
   app.use(cors({
-    origin: 'https://deploy-mern-1whq.vercel.app',
+    origin: 'http://localhost:7070',
     credentials: true,
   }));
+  
   // Use your view engine configuration if rendering views
   configViewEngine(app);
   
