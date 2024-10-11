@@ -58,7 +58,7 @@ app.get("/", (req, res) => {
       await connection();
       doLoginWGoogle();
       // sendMail("trungthanhle2004@gmail.com","This is CUong","con cac thanh den xi")
-      app.listen(port, hostname, () => {
+      server.listen(port, hostname, () => {
         console.log(`Backend app listening on http://${hostname}:${port}`);
       });
   
