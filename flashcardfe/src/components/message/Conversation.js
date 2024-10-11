@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 import UseConversation from "./zustand/UseConversation";
 import { Card } from "react-bootstrap";
 import { useSocketContext } from "../../context/SocketContext";
+import "./css/Conversation.scss"
 
 const Conversation = ({ conversation, lastIdx, emoji }) => {
     const { selectedConversation, setSelectedConversation } = UseConversation();
@@ -19,7 +20,7 @@ const Conversation = ({ conversation, lastIdx, emoji }) => {
     return (
         <>
             <Card
-                className={`mb-2 cursor-pointer ${isSelected ? "bg-primary text-white" : ""}`}
+                className={`mb-2 cursor-pointer ${isSelected ? "conversation-select text-black" : "conversation-notselect text-white"}`}
                 onClick={() => handleCardClick(conversation)}
             >
                 <Card.Body className="d-flex align-items-center">
@@ -28,7 +29,7 @@ const Conversation = ({ conversation, lastIdx, emoji }) => {
                             src={conversation.image}
                             alt='user avatar'
                             className='rounded-circle'
-                            style={{ height: '100px', width: '100px' }}
+                            style={{ height: '50px', width: '50px' }}
                         />
                         {isOnline && (
                             <span className="position-absolute top-0 start-100 translate-middle p-1 bg-success border border-light rounded-circle" style={{ width: '20px', height: '20px' }} />

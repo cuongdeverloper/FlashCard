@@ -5,6 +5,7 @@ import Select from 'react-select';
 import { Accordion, Button, Form, Alert } from "react-bootstrap";
 import Cookies from "js-cookie"; // Ensure you import Cookies
 import ModalUpdateQuestionPack from "./ModalUpdateQuestionpack";
+import "./css/myManage.scss"
 
 const MyManage = () => {
     const userId = useSelector((state) => state.user.account.id);
@@ -199,7 +200,7 @@ const MyManage = () => {
     };
 
     return (
-        <div style={{ backgroundColor: '#fff' }}>
+        <div style={{ backgroundColor: '#121045' }}>
             {loading ? <p>Loading...</p> : (
                 <Accordion defaultActiveKey="0">
                     <Accordion.Item eventKey="0">
@@ -297,7 +298,7 @@ const MyManage = () => {
                                             />
                                         )}
                                     </Form.Group>
-                                    <Button onClick={handleSaveClick} disabled={saving}>
+                                    <Button onClick={handleSaveClick} disabled={saving}  className="btn-save">
                                         {saving ? 'Saving...' : 'Save'}
                                     </Button>
                                 </div>

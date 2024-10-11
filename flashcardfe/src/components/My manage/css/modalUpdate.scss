@@ -1,0 +1,154 @@
+/* Modal Container */
+.modal-custom {
+    max-width: 100%;
+    margin: 0 auto;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+
+    /* Modal Header */
+    .modal-header-custom {
+        background-color: #4e73df;
+        color: white;
+        font-size: 1.25rem;
+        font-weight: bold;
+        padding: 15px 20px;
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+    }
+
+    .modal-header-custom .close {
+        color: white;
+    }
+
+    /* Modal Body */
+    .modal-body-custom {
+        background-color: #f8f9fc;
+        padding: 25px 20px;
+        border-radius: 10px;
+
+        /* Form */
+        .form-custom {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        /* Form Group */
+        .form-group-custom {
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Form Label */
+        .form-label-custom {
+            font-weight: bold;
+            color: #495057;
+            margin-bottom: 8px;
+            font-size: 1.1rem;
+        }
+
+        /* Form Control (Input, Textarea) */
+        .form-control-custom {
+            border-radius: 8px;
+            padding: 12px;
+            border: 1px solid #ced4da;
+            font-size: 1rem;
+            background-color: #fff;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .form-control-custom:focus {
+            border-color: #4e73df;
+            box-shadow: 0 0 0 0.2rem rgba(78, 115, 223, 0.25);
+        }
+
+        /* Checkbox */
+        .form-check-custom {
+            font-size: 1.1rem;
+            margin-top: 5px;
+        }
+
+        /* File Input */
+        .file-input-custom {
+            padding: 10px;
+            border-radius: 8px;
+            background-color: #f8f9fc;
+            border: 1px solid #ced4da;
+            transition: background-color 0.3s ease;
+        }
+
+        .file-input-custom:hover {
+            background-color: #e2e6ea;
+        }
+
+        /* Image Preview */
+        .image-preview-custom {
+            margin-top: 15px;
+            max-width: 100%;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+    }
+
+    /* Modal Footer */
+    .modal-footer-custom {
+        display: flex;
+        justify-content: flex-end;
+        background-color: #f1f3f5;
+        border-bottom-left-radius: 10px;
+        border-bottom-right-radius: 10px;
+        padding: 15px 20px;
+    }
+
+    /* Buttons */
+    .button-custom {
+        padding: 10px 20px;
+        font-size: 1rem;
+        font-weight: 600;
+        border-radius: 8px;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+        display: inline-block;
+        margin-left: 10px;
+    }
+
+    .button-custom:hover {
+        background-color: #2e59d9;
+        transform: scale(1.05);
+    }
+
+    .button-custom:focus {
+        outline: none;
+        box-shadow: 0 0 0 0.2rem rgba(78, 115, 223, 0.25);
+    }
+
+    .button-custom:active {
+        background-color: #2554b1;
+        transform: scale(1);
+    }
+
+    /* Close Button */
+    .button-custom.secondary {
+        background-color: #e2e6ea;
+        color: #495057;
+    }
+
+    .button-custom.secondary:hover {
+        background-color: #dae0e5;
+    }
+
+    .button-custom.secondary:active {
+        background-color: #cfd8dc;
+    }
+
+    /* Modal Dialog Width */
+    .modal-dialog {
+        max-width: 50%;
+        margin: 30px auto;
+    }
+
+    /* Nút Save */
+
+}
+.btn-save {
+    margin-top: 10px; /* Thêm margin-top */
+}

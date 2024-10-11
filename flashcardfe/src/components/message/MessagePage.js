@@ -6,6 +6,7 @@ import { searchUserId } from "../../service/ApiService";
 import UseGetConversations from "./hooks/UseGetConversations";
 import Conversation from "./Conversation";
 import SearchInput from "./SearchInput";
+import "./css/MessagePage.scss"
 
 const MessagePage = () => {
     const { loading, conversations } = UseGetConversations();
@@ -46,7 +47,10 @@ const MessagePage = () => {
 
                 {loading ? <span className='loading loading-spinner mx-auto'></span> : null}
             </div>
-            <div className="Right-ctn">
+
+            
+            <div className="Right-ctn" 
+             >
                 <Outlet />
             </div>
 

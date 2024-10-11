@@ -1,0 +1,87 @@
+.ms {
+    background-color: #1c1e21;
+    border-radius: 10px;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 25px; /* Tăng khoảng cách giữa các tin nhắn */
+
+    overflow-y: auto;
+    padding-right: 15px;
+    width: 700px;
+    height: 500px;
+    overflow-y: auto;
+     p{
+        color: #fff;
+     }
+  
+}
+
+.message-container {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    padding: 8px;
+    background-color: transparent;
+    
+}
+
+.message-container .p-2 {
+    max-width: 80%; /* Tăng độ rộng của khu vực tin nhắn */
+    word-break: break-word;
+    padding: 12px 20px;
+    border-radius: 18px;
+    font-size: 15px;
+    line-height: 20px;
+}
+
+.message-container .bg-primary {
+    background-color: #0084ff;
+    
+}
+
+.message-container .bg-secondary {
+    background-color: #3e4042;
+}
+
+.message-container .text-muted {
+    color: #b0b3b8;
+}
+
+.text-muted small {
+    font-size: 12px;
+    margin-top: 5px;
+}
+
+.avatar img {
+    border-radius: 50%;
+    height: 40px;
+    width: 40px;
+    object-fit: cover;
+}
+
+
+
+.ms::-webkit-scrollbar {
+    width: 8px;
+}
+
+.ms::-webkit-scrollbar-thumb {
+    background-color: #888;
+    border-radius: 10px;
+}
+
+.ms::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+/* Thêm khoảng cách rõ ràng giữa tin nhắn của bạn và người khác */
+.d-flex.justify-content-end {
+    margin-bottom: 20px; /* Tạo khoảng cách giữa tin nhắn của bạn */
+}
+
+.d-flex.justify-content-start {
+    margin-bottom: 20px; /* Tạo khoảng cách giữa tin nhắn của người khác */
+}
+
+

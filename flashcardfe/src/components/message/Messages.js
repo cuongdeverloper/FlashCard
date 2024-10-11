@@ -2,6 +2,7 @@ import { useEffect, useRef } from "react";
 import Message from "./Message";
 import useGetMessages from "./hooks/UseGetMessages";
 import MessageSkeleton from "./skeletons/MessageSkeletons";
+import "./css/Messages.scss"
 
 const Messages = () => {
     const { messages, loading } = useGetMessages();

@@ -4,7 +4,8 @@ import UseConversation from "./zustand/UseConversation";
 import { useState } from "react";
 import { IoSearchSharp } from "react-icons/io5";
 import { searchUserId } from "../../service/ApiService";
-import { Form, Button, InputGroup, ListGroup } from "react-bootstrap";
+import { Form, InputGroup, ListGroup } from "react-bootstrap";
+import "./css/SearchInput.scss";
 
 const SearchInput = () => {
     const [search, setSearch] = useState("");
@@ -60,18 +61,16 @@ const SearchInput = () => {
     };
 
     return (
-        <div style={{ position: "relative" }}>
+        <div style={{ position: "relative" }} className="search">
             <Form onSubmit={handleSubmit}>
-                <InputGroup>
+                <InputGroup className="search-input">
                     <Form.Control
                         type="text"
                         placeholder="Search…"
                         value={search}
                         onChange={handleChange}
                     />
-                    <Button type="submit" variant="primary">
-                        <IoSearchSharp />
-                    </Button>
+                    <IoSearchSharp className="search-icon" />
                 </InputGroup>
             </Form>
 

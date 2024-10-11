@@ -1,0 +1,22 @@
+
+.to-container {
+    display: flex;
+    align-items: center;
+
+    background-color: #0084ff; /* màu xanh như Messenger */
+    color: white;
+    padding: 10px 15px;
+    border-radius: 10px 10px 0 0;
+}
+
+
+
+.username {
+    font-weight: bold;
+    margin-left: 10px;
+}
+
+.noselect{
+    margin-top: 20px;
+
+}

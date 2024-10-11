@@ -1,0 +1,148 @@
+.search{
+    margin-bottom: 10px;
+}
+/* Search input container */
+.search {
+    position: relative;
+}
+
+/* Input group for search */
+.search-input {
+    display: flex;
+    align-items: center;
+    position: relative;
+
+}
+
+/* Input field */
+.search-input .form-control {
+    padding-left: 40px; /* Tạo khoảng trống cho biểu tượng tìm kiếm */
+    border-radius: 30px !important; /* Border radius cho input */
+    height: 40px; /* Chiều cao của ô nhập liệu */
+    box-shadow: none;
+    border: none;
+    background-color: #A3A2A2;a.search{
+        margin-bottom: 10px;
+    }
+    
+    /* Search input container */
+    .search {
+        position: relative;
+    }
+    
+    /* Input group for search */
+    .search-input {
+        display: flex;
+        align-items: center;
+        position: relative;
+
+    }
+
+
+    .search-icon {
+        position: absolute;
+        left: 10px;
+        top: 10px;
+        color: black; /* Màu sắc của icon */
+        font-size: 20px; /* Kích thước của icon */
+    }
+    
+    /* Kết quả tìm kiếm */
+    .search .list-group {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        max-height: 180px;
+        overflow-y: auto;
+        background-color: white;
+        border-radius: 5px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        margin-top: 5px;
+    }
+    
+    /* Item trong danh sách kết quả */
+    .search .list-group-item {
+        cursor: pointer;
+        padding: 10px 15px;
+        border: 1px solid #f1f1f1;
+        font-size: 14px;
+    }
+    
+    /* Màu placeholder */
+    .search-input .form-control::placeholder {
+        color: black; 
+    }
+    
+    /* Hover effect khi di chuột vào kết quả */
+    .search .list-group-item:hover {
+        background-color: #e9ecef;
+        color: #000; 
+    }
+    
+    /* Active effect khi click vào kết quả */
+    .search .list-group-item:active {
+        background-color: #007bff;
+        color: white;
+    }
+    
+    color: #fff;
+    .search-input .form-control:active {
+        border: none ;
+        outline: none ;
+        background-color: #d2d2d2;
+    }
+}
+
+/* Icon tìm kiếm */
+.search-icon {
+    position: absolute;
+    left: 10px;
+    top : 10px;
+    color: black; /* Màu sắc của icon */
+    font-size: 20px; /* Kích thước của icon */
+}
+
+/* Kết quả tìm kiếm */
+.search .list-group {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    max-height: 180px;
+    overflow-y: auto;
+    background-color: white;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-top: 5px;
+}
+
+/* Item trong danh sách kết quả */
+.search .list-group-item {
+    cursor: pointer;
+    padding: 10px 15px;
+    border: 1px solid #f1f1f1;
+    font-size: 14px;
+}
+
+
+.search-input .form-control::placeholder {
+    color: black; 
+}
+
+
+
+
+
+.search .list-group-item:hover {
+    background-color: #e9ecef; 
+    color: #000; 
+}
+
+
+.search .list-group-item:active {
+    background-color: #007bff;
+    color: white;
+}
+
+
