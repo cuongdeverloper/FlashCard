@@ -1,17 +1,17 @@
 const express = require('express');
-const configViewEngine = require('./src/config/ViewEngine.js');
+const configViewEngine = require('./config/ViewEngine.js');
 const cors = require('cors');
 require('dotenv').config();
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const passport = require('passport');
-const connection = require('./src/config/database.js');
-const { routerApi } = require('./src/routes/api.js');
-const doLoginWGoogle = require('./src/controller/social/GoogleController.js');
-const {app,server} = require('./src/socket/socket.js')
+const connection = require('./config/database.js');
+const { routerApi } = require('./routes/api.js');
+const doLoginWGoogle = require('./controller/social/GoogleController.js');
+const {app,server} = require('./socket/socket.js')
 const bodyParser = require('body-parser');
-const uploadCloud = require('./src/config/cloudinaryConfig.js');
-const { sendMail } = require('./src/config/mailSendConfig.js');
+const uploadCloud = require('./config/cloudinaryConfig.js');
+const { sendMail } = require('./config/mailSendConfig.js');
 // const app = express();
 const port = process.env.PORT || 8888;
 const hostname = process.env.HOST_NAME || 'localhost';
@@ -22,10 +22,10 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(session({
-    secret: 'your-secret-key', // Replace with your secret key
+    secret: 'your-secret-key',
     resave: false,
     saveUninitialized: true,
-    cookie: { secure: false } // Set to true if using HTTPS
+    cookie: { secure: false }
   }));
   
   // Initialize passport
@@ -33,19 +33,19 @@ app.use(session({
   app.use(passport.session()); // Enable passport session support
   
   // Configure CORS
+  // app.use(cors({
+  //   origin: 'http://localhost:7070',
+  //   credentials: true,
+  // }));
   app.use(cors({
-    origin: 'http://localhost:7070',
+    origin: 'https://deploy-mern-1whq.vercel.app',
     credentials: true,
   }));
-  
   // Use your view engine configuration if rendering views
   configViewEngine(app);
- 
+  
   // API routes
   app.use('/', routerApi);
-  routerApi.get('/example', (req, res) => {
-    res.send('This is an example route');
-  });
 //   app.use('/', ApiNodejs);
   
   // Error handling middleware
