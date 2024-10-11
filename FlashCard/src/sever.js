@@ -45,7 +45,7 @@ app.use(session({
   app.use('/', routerApi);
 //   app.use('/', ApiNodejs);
 app.get("/", (req, res) => {
-  res.json("Hello123");
+  res.json("Hello");
 })  // Error handling middleware
   app.use((err, req, res, next) => {
     console.error(err.stack);
@@ -58,7 +58,7 @@ app.get("/", (req, res) => {
       await connection();
       doLoginWGoogle();
       // sendMail("trungthanhle2004@gmail.com","This is CUong","con cac thanh den xi")
-      server.listen(port, hostname, () => {
+      app.listen(port, hostname, () => {
         console.log(`Backend app listening on http://${hostname}:${port}`);
       });
   
