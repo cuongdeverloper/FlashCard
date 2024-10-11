@@ -1,17 +1,17 @@
 const express = require('express');
-const configViewEngine = require('./config/ViewEngine.js');
+const configViewEngine = require('./src/config/ViewEngine.js');
 const cors = require('cors');
 require('dotenv').config();
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const passport = require('passport');
-const connection = require('./config/database.js');
-const { routerApi } = require('./routes/api.js');
-const doLoginWGoogle = require('./controller/social/GoogleController.js');
-const {app,server} = require('./socket/socket.js')
+const connection = require('./src/config/database.js');
+const { routerApi } = require('./src/routes/api.js');
+const doLoginWGoogle = require('./src/controller/social/GoogleController.js');
+const {app,server} = require('./src/socket/socket.js')
 const bodyParser = require('body-parser');
-const uploadCloud = require('./config/cloudinaryConfig.js');
-const { sendMail } = require('./config/mailSendConfig.js');
+const uploadCloud = require('./src/config/cloudinaryConfig.js');
+const { sendMail } = require('./src/config/mailSendConfig.js');
 // const app = express();
 const port = process.env.PORT || 8888;
 const hostname = process.env.HOST_NAME || 'localhost';
