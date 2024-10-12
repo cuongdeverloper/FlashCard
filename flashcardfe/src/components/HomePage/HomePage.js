@@ -28,14 +28,15 @@ const HomePage = () => {
     useEffect(() => {
         const accessToken = Cookies.get('accessToken');
         const refreshToken = Cookies.get('refreshToken');
-
         // If accessToken is missing or expired, log out
+        console.log(accessToken)
         if (!accessToken || isTokenExpired(accessToken)) {
             dispatch(doLogout());
         } else {
             const userCookie = Cookies.get('user');
             if (userCookie) {
                 const userData = JSON.parse(decodeURIComponent(userCookie));
+                console.log(userData)
                 dispatch(doLoginWGoogle(userData, accessToken, refreshToken));
                 Cookies.remove('user');
             }

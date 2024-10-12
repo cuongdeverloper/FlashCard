@@ -23,8 +23,8 @@ const userReducer = (state = INITIAL_STATE, action) => {
                 ...state,
                 account: {
                     ...state.account,
-                    ...action.payload, // Cập nhật các thông tin tài khoản từ payload
-                    onlineUser: state.account.onlineUser // Giữ lại onlineUser
+                    ...action.payload, 
+                    onlineUser: state.account.onlineUser
                 },
                 isAuthenticated: true,
             };
