@@ -15,35 +15,9 @@ const HomePage = () => {
     const [classData, setClassData] = useState([]);
     const navigate = useNavigate();
 
-    const isTokenExpired = (token) => {
-        try {
-            const decodedToken = jwtDecode(token);
-            const currentTime = Date.now() / 1000;
-            return decodedToken.exp < currentTime;
-        } catch (error) {
-            console.error('Lỗi khi giải mã token:', error);
-            return true;
-        }
-    };
+   
 
-    useEffect(() => {
-        const accessToken = Cookies.get('accessToken');
-        const refreshToken = Cookies.get('refreshToken');
-        const userCookie = Cookies.get('user');
 
-        // Log tất cả cookies để gỡ lỗi
-        console.log("Tất cả Cookies:", Cookies.get());
-
-        // Nếu accessToken bị thiếu hoặc đã hết hạn, đăng xuất
-        if (!accessToken || isTokenExpired(accessToken)) {
-            dispatch(doLogout());
-        } else if (userCookie) {
-            const userData = JSON.parse(decodeURIComponent(userCookie));
-            console.log("Dữ liệu người dùng từ Cookies:", userData);
-            dispatch(doLoginWGoogle(userData, accessToken, refreshToken));
-            Cookies.remove('user'); // Xóa cookie người dùng sau khi sử dụng
-        }
-    }, [dispatch, navigate, isAuthenticated]); // Thêm isAuthenticated vào dependencies
 
     useEffect(() => {
         document.title = "Quizone | Chào mừng";

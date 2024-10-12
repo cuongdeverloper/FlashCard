@@ -34,6 +34,7 @@ import MyClass from "./components/Myclass-homepage/myclass";
 import EnterOTPRegister from "./components/auth/EnterOTPRegister";
 import RequestPasswordReset from "./components/auth/reset password/RequestPasswordReset";
 import ResetPassword from "./components/auth/reset password/ResetPassword";
+import AuthCallback from "./components/AuthCallback";
 
 
 
@@ -99,6 +100,7 @@ const Layout = () => {
                         <Route path="/MyManage/:userId" element={<MyManage />} ></Route>
 
                     </Route>
+                    <Route path="auth/callback" element={<AuthCallback />} />
                     <Route path="join-class/:token" element={<JoinClass />} />
                     <Route path="/login" element={<Login />} />
                     <Route path="/logout" element={<Logout />} />
