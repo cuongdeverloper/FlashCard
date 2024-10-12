@@ -5,7 +5,7 @@ import { store } from '../redux/store';
 
 
 const instance = axios.create({
-    baseURL: 'http://localhost:6868/',
+    baseURL: 'https://quizonebe.onrender.com/',
     withCredentials: true,
 });
 

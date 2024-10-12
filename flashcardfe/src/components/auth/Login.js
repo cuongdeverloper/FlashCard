@@ -28,7 +28,7 @@ const Login = () =>{
 
     const redirectGoogleLogin = async () => {
         setIsLoadingLogin(true);
-        window.location.href = "http://localhost:6868/auth/google";
+        window.location.href = "https://quizonebe.onrender.com/auth/google";
     };
 
    
