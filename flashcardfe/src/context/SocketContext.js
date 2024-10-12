@@ -15,7 +15,7 @@ export const SocketContextProvider = ({ children }) => {
 
 	useEffect(() => {
 		if (authUser) {
-			const socket = io("https://quizonebe.onrender.com/", {
+			const socket = io("https://quizonebe.onrender.com", {
 				query: {
 					userId: authUser.access_token,
 				},
