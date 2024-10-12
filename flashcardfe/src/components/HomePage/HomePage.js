@@ -36,7 +36,7 @@ const HomePage = () => {
             const userCookie = Cookies.get('user');
             if (userCookie) {
                 const userData = JSON.parse(decodeURIComponent(userCookie));
-                console.log(userData)
+                console.log("User Data from Cookies:", userData);
                 dispatch(doLoginWGoogle(userData, accessToken, refreshToken));
                 Cookies.remove('user');
             }
