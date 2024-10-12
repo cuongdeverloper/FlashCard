@@ -27,9 +27,33 @@ const Login = () =>{
     };
 
     const redirectGoogleLogin = async () => {
-        setIsLoadingLogin(true);
-        window.location.href = "https://quizonebe.onrender.com/auth/google";
-    };
+        try {
+          const response = await fetch("https://quizonebe.onrender.com/auth/google/redirect", {
+            method: 'GET',
+            credentials: 'include', // Make sure cookies are sent, if any.
+          });
+      
+          if (response.ok) {
+            const data = await response.json();
+      
+            // Set tokens and user info in cookies or localStorage
+            Cookies.set('accessToken', data.accessToken, { expires: 1 });
+            Cookies.set('refreshToken', data.refreshToken, { expires: 7 });
+            localStorage.setItem('user', JSON.stringify(data.user));
+            console.log("All Cookies:", Cookies.get());
+            // Dispatch login action
+            dispatch(doLogin(data.user, data.accessToken, data.refreshToken));
+      
+            // Redirect user after successful login
+            window.location.href = '/';
+          } else {
+            console.error('Google login failed');
+          }
+        } catch (error) {
+          console.error('Error during Google login:', error);
+        }
+      };
+      
 
    
     const handleLogin = async () => {
