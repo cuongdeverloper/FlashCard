@@ -1,13 +1,16 @@
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
-import { getQuestionByQPId, getUserByUserId } from "../../../service/ApiService";
+import { getQuestionByQPId, getQuizByQuizId, getUserByUserId } from "../../../service/ApiService";
 import "./DetailQuesPack.scss";
 import DetailFormQA from "./DetailFormQA/DetailFormQA";
 import { FaRegArrowAltCircleLeft, FaRegArrowAltCircleRight, FaShareAlt, FaSave, FaEllipsisH } from "react-icons/fa";
 import { Breadcrumb, Button } from "react-bootstrap";
+import { useSelector } from "react-redux";
 
 const DetailQuesPack = () => {
   const params = useParams();
+  const userId = useSelector(state => state.user.account.id);
+
   const [dataQuestion, setDataQuestion] = useState([]);
   const [idQp,setIdQp] = useState('')
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
@@ -15,7 +18,8 @@ const DetailQuesPack = () => {
   const [dataAuthor, setDataAuthor] = useState(null);
   const [idAuthor, setIdAuthor] = useState('');
   const [semester,setSemester]=useState('');
-  const [title,setTitle] = useState('')
+  const [title,setTitle] = useState('');
+  const [idQuiz,setIdQuiz] = useState('')
   const location = useLocation();
   const navigate = useNavigate()
   const getQuestionByQuestionPack = async () => {
@@ -78,7 +82,17 @@ const DetailQuesPack = () => {
       }, 500);  // Sync with CSS animation duration
     }
   };
-
+  const getQuizId = async () => {
+    try {
+      const response = await getQuizByQuizId(idQp);
+      setIdQuiz(response.exam._id)
+    } catch (error) {
+      console.log(error)
+    } 
+  };
+  useEffect(()=>{
+    getQuizId()
+  },[idQp])
   return (
     <div className="DetailQuesPack-container row">
       <div className="DetailQP-content container-fluid col-9">
@@ -93,6 +107,8 @@ const DetailQuesPack = () => {
           </Breadcrumb.Item>
         </Breadcrumb>
         <Button className="btn btn-secondary" onClick={()=> navigate(`/quiz/${idQp}`)}>Do quiz</Button>
+        {(userId === idAuthor) && <Button className="btn btn-secondary" onClick={()=> navigate(`/result/${idQuiz}`)}>Get result</Button>
+      }
         <DetailFormQA
           dataQuestion={dataQuestion}
           currentQuestionIndex={currentQuestionIndex}

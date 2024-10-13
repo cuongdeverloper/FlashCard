@@ -35,6 +35,8 @@ import EnterOTPRegister from "./components/auth/EnterOTPRegister";
 import RequestPasswordReset from "./components/auth/reset password/RequestPasswordReset";
 import ResetPassword from "./components/auth/reset password/ResetPassword";
 import AuthCallback from "./components/AuthCallback";
+import ResultTeacher from "./components/Result/Result From teacher/ResultTeacher";
+import ResultUser from "./components/Result/Result From User/ResultUser";
 
 
 
@@ -112,6 +114,8 @@ const Layout = () => {
                     
                     </Route>
 
+                    <Route path="/result/:examId" element={<ResultTeacher />} />
+                    <Route path="/results/user" element={<ResultUser />} />
                     <Route path="/userprofile" element={<ViewProfile />} />
                 </Routes>
             </BrowserRouter>

@@ -49,6 +49,7 @@ const Quiz = () => {
   const fetchQuiz = async () => {
     try {
       const response = await getQuizByQuizId(quizId);
+      console.log(response)
       setExamId(response.exam._id);
       setQuizData(response.exam);
       setTimeLeft(response.exam.duration);

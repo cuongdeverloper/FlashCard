@@ -613,6 +613,48 @@ const resetPasswordApi = async (token, newPassword) => {
         console.log(error)
     }
 };
+const getAllResultsByTeacher = async(examId) =>{
+    try {
+        const token = Cookies.get('accessToken');
+
+        // Check if the token exists
+        if (!token) {
+            throw new Error('No access token found. Please login again.');
+        }
+
+        const response = await axios.get(`/results/${examId}`, {
+            headers: {
+                'Authorization': `Bearer ${token}`,
+            }
+        });
+
+        return response; // Return the response data
+    } catch (error) {
+        console.error('Error updating question:', error);
+        throw error; // Propagate the error to be handled by the caller
+    }
+}
+const getAllResultsByUser = async() =>{
+    try {
+        const token = Cookies.get('accessToken');
+
+        // Check if the token exists
+        if (!token) {
+            throw new Error('No access token found. Please login again.');
+        }
+
+        const response = await axios.get(`/results-student`, {
+            headers: {
+                'Authorization': `Bearer ${token}`,
+            }
+        });
+
+        return response; // Return the response data
+    } catch (error) {
+        console.error('Error updating question:', error);
+        throw error; // Propagate the error to be handled by the caller
+    }
+}
 export {
     LoginApi, loginWGoogle, decodeDataGoogle, getAllQuestionPack,
     getQuestionByQPId, getUserByUserId, createNewQuestionPackApi,
@@ -621,4 +663,5 @@ export {
     deleteReply, getClassById, getClassByClassId, getQuestionPackByQuestionPackId, removeQpToClass
     , joinClassByInvite, getMemberByClassId, searchUserId, getAllUserApi, sendMess, getMessagesApi
     , getQuizByQuizId, postSubmitExam, getQuestionPackOfTeacher, updateQuestion, updateQuestionPack, reSendOtpApi, sendOTPApi, requestPasswordResetApi, resetPasswordApi
+    ,getAllResultsByTeacher,getAllResultsByUser
 }
