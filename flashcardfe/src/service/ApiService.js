@@ -657,7 +657,27 @@ const getAllResultsByUser = async() =>{
 }
 
 
+const updateUserProfile = async(userId,userUpdateForm) =>{
+    try {
+        const token = Cookies.get('accessToken');
 
+        // Check if the token exists
+        if (!token) {
+            throw new Error('No access token found. Please login again.');
+        }
+
+        const response = await axios.put(`/user/${userId}`, userUpdateForm,{
+            headers: {
+                'Authorization': `Bearer ${token}`,
+            }
+        });
+
+        return response; 
+    } catch (error) {
+        console.error('Error updating question:', error);
+        throw error; 
+    }
+}
 export {
     LoginApi, loginWGoogle, decodeDataGoogle, getAllQuestionPack,
     getQuestionByQPId, getUserByUserId, createNewQuestionPackApi,
@@ -666,5 +686,5 @@ export {
     deleteReply, getClassById, getClassByClassId, getQuestionPackByQuestionPackId, removeQpToClass
     , joinClassByInvite, getMemberByClassId, searchUserId, getAllUserApi, sendMess, getMessagesApi
     , getQuizByQuizId, postSubmitExam, getQuestionPackOfTeacher, updateQuestion, updateQuestionPack, reSendOtpApi, sendOTPApi, requestPasswordResetApi, resetPasswordApi
-    ,getAllResultsByTeacher,getAllResultsByUser
+    ,getAllResultsByTeacher,getAllResultsByUser,updateUserProfile
 }
