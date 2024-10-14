@@ -1,19 +1,23 @@
 
+.container-profile{
+  padding-top: 20px;
+  background-color: #1e1e66;
+  height: 100%;
+   
+}
 .navbar-breadcrumb {
   background-color: #5d37f5; /* Màu nền */
   border-radius: 20px; /* Bo tròn góc */
   padding: 10px 20px; /* Khoảng cách bên trong */ 
-  text-decoration: none; /* Bỏ gạch chân */
-  transition: background-color 0.3s ease; /* Hiệu ứng chuyển màu */
-  font-weight: 700;
+  margin: 0;
 }
 .navbar-breadcrumb .breadcrum-userprofile-home {
-  background-color: #5d37f5; /* Màu nền */
-  color: #fff; /* Màu chữ */
-  border-radius: 20px; /* Bo tròn góc */
-  padding: 10px 20px; /* Khoảng cách bên trong */ 
-  text-decoration: none; /* Bỏ gạch chân */
-  transition: background-color 0.3s ease; /* Hiệu ứng chuyển màu */
+  background-color: #5d37f5; 
+  color: #fff; 
+  border-radius: 20px; 
+  padding: 10px 20px; 
+  text-decoration: none; 
+  transition: background-color 0.3s ease;
   font-weight: 700;
 } 
 .breadCrumb-href .breadcrum-userprofile-home:hover {
@@ -23,7 +27,8 @@
 /* Profile card style */
 .profile-card {
   border: none;
-  background-color: #1e1e66; /* Màu nền cho card */
+  margin: 0 10px;
+  background-color: #fff !important; /* Màu nền cho card */
 }
 
 /* Profile image */
@@ -52,7 +57,13 @@
 
 /* Style for card */
 
-
+.card-info{
+  margin: 0 0px;
+  .card{
+    width: 990px;
+  }
+  
+}
 /* Các style cho button */
 .btn-warning {
   color: white;
@@ -74,3 +85,5 @@
   background-color: #449d44;
   border-color: #398439;
 }
+
+

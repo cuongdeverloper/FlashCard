@@ -68,6 +68,7 @@ const MyManage = () => {
             setLoading(true);
             let response = await getQuestionPackOfTeacher(userId);
             setListQp(response.data);
+     
         } catch (error) {
             setError('Failed to load question packs');
         } finally {

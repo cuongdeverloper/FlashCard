@@ -2,8 +2,9 @@ import React, { useEffect, useState } from "react";
 import "./profile.css";
 import { useSelector } from "react-redux";
 import { FaUpload } from "react-icons/fa";
-import { toast } from "react-toastify"; // Import toast
-import Footer from "../footer/footer";
+import { toast } from "react-toastify";
+import { getAllResultsByUser } from "../../service/ApiService";
+import Select from "react-select"; // Import thư viện Select
 
 const ViewProfile = () => {
   const [userProfile, setUserProfile] = useState(null);
@@ -11,9 +12,13 @@ const ViewProfile = () => {
   const [error, setError] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
   const [editedProfile, setEditedProfile] = useState({});
+  const [results, setResults] = useState([]);
+  const [subjects, setSubjects] = useState([]);
+  const [selectedSubject, setSelectedSubject] = useState(null); // Thêm state cho môn học được chọn
 
   const user = useSelector((state) => state?.user?.account);
 
+  // Load user profile data
   useEffect(() => {
     if (user) {
       setUserProfile(user);
@@ -25,8 +30,36 @@ const ViewProfile = () => {
     }
   }, [user]);
 
+  // Fetch user exam results
+  useEffect(() => {
+    getResultOfUser();
+  }, []);
+
+  const getResultOfUser = async () => {
+    try {
+      let response = await getAllResultsByUser();
+      console.log(response); // Xem dữ liệu trả về từ API
+      if (response && Array.isArray(response.results)) {
+        setResults(response.results);
+        const subjects = Array.from(new Set(response.results.map(result => 
+          result.exam && result.exam.questionPack ? result.exam.questionPack.subject : null
+        ).filter(subject => subject !== null))); // Lọc bỏ các giá trị null
+        setSubjects(subjects.map(subject => ({ value: subject, label: subject })));
+      } else {
+        setError("No results found.");
+      }
+      setLoading(false);
+    } catch (err) {
+      console.error(err); // Log lỗi để kiểm tra
+      setError("Failed to fetch results.");
+      setLoading(false);
+    }
+  };
+  
+  
+
   const handleEditClick = () => {
-    setIsEditing(!isEditing);
+    setIsEditing(!isEditing); // Toggle editing mode
   };
 
   const handleInputChange = (e) => {
@@ -38,11 +71,8 @@ const ViewProfile = () => {
   };
 
   const handleSave = () => {
-    // Cập nhật thông tin trong state
     setUserProfile(editedProfile);
     setIsEditing(false);
-
-    // Hiển thị toast thông báo thành công
     toast.success("Profile updated successfully!");
   };
 
@@ -60,6 +90,18 @@ const ViewProfile = () => {
     }
   };
 
+  const handleSubjectChange = (selectedOption) => {
+    setSelectedSubject(selectedOption);
+  };
+
+  const filteredResults = selectedSubject
+  ? results.filter(result => 
+      result.exam && 
+      result.exam.questionPack && 
+      result.exam.questionPack.subject === selectedSubject.value
+  )
+  : results;
+
   if (loading) {
     return <div>Loading...</div>;
   }
@@ -69,15 +111,14 @@ const ViewProfile = () => {
   }
 
   return (
-    <div className="container mt-4">
-      {/* Navbar-like Breadcrumb */}
+    <div className="container-profile">
+      {/* Breadcrumb */}
       <div className="navbar-breadcrumb p-3 mb-4">
         <nav aria-label="breadcrumb">
           <ol className="breadcrumb mb-0">
             <li className="breadcrumb-item">
               <a href="/" className="breadcrum-userprofile-home">Home</a>
             </li>
-
             <li className="breadcrumb-item active" aria-current="page">
               Profile
             </li>
@@ -86,7 +127,7 @@ const ViewProfile = () => {
       </div>
 
       <div className="row">
-        {/* Left Side - User Information */}
+        {/* Profile Section */}
         <div className="col-md-4">
           <div className="card text-center profile-card">
             <div className="card-body">
@@ -124,7 +165,7 @@ const ViewProfile = () => {
           </div>
         </div>
 
-        {/* Right Side - Contact Information */}
+        {/* Editable Information Section */}
         <div className="col-md-8">
           <div className="card">
             <div className="card-body">
@@ -210,8 +251,47 @@ const ViewProfile = () => {
           </div>
         </div>
       </div>
+
+
+
+      <div>
+  <h2 className="text-white mt-4">Exam Results</h2>
+  <Select
+    value={selectedSubject}
+    onChange={handleSubjectChange}
+    options={subjects}
+    isClearable={true}
+    placeholder="Select a subject"
+    className="mb-4"
+  />
+  {selectedSubject ? (
+    filteredResults && filteredResults.length > 0 ? (
+      <div className="row">
+        {filteredResults.map((result, index) => (
+          <div key={index} className="col-md-4">
+            <div className="card mb-3">
+              <div className="card-body">
+                <h5 className="card-title">
+                  {result?.exam?.questionPack?.subject || "Unknown Subject"}
+                </h5>
+                <p className="card-text">Score: {result?.score || "N/A"}</p>
+                <p className="card-text">Exam Title: {result?.exam?.title || "Unknown Title"}</p>
+                <p className="card-text">Exam Date: {result?.exam?.createdAt ? new Date(result.exam.createdAt).toLocaleDateString() : "Unknown Date"}</p>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    ) : (
+      <div>No results found for this exam.</div>
+    )
+  ) : (
+    <div>Please select a subject to view results.</div>
+  )}
+</div>
+
+
     </div>
-    
   );
 };
 
