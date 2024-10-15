@@ -25,6 +25,8 @@
             width: 100%;
         }
     }
+
+    
 }
 
 .navbar-outlay {
@@ -217,3 +219,35 @@ a.dropdown-item.active {
       }
     }
   }
+
+  @media (max-width: 576px) {
+    .navbar-collapse {
+      flex-direction: column; // Đặt hướng của navbar thành cột trên màn hình nhỏ
+      align-items: flex-end; // Căn chỉnh các phần tử về bên trái
+    }
+  
+    .navbar-nav {
+      width: 100%; // Đặt chiều rộng của navbar nav bằng 100%
+      margin-top: 10px; // Thêm khoảng cách giữa phần tìm kiếm và các nút
+    }
+  
+    .nav-link {
+      width: 100%; // Đặt chiều rộng của các nút thành 100% để dễ nhấn
+      text-align: left; // Căn giữa nội dung của nút
+      padding: 10px 15px; // Thêm khoảng cách cho nút
+    }
+  
+    #mid-navbar-nav {
+      flex-direction: column; // Đặt hướng của mid-navbar-nav thành cột
+      align-items: flex-start; // Căn chỉnh nội dung về bên trái
+    }
+  
+    #search-icon {
+      font-size: 18px; // Giảm kích thước biểu tượng tìm kiếm trên điện thoại
+    }
+  
+    input.search-input {
+      font-size: 0.9rem; // Giảm kích thước font của input tìm kiếm
+    }
+  }
+  

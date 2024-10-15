@@ -18,7 +18,7 @@ const ViewProfile = () => {
   const handleEditClick = () => {
     setShowModal(true); // Use setShow to display the modal
   };
-  
+
   const handleClose = () => {
     setShowModal(false); // Close modal
   };
@@ -45,13 +45,22 @@ const ViewProfile = () => {
       let response = await getAllResultsByUser();
       if (response && Array.isArray(response.results)) {
         setResults(response.results);
-        const subjects = Array.from(new Set(response.results
-          .map(result =>
-            result.exam && result.exam.questionPack ? result.exam.questionPack.subject : null
-          ).filter(subject => subject !== null)
-        ));
-        setSubjects(subjects.map(subject => ({ value: subject, label: subject })));
+        const subjects = Array.from(
+          new Set(
+            response.results
+              .map((result) =>
+                result.exam && result.exam.questionPack
+                  ? result.exam.questionPack.subject
+                  : null
+              )
+              .filter((subject) => subject !== null)
+          )
+        );
+        setSubjects(
+          subjects.map((subject) => ({ value: subject, label: subject }))
+        );
       } else {
+        setResults([]); 
         setError("No results found.");
       }
       setLoading(false);
@@ -66,11 +75,12 @@ const ViewProfile = () => {
   };
 
   const filteredResults = selectedSubject
-    ? results.filter(result =>
-      result.exam &&
-      result.exam.questionPack &&
-      result.exam.questionPack.subject === selectedSubject.value
-    )
+    ? results.filter(
+        (result) =>
+          result.exam &&
+          result.exam.questionPack &&
+          result.exam.questionPack.subject === selectedSubject.value
+      )
     : results;
 
   if (loading) {
@@ -88,7 +98,9 @@ const ViewProfile = () => {
         <nav aria-label="breadcrumb">
           <ol className="breadcrumb mb-0">
             <li className="breadcrumb-item">
-              <a href="/" className="breadcrum-userprofile-home">Home</a>
+              <a href="/" className="breadcrum-userprofile-home">
+                Home
+              </a>
             </li>
             <li className="breadcrumb-item active" aria-current="page">
               Profile
@@ -99,16 +111,26 @@ const ViewProfile = () => {
 
       {/* User Profile */}
       <div className="profile-section">
-        <h2 className="text-white mt-4">Your Profile</h2>
-        <div>
-          <p><strong>Name:</strong> {userProfile?.username || "N/A"}</p>
-          <p><strong>Email:</strong> {userProfile?.email || "N/A"}</p>
-          <img src={userProfile?.image} style={{height:'100px',width:'100px'}} alt="Profile" className="profile-image" />
-        </div>
-      </div>
+  <div className="profile-info">
+    <img src={userProfile?.image} alt="Profile" className="profile-avatar" />
+    <p className="profile-name"><strong>{userProfile?.username || "N/A"}</strong></p>
+  </div>
+  
+  <div className="contact-info">
+    <p><strong>Full Name:</strong> {userProfile?.username || "N/A"}</p>
+    <p><strong>Email:</strong> {userProfile?.email || "N/A"}</p>
+          {/* Modal for editing profile */}
+          <ModalUpdateProfile
+        user={userProfile}
+        showModal={showModal}
+        handleClose={handleClose}
+      />
+  </div>
+</div>
 
-      {/* Modal for editing profile */}
-      <ModalUpdateProfile user={userProfile} showModal={showModal} handleClose={handleClose}/>
+
+
+
 
       {/* Exam Results */}
       <div>
@@ -129,11 +151,21 @@ const ViewProfile = () => {
                   <div className="card mb-3">
                     <div className="card-body">
                       <h5 className="card-title">
-                        {result?.exam?.questionPack?.subject || "Unknown Subject"}
+                        {result?.exam?.questionPack?.subject ||
+                          "Unknown Subject"}
                       </h5>
-                      <p className="card-text">Score: {result?.score || "N/A"}</p>
-                      <p className="card-text">Exam Title: {result?.exam?.title || "Unknown Title"}</p>
-                      <p className="card-text">Exam Date: {result?.exam?.createdAt ? new Date(result.exam.createdAt).toLocaleDateString() : "Unknown Date"}</p>
+                      <p className="card-text">
+                        Score: {result?.score || "N/A"}
+                      </p>
+                      <p className="card-text">
+                        Exam Title: {result?.exam?.title || "Unknown Title"}
+                      </p>
+                      <p className="card-text">
+                        Exam Date:{" "}
+                        {result?.exam?.createdAt
+                          ? new Date(result.exam.createdAt).toLocaleDateString()
+                          : "Unknown Date"}
+                      </p>
                     </div>
                   </div>
                 </div>
@@ -143,7 +175,7 @@ const ViewProfile = () => {
             <div>No results found for this exam.</div>
           )
         ) : (
-          <div>Please select a subject to view results.</div>
+          <div className="text-white">Please select a subject to view results.</div>
         )}
       </div>
     </div>

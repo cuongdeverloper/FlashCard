@@ -27,7 +27,7 @@ import Quiz from "./components/Quiz/Quiz";
 import MyManage from "./components/My manage/MyManage";
 
 import MyClass from "./components/Myclass-homepage/myclass";
-
+import ModalDetailResults from "./components/Result/Result From teacher/ModalDetailResult";
 import EnterOTPRegister from "./components/auth/EnterOTPRegister";
 import RequestPasswordReset from "./components/auth/reset password/RequestPasswordReset";
 import ResetPassword from "./components/auth/reset password/ResetPassword";
@@ -102,6 +102,7 @@ const Layout = () => {
                     <Route path="/quiz/:quizId" element={<Quiz />} >
                     
                     </Route>
+                    <Route path="/modal-detail-results/:resultId" element={<ModalDetailResults />} />
 
                     <Route path="/result/:examId" element={<ResultTeacher />} />
                     <Route path="/results/user" element={<ResultUser />} />

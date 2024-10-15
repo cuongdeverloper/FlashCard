@@ -197,10 +197,6 @@
   border-right:  3px solid #121045;
   
 }
-.DQ-table .answer{
-  display: flex;
-  padding: 10px 0;
-}
 
 /* Add any additional styles you need here */
 .DQP-author-icons {
@@ -210,3 +206,23 @@
   display: flex;
   justify-content: flex-end;
 }
+.DQ-table .answer-col {
+  display: flex;
+  flex-direction: column; 
+  flex-wrap: wrap; 
+  height: 90px; 
+  overflow-y: auto; 
+  padding: 10px;
+}
+
+.DQ-table .answer {
+  flex: 1 1 auto; 
+  word-wrap: break-word;
+  margin-bottom: 5px; 
+}
+
+.DQ-table .question-col {
+  font-weight: bold;
+  padding-right: 10px;
+}
+
