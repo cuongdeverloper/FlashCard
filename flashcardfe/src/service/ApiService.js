@@ -119,8 +119,6 @@ const createNewQuestionPackApi = async (title, description, teacher, semester, s
     }
 
     try {
-        // Get the current user's ID to use as author
-        const author = await getUserId();
 
         const form = new FormData();
         form.append('title', title);
@@ -720,6 +718,27 @@ const getDataDashBoardAdm = async() =>{
         throw error; 
     }
 }
+const getAllUserAdm = async() =>{
+    try {
+        const token = Cookies.get('accessToken');
+      
+        if (!token) {
+            throw new Error('No access token found. Please login again.');
+        }
+
+        const response = await axios.get(`/users`, {
+            headers: {
+                'Authorization': `Bearer ${token}`,
+               
+            }
+        });
+
+        return response; 
+    } catch (error) {
+        console.error('Error creating class:', error);
+        throw error; 
+    }
+}
 export {
     LoginApi, loginWGoogle, decodeDataGoogle, getAllQuestionPack,
     getQuestionByQPId, getUserByUserId, createNewQuestionPackApi,
@@ -728,5 +747,5 @@ export {
     deleteReply, getClassById, getClassByClassId, getQuestionPackByQuestionPackId, removeQpToClass
     , joinClassByInvite, getMemberByClassId, searchUserId, getAllUserApi, sendMess, getMessagesApi
     , getQuizByQuizId, postSubmitExam, getQuestionPackOfTeacher, updateQuestion, updateQuestionPack, reSendOtpApi, sendOTPApi, requestPasswordResetApi, resetPasswordApi
-    ,getAllResultsByTeacher,getAllResultsByUser,updateUserProfile,createClassApi,getDataDashBoardAdm
+    ,getAllResultsByTeacher,getAllResultsByUser,updateUserProfile,createClassApi,getDataDashBoardAdm,getAllUserAdm
 }

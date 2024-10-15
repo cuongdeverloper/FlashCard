@@ -1,10 +1,7 @@
-import React, { Suspense, useEffect } from "react";
+import React, { Suspense } from "react";
 import { ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import Cookies from 'js-cookie';
-import { useDispatch } from "react-redux";
-import io from "socket.io-client";
 
 import Login from "./components/auth/Login";
 import HomePage from "./components/HomePage/HomePage";
@@ -40,32 +37,13 @@ import ResultUser from "./components/Result/Result From User/ResultUser";
 import CreateClass from "./components/Classes/Create class/CreateClass";
 import AdminManage from "./components/Admin manager/AdminManage";
 import Dashboard from "./components/Admin manager/Dash board/Dashboard";
+import AdminManageUser from "./components/Admin manager/User/AdminManageUser";
 
 
 
 const Layout = () => {
-    const dispatch = useDispatch();
-
-    // useEffect(() => {
-    //     const token = Cookies.get('accessToken');
-    //     const socketConnection = io('http://localhost:6868', {
-    //         auth: {
-    //             token: token
-    //         }
-    //     });
-
-    //     socketConnection.on('onlineUser', (data) => {
-    //         // console.log('Online users:', data);
-    //         dispatch(setOnlineUser(data));
-    //     });
-    //     console.log(socketConnection)
-    //     // dispatch(setSocketConnection(socketConnection));    
 
 
-    //     return () => {
-    //         socketConnection.disconnect();
-    //     }
-    // }, []);
 
     return (
         <Suspense fallback={<div>Loading...</div>}>
@@ -96,7 +74,7 @@ const Layout = () => {
 
                         <Route path="/admin-manage" element={<PrivateRoute element={<AdminManage />} requiredRole='admin'/>} >
                             <Route  index element={<PrivateRoute element={<Dashboard />} requiredRole="admin" />} />
-
+                            <Route path="admin-user" element={<AdminManageUser/>} /> 
                         </Route>
 
 

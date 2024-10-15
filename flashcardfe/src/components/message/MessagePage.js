@@ -1,8 +1,6 @@
-import { useDispatch, useSelector } from "react-redux"
-import { Outlet, useNavigate, useParams } from "react-router-dom"
-import { useEffect, useState } from "react";
-import { io } from "socket.io-client";
-import { searchUserId } from "../../service/ApiService";
+
+import { Outlet } from "react-router-dom"
+
 import UseGetConversations from "./hooks/UseGetConversations";
 import Conversation from "./Conversation";
 import SearchInput from "./SearchInput";
@@ -14,28 +12,6 @@ const MessagePage = () => {
         <div style={{ display: 'flex', flexDirection: 'row' }}>
             
             <div className="Left-ctn"  >
-                {/* <form onSubmit={handleSearch}>
-                    <input
-                        type="text"
-                        value={query}
-                        onChange={(e) => setQuery(e.target.value)}
-                        placeholder="Search for a user..."
-                        required
-                    />
-                    <button type="submit">Search</button>
-                </form>
-                {results.length > 0 && (
-                    <div>
-                        <ul>
-                            {results.map((user) => (
-                                <li key={user._id} onClick={() => navigate(`${user._id}`)}>
-                                    {user.username}
-                                </li>
-                            ))}
-                        </ul>
-
-                    </div>
-                )} */}
 <SearchInput/>
                 {conversations.map((conversation, idx) => (
                     <Conversation

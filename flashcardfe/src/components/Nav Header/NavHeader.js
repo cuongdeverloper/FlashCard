@@ -6,6 +6,7 @@ import { NavLink, useNavigate } from "react-router-dom";
 import "./NavHeader.scss";
 import { IoPersonCircle } from "react-icons/io5";
 import { GoSearch } from "react-icons/go";
+import { FaUserShield } from "react-icons/fa"; // Admin icon
 import logoImg from "../../assests/logo.png";
 import { IoAddOutline } from "react-icons/io5";
 import { Nav, NavDropdown } from "react-bootstrap";
@@ -14,11 +15,12 @@ import { searchItems } from "../../service/ApiService";
 
 const NavHeader = () => {
   const isAuthenticated = useSelector((state) => state.user.isAuthenticated);
+  const userRole = useSelector((state) => state.user.account.role); 
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState("");
-  const [searchResults, setSearchResults] = useState([]); 
+  const [searchResults, setSearchResults] = useState([]);
   const [openDropdown, setOpenDropdown] = useState(null);
-
+const iconNav = { fontSize: "20px", color: "#fff" }
   const handleMouseEnter = (dropdownId) => {
     setOpenDropdown(dropdownId);
   };
@@ -35,7 +37,7 @@ const NavHeader = () => {
       const response = await searchItems(query);
       setSearchResults(response.data || []);
     } else {
-      setSearchResults([]); 
+      setSearchResults([]);
     }
   };
 
@@ -43,16 +45,16 @@ const NavHeader = () => {
     e.preventDefault();
     const response = await searchItems(searchQuery);
     setSearchResults(response.data || []);
-    const results = response.data
-    navigate("/search", { state: {results, query: searchQuery } });
-    setSearchQuery(""); 
-    setSearchResults([]); 
+    const results = response.data;
+    navigate("/search", { state: { results, query: searchQuery } });
+    setSearchQuery("");
+    setSearchResults([]);
   };
 
   const handleResultClick = (result) => {
     navigate(`/detailquespack/${result._id}`);
-    setSearchQuery(""); 
-    setSearchResults([]); 
+    setSearchQuery("");
+    setSearchResults([]);
   };
 
   return (
@@ -79,7 +81,7 @@ const NavHeader = () => {
                   <ul>
                     {searchResults.map((result, index) => (
                       <li key={index} onClick={() => handleResultClick(result)}>
-                        {result.title} 
+                        {result.title}
                       </li>
                     ))}
                   </ul>
@@ -118,9 +120,6 @@ const NavHeader = () => {
                   <NavDropdown.Item as={NavLink} to="/quiz">
                     Create Quiz
                   </NavDropdown.Item>
-                  {/* <NavDropdown.Item as={NavLink} to="/shop/product/ao-ba-lo">
-                    Create Folder
-                  </NavDropdown.Item> */}
                 </NavDropdown>
               </div>
             </div>
@@ -129,20 +128,29 @@ const NavHeader = () => {
           <Navbar.Collapse>
             <Nav>
               {isAuthenticated ? (
-                <NavLink to="/logout" className="nav-link">
-                  Logout
-                </NavLink>
+                <>
+                  <NavLink to="/logout" className="nav-link">
+                    Logout
+                  </NavLink>
+
+                  {/* Admin-only icon */}
+                  {userRole === "admin" && (
+                    <Nav.Link onClick={() => navigate("/admin")}>
+                      <FaUserShield style={iconNav} />
+                    </Nav.Link>
+                  )}
+                </>
               ) : (
                 <NavLink to="/login" className="nav-link">
                   Login
                 </NavLink>
               )}
               <Nav.Link onClick={() => navigate("/userprofile")}>
-                <IoPersonCircle />
+                <IoPersonCircle style={iconNav}/>
               </Nav.Link>
 
               <Nav.Link href="#home">
-                <GoSearch />
+                <GoSearch style={iconNav}/>
               </Nav.Link>
             </Nav>
           </Navbar.Collapse>

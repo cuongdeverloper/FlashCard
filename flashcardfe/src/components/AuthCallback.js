@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import Cookies from 'js-cookie';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { doLogin, doLoginWGoogle, doLogout } from '../redux/action/userAction';
+import { doLoginWGoogle, doLogout } from '../redux/action/userAction';
 import { jwtDecode } from 'jwt-decode';
 
 const AuthCallback = () => {

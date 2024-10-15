@@ -41,7 +41,11 @@
     margin-top: 0 !important;
     border: 0 !important;
 }
-
+.navbar-brand{
+    img{
+        margin: 0;
+    }
+}
 .menu-shop {
     a {
         text-decoration: none;

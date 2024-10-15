@@ -10,6 +10,8 @@ import {
     YAxis,
     Tooltip,
 } from "recharts";
+import { Card } from "react-bootstrap";
+import { FaRegAddressCard, FaQuestion, FaUserAlt } from "react-icons/fa"; // Importing icons
 
 const Dashboard = () => {
     const [dataOverView, setDataOverView] = useState([]);
@@ -50,17 +52,38 @@ const Dashboard = () => {
 
     return (
         <div className="dashboard-container row mt-3">
-            <div className="dashboard-left col-md-6 row">
-                <div className="dashboard-left-ct col-md-5 border">
-                    Flash Card:<br />{dataOverView?.flashcardCount}
+            {dataOverView && Object.keys(dataOverView).length > 0 && (
+                <div className="dashboard-left col-md-6 row">
+                    <Card style={{ width: "18rem", margin: "10px" }} >
+                        <Card.Body>
+                            <Card.Title>
+                                <FaRegAddressCard style={{ marginRight: "10px", color: "#3498db" }} />
+                                Flash Card
+                            </Card.Title>
+                            <Card.Text>{dataOverView.flashcardCount}</Card.Text>
+                        </Card.Body>
+                    </Card>
+                    <Card style={{ width: "18rem", margin: "10px" }}>
+                        <Card.Body>
+                            <Card.Title>
+                                <FaQuestion style={{ marginRight: "10px", color: "#e74c3c" }} />
+                                Question Pack
+                            </Card.Title>
+                            <Card.Text>{dataOverView.questionPackCount}</Card.Text>
+                        </Card.Body>
+                    </Card>
+                    <Card style={{ width: "18rem", margin: "10px" }}>
+                        <Card.Body>
+                            <Card.Title>
+                                <FaUserAlt style={{ marginRight: "10px", color: "#2ecc71" }} />
+                                User
+                            </Card.Title>
+                            <Card.Text>{dataOverView.userCount}</Card.Text>
+                        </Card.Body>
+                    </Card>
                 </div>
-                <div className="dashboard-left-ct col-md-5 border">
-                    Question Pack:<br />{dataOverView?.questionPackCount}
-                </div>
-                <div className="dashboard-left-ct col-md-5 border">
-                    User:<br />{dataOverView?.userCount}
-                </div>
-            </div>
+            )}
+
             <div className="dashboard-right col-md-6">
                 <ResponsiveContainer width="95%" height={400}>
                     <BarChart data={dataChart}>

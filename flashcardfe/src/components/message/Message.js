@@ -5,7 +5,7 @@ import { extractTime } from "./extractTime/extractTime";
 
 
 const Message = ({ message }) => {
-    const [showTime, setShowTime] = useState(false);  // State để điều khiển việc hiển thị thời gian
+    const [showTime, setShowTime] = useState(false); 
     const authUser = useSelector(state => state.user.account);
     const { selectedConversation } = UseConversation();
     const fromMe = message.sender === authUser.id;
@@ -14,7 +14,7 @@ const Message = ({ message }) => {
 
     // Hàm xử lý khi click vào tin nhắn
     const handleClick = () => {
-        setShowTime(prevState => !prevState);  // Toggle trạng thái hiển thị thời gian
+        setShowTime(prevState => !prevState); 
     };
 
     return (

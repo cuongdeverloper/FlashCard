@@ -6,7 +6,7 @@ import Col from 'react-bootstrap/Col';
 import './ManageAddQuiz.scss';
 import { createNewQuestionPackApi, createQuestionToQuestionPackAPI, getUserId } from '../../../service/ApiService';
 import { toast } from 'react-toastify';
-import { FaTrash } from 'react-icons/fa'; // Import the trash icon
+import { FaTrash } from 'react-icons/fa'; 
 
 const ManageAddQuiz = () => {
     const [questionPack, setQuestionPack] = useState({

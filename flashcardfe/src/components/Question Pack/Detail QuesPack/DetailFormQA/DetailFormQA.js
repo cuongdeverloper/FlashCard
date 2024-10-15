@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { FaTrash, FaUpload, FaReply } from "react-icons/fa"; // Add FaReply icon
+import { FaTrash, FaUpload, FaReply } from "react-icons/fa"; 
 import "./DetailFormQA.scss";
 import { deleteCommentApi, getAllCommentFlashCard, postComment, postReplyComment,deleteReply } from '../../../../service/ApiService'
 import Form from 'react-bootstrap/Form';

@@ -3,7 +3,6 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { ImSpinner9 } from "react-icons/im";
 import { sendOTPApi } from "../../service/ApiService";
-// import './EnterOTPRegister.scss'; // Create this file for styling
 
 const EnterOTPRegister = () => {
   const [otp, setOtp] = useState('');

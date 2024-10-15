@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { Accordion } from "react-bootstrap";
 import { useParams } from "react-router-dom";
 import { getMemberByClassId } from "../../../service/ApiService";
-import { useSelector } from "react-redux";
 import { HiStatusOnline } from "react-icons/hi";
 import { useSocketContext } from "../../../context/SocketContext";
 

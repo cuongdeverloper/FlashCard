@@ -3,7 +3,6 @@ import { getQuestionByQPId, getQuestionPackOfTeacher, updateQuestion, updateQues
 import { useEffect, useState } from "react";
 import Select from 'react-select';
 import { Accordion, Button, Form, Alert } from "react-bootstrap";
-import Cookies from "js-cookie"; // Ensure you import Cookies
 import ModalUpdateQuestionPack from "./ModalUpdateQuestionpack";
 import "./css/myManage.scss"
 

@@ -1,6 +1,6 @@
 import React from "react";
-import { FaBook, FaRegStar } from "react-icons/fa"; // Flashcard icon from React Icons
-import "./banner.scss"; // Import the associated SCSS for styling
+import { FaBook } from "react-icons/fa"; 
+import "./banner.scss";
 
 const Banner = () => {
   return (

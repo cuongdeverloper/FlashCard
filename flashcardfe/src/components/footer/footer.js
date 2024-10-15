@@ -1,6 +1,6 @@
 import React from "react";
 import { FaEnvelope, FaMapMarkerAlt, FaPhoneAlt } from "react-icons/fa";
-import "./footer.scss"; // Import your custom CSS for styling
+import "./footer.scss"; 
 
 const Footer = () => {
   return (

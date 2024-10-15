@@ -6,7 +6,6 @@ import './Register.scss';
 import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
 import { registerUser, reSendOtpApi } from "../../service/ApiService";
-import Cookies from "js-cookie";
 
 const Register = () => {
     const [isLoadingRegister, setIsLoadingRegister] = useState(false);
