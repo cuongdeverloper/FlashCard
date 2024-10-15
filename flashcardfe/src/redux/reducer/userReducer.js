@@ -39,7 +39,7 @@ const userReducer = (state = INITIAL_STATE, action) => {
         case Fetch_User_LogOut:
             return {
                 ...state,
-                account: INITIAL_STATE.account, // Reset tài khoản về giá trị ban đầu
+                account: INITIAL_STATE.account, 
                 isAuthenticated: false,
             };
         case Set_Socket_Connection:

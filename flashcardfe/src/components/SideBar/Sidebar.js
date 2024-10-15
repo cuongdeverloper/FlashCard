@@ -59,26 +59,18 @@ const SideBar = (props) => {
             <Link to={`/MyManage/${userInfor}`} className="nav-link">Your flashcard</Link>
           </MenuItem>
           <hr />
-          <MenuItem icon={<FaFolderOpen />}>Your classes</MenuItem>
           <MenuItem icon={<FaRegMessage />}>
             <Link to="/messagePage" className="">Your Message</Link></MenuItem>
+         
+        </Menu>
+        <Menu iconShape="circle">
+          <SubMenu icon={<FaFolderOpen />} title="Your class">
           {classData.map((classItem) => (
             <MenuItem key={classItem._id}>
               <Link to={`/classes/${classItem._id}`} className="nav-link">{classItem.name}</Link>
             </MenuItem>
           ))}
-        </Menu>
-        <Menu iconShape="circle">
-          <SubMenu icon={<FaRegLaughWink />} title="Admin Manage">
-            <MenuItem>
-              <Link to="User" className="nav-link">User</Link>
-            </MenuItem>
-            <MenuItem>
-              <Link to="Product" className="nav-link">Product</Link>
-            </MenuItem>
-            <MenuItem>
-              <Link to="manage-question" className="nav-link">Manage Questions</Link>
-            </MenuItem>
+            
           </SubMenu>
         </Menu>
       </SidebarContent>

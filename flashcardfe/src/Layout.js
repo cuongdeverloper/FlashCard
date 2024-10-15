@@ -37,6 +37,9 @@ import ResetPassword from "./components/auth/reset password/ResetPassword";
 import AuthCallback from "./components/AuthCallback";
 import ResultTeacher from "./components/Result/Result From teacher/ResultTeacher";
 import ResultUser from "./components/Result/Result From User/ResultUser";
+import CreateClass from "./components/Classes/Create class/CreateClass";
+import AdminManage from "./components/Admin manager/AdminManage";
+import Dashboard from "./components/Admin manager/Dash board/Dashboard";
 
 
 
@@ -86,9 +89,17 @@ const Layout = () => {
                         <Route index element={<ListQuestionPack />} />
                         <Route path="my-class" element={<MyClass/>} /> 
                         <Route path="detailquespack/:packId" element={<DetailQuesPack />} />
-                        <Route path="/crud-q" element={<PrivateRoute element={<ManageFcQ />} requiredRole="teacher" />}>
+                        <Route path="/crud-q" element={<PrivateRoute element={<ManageFcQ />} requiredRole={['teacher', 'admin']} />}>
                             <Route path="add-quiz" element={<PrivateRoute element={<ManageAddQuiz />} requiredRole="teacher" />} />
                         </Route>
+                        <Route path="/create-class" element={<PrivateRoute element={<CreateClass />} requiredRole={['teacher', 'admin']} />} />
+
+                        <Route path="/admin-manage" element={<PrivateRoute element={<AdminManage />} requiredRole='admin'/>} >
+                            <Route  index element={<PrivateRoute element={<Dashboard />} requiredRole="admin" />} />
+
+                        </Route>
+
+
                         <Route path="/forbidden" element={<Forbidden />} />
                         <Route path="search" element={<ResultSearchItem />} />
                         <Route path="classes/:classId" element={<Classes />}>

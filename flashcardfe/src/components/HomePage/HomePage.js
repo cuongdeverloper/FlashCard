@@ -42,7 +42,7 @@ const HomePage = () => {
                 <div className='Admin-SideBar'>
                     <SideBar classData={classData} />
                 </div>
-                <div className='Homepage-content'>
+                <div className='Homepage-content' style={{color:'#fff'}}>
                     <NavHeader />
                     <Outlet />
                 </div>

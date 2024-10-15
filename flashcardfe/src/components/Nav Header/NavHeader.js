@@ -109,18 +109,18 @@ const NavHeader = () => {
                   id="shirt-dropdown"
                   show={openDropdown === "shirt-dropdown"}
                 >
-                  <NavDropdown.Item as={NavLink} to="/classes">
-                    Class
+                  <NavDropdown.Item as={NavLink} to="/create-class">
+                    Create Class
                   </NavDropdown.Item>
                   <NavDropdown.Item as={NavLink} to="/crud-q">
-                    FlashCard
+                    Create FlashCard
                   </NavDropdown.Item>
                   <NavDropdown.Item as={NavLink} to="/quiz">
-                    Quiz
+                    Create Quiz
                   </NavDropdown.Item>
-                  <NavDropdown.Item as={NavLink} to="/shop/product/ao-ba-lo">
-                    Folder
-                  </NavDropdown.Item>
+                  {/* <NavDropdown.Item as={NavLink} to="/shop/product/ao-ba-lo">
+                    Create Folder
+                  </NavDropdown.Item> */}
                 </NavDropdown>
               </div>
             </div>

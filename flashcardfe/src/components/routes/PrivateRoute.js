@@ -10,13 +10,18 @@ const PrivateRoute = ({ element: Component, requiredRole }) => {
 
     const isValidToken = !!accessToken && isAuthenticated;
 
-    // Check if the token is valid and user has the required role (if specified)
-    if (isValidToken && (!requiredRole || userRole === requiredRole)) {
-        return Component; 
+    // Check if user has one of the required roles
+    const hasRequiredRole = Array.isArray(requiredRole)
+        ? requiredRole.includes(userRole)
+        : userRole === requiredRole;
+
+    // If the token is valid and the user has the required role (or no role is specified)
+    if (isValidToken && (!requiredRole || hasRequiredRole)) {
+        return Component;
     } else if (!isValidToken) {
         return <Navigate to="/login" />;
     } else {
-        return <Navigate to="/forbidden" />; 
+        return <Navigate to="/forbidden" />;
     }
 };
 

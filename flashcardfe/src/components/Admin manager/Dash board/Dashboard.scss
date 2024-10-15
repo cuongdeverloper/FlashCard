@@ -1,0 +1,12 @@
+.dashboard-left{
+    gap: 10px;
+    margin-left: 10px;
+    .dashboard-left-ct{
+        height: 200px;
+        width: calc(50% - 5px);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+    }
+}

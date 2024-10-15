@@ -18,7 +18,7 @@ const EnterOTPRegister = () => {
     setIsLoading(true);
     try {
       // Call the correct function to verify OTP
-      const response = await sendOTPApi(userId, otp); // This should call the correct API to verify OTP
+      const response = await sendOTPApi(userId, otp);
       console.log(response);
       if (response && response.errorCode === 0) {
         toast.success(response.message);

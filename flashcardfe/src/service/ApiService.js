@@ -678,6 +678,48 @@ const updateUserProfile = async(userId,userUpdateForm) =>{
         throw error; 
     }
 }
+const createClassApi = async (className) => {
+    try {
+        const token = Cookies.get('accessToken');
+      
+        if (!token) {
+            throw new Error('No access token found. Please login again.');
+        }
+
+        const response = await axios.post(`/class`, { name: className }, {
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            }
+        });
+
+        return response; 
+    } catch (error) {
+        console.error('Error creating class:', error);
+        throw error; 
+    }
+}
+const getDataDashBoardAdm = async() =>{
+    try {
+        const token = Cookies.get('accessToken');
+      
+        if (!token) {
+            throw new Error('No access token found. Please login again.');
+        }
+
+        const response = await axios.get(`/dashboard-admin`, {
+            headers: {
+                'Authorization': `Bearer ${token}`,
+               
+            }
+        });
+
+        return response; 
+    } catch (error) {
+        console.error('Error creating class:', error);
+        throw error; 
+    }
+}
 export {
     LoginApi, loginWGoogle, decodeDataGoogle, getAllQuestionPack,
     getQuestionByQPId, getUserByUserId, createNewQuestionPackApi,
@@ -686,5 +728,5 @@ export {
     deleteReply, getClassById, getClassByClassId, getQuestionPackByQuestionPackId, removeQpToClass
     , joinClassByInvite, getMemberByClassId, searchUserId, getAllUserApi, sendMess, getMessagesApi
     , getQuizByQuizId, postSubmitExam, getQuestionPackOfTeacher, updateQuestion, updateQuestionPack, reSendOtpApi, sendOTPApi, requestPasswordResetApi, resetPasswordApi
-    ,getAllResultsByTeacher,getAllResultsByUser,updateUserProfile
+    ,getAllResultsByTeacher,getAllResultsByUser,updateUserProfile,createClassApi,getDataDashBoardAdm
 }
