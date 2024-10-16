@@ -647,7 +647,7 @@ const getAllResultsByUser = async() =>{
             }
         });
 
-        return response; // Return the response data
+        return response; 
     } catch (error) {
         console.error('Error updating question:', error);
         throw error; // Propagate the error to be handled by the caller
@@ -739,7 +739,7 @@ const getAllUserAdm = async() =>{
         throw error; 
     }
 }
-const deleteUserApi = async() =>{
+const deleteUserApi = async(userId) =>{
     try {
         const token = Cookies.get('accessToken');
       
@@ -747,10 +747,9 @@ const deleteUserApi = async() =>{
             throw new Error('No access token found. Please login again.');
         }
 
-        const response = await axios.get(`/users`, {
+        const response = await axios.delete(`/user/${userId}`, {
             headers: {
-                'Authorization': `Bearer ${token}`,
-               
+                'Authorization': `Bearer ${token}`,       
             }
         });
 
@@ -768,5 +767,5 @@ export {
     deleteReply, getClassById, getClassByClassId, getQuestionPackByQuestionPackId, removeQpToClass
     , joinClassByInvite, getMemberByClassId, searchUserId, getAllUserApi, sendMess, getMessagesApi
     , getQuizByQuizId, postSubmitExam, getQuestionPackOfTeacher, updateQuestion, updateQuestionPack, reSendOtpApi, sendOTPApi, requestPasswordResetApi, resetPasswordApi
-    ,getAllResultsByTeacher,getAllResultsByUser,updateUserProfile,createClassApi,getDataDashBoardAdm,getAllUserAdm
+    ,getAllResultsByTeacher,getAllResultsByUser,updateUserProfile,createClassApi,getDataDashBoardAdm,getAllUserAdm,deleteUserApi
 }

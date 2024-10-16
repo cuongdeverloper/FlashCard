@@ -1,10 +1,15 @@
 import { useEffect, useState } from "react";
 import { getAllUserAdm } from "../../../service/ApiService"
 import { Button, Pagination } from "react-bootstrap";
+import ModalPreviewUserAdm from "./Modal Preview user/ModalPreviewUserAdm";
+import ModalUpdateUserAdm from "./Modalupdate/ModalUpdateUserAdm";
 
 const AdminManageUser = () =>{
     const [results, setResults] = useState([]);
-    const [currentPage, setCurrentPage] = useState(1); // Trang hiện tại
+    const [currentPage, setCurrentPage] = useState(1);
+    const [showPreview,setShowPreview] = useState(false);
+    const [showUpdate,setShowUpdate] = useState(false);
+    const [selectedUser, setSelectedUser] = useState(null);
     const resultsPerPage = 7;
     const getAllUser = async() =>{
         let response = await getAllUserAdm();
@@ -29,7 +34,15 @@ const AdminManageUser = () =>{
       setCurrentPage(currentPage - 1);
     }
   };
-
+const handlePreviewUser = (user) =>{
+  setSelectedUser(user);
+  setShowPreview(true)
+}
+const handleUpdateUser = (user)=>{
+  setSelectedUser(user)
+  console.log(user)
+  setShowUpdate(true)
+}
     useEffect(()=>{
         getAllUser()
     },[])
@@ -63,13 +76,13 @@ const AdminManageUser = () =>{
                     <td>
                       <Button
                         variant="primary"
-                        // onClick={() => handleViewDetails(result)}
+                        onClick={() => handlePreviewUser(result)}
                       >
                         View Details
                       </Button>
                       <Button
                         variant="warning"
-                        // onClick={() => handleViewDetails(result)}
+                        onClick={() => handleUpdateUser(result)}
                       >
                         Update
                       </Button>
@@ -111,6 +124,17 @@ const AdminManageUser = () =>{
           No results available
         </div>
       )}
+
+      <ModalPreviewUserAdm 
+        show={showPreview}
+        setShow={setShowPreview}
+        user={selectedUser}
+      />
+      <ModalUpdateUserAdm 
+        user={selectedUser}
+        showUpdate={showUpdate}
+        setShowUpdate={setShowUpdate}
+      />
         </>
     )
 }

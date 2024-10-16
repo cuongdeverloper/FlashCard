@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from "react";
 import "./profile.css";
 import { useSelector } from "react-redux";
-import { FaUpload } from "react-icons/fa";
-import { toast } from "react-toastify";
+
 import { getAllResultsByUser } from "../../service/ApiService";
-import Select from "react-select"; // Import Select component
+import Select from "react-select"; 
 import ModalUpdateProfile from "./ModalUpdateProfile/ModalUpdateProfile";
 
 const ViewProfile = () => {
@@ -43,6 +42,7 @@ const ViewProfile = () => {
   const getResultOfUser = async () => {
     try {
       let response = await getAllResultsByUser();
+      console.log(response)
       if (response && Array.isArray(response.results)) {
         setResults(response.results);
         const subjects = Array.from(

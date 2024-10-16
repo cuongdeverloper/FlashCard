@@ -4,80 +4,89 @@ import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
 import { toast } from 'react-toastify';
 import Select from 'react-select';
-import { updateUserProfile } from '../../../service/ApiService';
-import { useDispatch } from 'react-redux';
-import { doLogout } from '../../../redux/action/userAction';
-import { useNavigate } from 'react-router-dom';
+import { updateUserProfile } from '../../../../service/ApiService';
 
-const ModalUpdateProfile = ({ user,showUpdate,setShowUpdate }) => {
+const ModalUpdateUserAdm = ({ user, showUpdate, setShowUpdate }) => {
     const [show, setShow] = useState(showUpdate);
-    const [updatedProfile, setUpdatedProfile] = useState(user);
+    const [originalProfile, setOriginalProfile] = useState(null); // Store the original profile
+    const [updatedProfile, setUpdatedProfile] = useState({
+        username: '',
+        email: '',
+        phoneNumber: '',
+        gender: '',
+        role: '',
+        image: null,
+        _id: null,
+    });
     const [imageUrl, setImageUrl] = useState(null);
-    const dispatch = useDispatch();
-    const navigate = useNavigate();
 
     const handleClose = () => {
-        setShow(false)
-        setShowUpdate(false)
+        setShow(false);
+        setShowUpdate(false);
+        // Reset to the original profile when closing
+        setUpdatedProfile(originalProfile);
     };
+
     const handleShow = () => {
-        setShow(true)
+        setShow(true);
     };
-useEffect(()=>{
-    setShow(showUpdate)
-},[showUpdate])
+
+    useEffect(() => {
+        setShow(showUpdate);
+        if (user) {
+            // Save original profile when the modal is opened
+            setOriginalProfile(user);
+            setUpdatedProfile(user);
+            setImageUrl(user.image);
+        }
+    }, [showUpdate, user]);
+
     const handleInputChange = (e) => {
         const { name, value } = e.target;
-        setUpdatedProfile({
-            ...updatedProfile,
+        setUpdatedProfile((prev) => ({
+            ...prev,
             [name]: value,
-        });
+        }));
     };
 
     const handleSelectChange = (selectedOption, { name }) => {
-        setUpdatedProfile({
-            ...updatedProfile,
+        setUpdatedProfile((prev) => ({
+            ...prev,
             [name]: selectedOption.value,
-        });
+        }));
     };
 
     const handleImageUpload = (e) => {
         const file = e.target.files[0];
         if (file) {
-            setUpdatedProfile((prevState) => ({
-                ...prevState,
+            setUpdatedProfile((prev) => ({
+                ...prev,
                 image: file,
             }));
             setImageUrl(URL.createObjectURL(file));
         } else {
-            setImageUrl(null); 
+            setImageUrl(null);
         }
     };
 
     const handleSave = async () => {
         const formData = new FormData();
-
-        // Append each field to the FormData object
         formData.append('username', updatedProfile.username);
         formData.append('email', updatedProfile.email);
         formData.append('phoneNumber', updatedProfile.phoneNumber);
         formData.append('gender', updatedProfile.gender);
         formData.append('role', updatedProfile.role);
 
-        // Append the image file if it exists
         if (updatedProfile.image) {
             formData.append('image', updatedProfile.image);
         }
 
         try {
-            const response = await updateUserProfile(updatedProfile.id, formData);
-            console.log(response);
+            const response = await updateUserProfile(updatedProfile._id, formData);
             if (response && response.errorCode === 0) {
-                toast.warning('You must login again.');
-                dispatch(doLogout());
-                navigate('/login');
-            } else {
                 toast.success('Profile updated successfully!');
+                setOriginalProfile(updatedProfile);
+                window.location.reload();
             }
         } catch (error) {
             toast.error('Error updating profile: ' + error.message);
@@ -95,15 +104,9 @@ useEffect(()=>{
         { value: 'student', label: 'Student' },
         { value: 'admin', label: 'Admin' },
     ];
-    useEffect(() => {
-        if (user) {
-            setUpdatedProfile(user); // Update the profile when user changes
-        }
-    }, [user]);
-    
+
     useEffect(() => {
         return () => {
-            
             if (imageUrl) {
                 URL.revokeObjectURL(imageUrl);
             }
@@ -127,7 +130,7 @@ useEffect(()=>{
                             <Form.Control
                                 type="text"
                                 name="username"
-                                value={updatedProfile?.username}
+                                value={updatedProfile.username || ''}
                                 onChange={handleInputChange}
                                 placeholder="Enter your name"
                             />
@@ -138,7 +141,7 @@ useEffect(()=>{
                             <Form.Control
                                 type="email"
                                 name="email"
-                                value={updatedProfile?.email}
+                                value={updatedProfile.email || ''}
                                 onChange={handleInputChange}
                                 placeholder="Enter your email"
                                 disabled
@@ -150,7 +153,7 @@ useEffect(()=>{
                             <Form.Control
                                 type="text"
                                 name="phoneNumber"
-                                value={updatedProfile?.phoneNumber}
+                                value={updatedProfile.phoneNumber || ''}
                                 onChange={handleInputChange}
                                 placeholder="Enter your phone number"
                             />
@@ -161,8 +164,8 @@ useEffect(()=>{
                             <Select
                                 name="gender"
                                 value={genderOptions.find(
-                                    (option) => option.value === updatedProfile?.gender
-                                )}
+                                    (option) => option.value === updatedProfile.gender
+                                ) || null}
                                 options={genderOptions}
                                 onChange={handleSelectChange}
                                 placeholder="Select your gender"
@@ -173,14 +176,14 @@ useEffect(()=>{
                             <Form.Label>Role</Form.Label>
                             <Select
                                 name="role"
-                                value={roleOptions.find((option) => option.value === updatedProfile?.role)}
+                                value={roleOptions.find((option) => option.value === updatedProfile.role) || null}
                                 options={roleOptions}
                                 onChange={handleSelectChange}
                                 placeholder="Select your role"
                             />
                         </Form.Group>
 
-                        <Form.Group controlId={`image-${updatedProfile?.id}`}>
+                        <Form.Group controlId={`image-${updatedProfile._id}`}>
                             <Form.Label>Profile Picture:</Form.Label>
                             <Form.Control
                                 type="file"
@@ -195,7 +198,6 @@ useEffect(()=>{
                                 />
                             )}
                         </Form.Group>
-
                     </Form>
                 </Modal.Body>
                 <Modal.Footer>
@@ -211,4 +213,4 @@ useEffect(()=>{
     );
 };
 
-export default ModalUpdateProfile;
+export default ModalUpdateUserAdm;

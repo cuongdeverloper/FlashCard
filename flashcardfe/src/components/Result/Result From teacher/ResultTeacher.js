@@ -6,10 +6,10 @@ import { Pagination, Button } from 'react-bootstrap';
 
 const ResultTeacher = () => {
   const params = useParams();
-  const navigate = useNavigate(); // For navigation
+  const navigate = useNavigate(); 
   const [results, setResults] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1); // Trang hiện tại
-  const resultsPerPage = 7; // Số kết quả trên mỗi trang
+  const [currentPage, setCurrentPage] = useState(1); 
+  const resultsPerPage = 7; 
 
   useEffect(() => {
     getRsTeacher();
