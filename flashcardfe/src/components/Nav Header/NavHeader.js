@@ -135,7 +135,7 @@ const iconNav = { fontSize: "20px", color: "#fff" }
 
                   {/* Admin-only icon */}
                   {userRole === "admin" && (
-                    <Nav.Link onClick={() => navigate("/admin")}>
+                    <Nav.Link onClick={() => navigate("/admin-manage")}>
                       <FaUserShield style={iconNav} />
                     </Nav.Link>
                   )}

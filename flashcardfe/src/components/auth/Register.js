@@ -53,16 +53,16 @@ const Register = () => {
         }
     };
 
-    const handleResendOTP = async () => {
-        setIsLoadingResend(true);
-        const response = await reSendOtpApi(email); 
-        setIsLoadingResend(false);
-        if (response && response.errorCode === 0) {
-            toast.success(response.message);
-        } else {
-            toast.error(response.message);
-        }
-    };
+    // const handleResendOTP = async () => {
+    //     setIsLoadingResend(true);
+    //     const response = await reSendOtpApi(email); 
+    //     setIsLoadingResend(false);
+    //     if (response && response.errorCode === 0) {
+    //         toast.success(response.message);
+    //     } else {
+    //         toast.error(response.message);
+    //     }
+    // };
 
     useEffect(() => {
         validateForm();

@@ -13,7 +13,7 @@ const ResultTeacher = () => {
 
   useEffect(() => {
     getRsTeacher();
-  }, []);
+  }, [navigate]);
 
   const getRsTeacher = async () => {
     try {
@@ -27,16 +27,13 @@ const ResultTeacher = () => {
     }
   };
 
-  // Tính toán các chỉ số cho phân trang
   const indexOfLastResult = currentPage * resultsPerPage;
   const indexOfFirstResult = indexOfLastResult - resultsPerPage;
   const currentResults = results.slice(indexOfFirstResult, indexOfLastResult);
-  const totalPages = Math.ceil(results.length / resultsPerPage); // Tổng số trang
+  const totalPages = Math.ceil(results.length / resultsPerPage); 
 
-  // Hàm chuyển trang
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
-  // Hàm chuyển trang tiếp theo và trước đó
   const handleNextPage = () => {
     if (currentPage < totalPages) {
       setCurrentPage(currentPage + 1);

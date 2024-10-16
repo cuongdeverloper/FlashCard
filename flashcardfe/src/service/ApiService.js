@@ -739,6 +739,27 @@ const getAllUserAdm = async() =>{
         throw error; 
     }
 }
+const deleteUserApi = async() =>{
+    try {
+        const token = Cookies.get('accessToken');
+      
+        if (!token) {
+            throw new Error('No access token found. Please login again.');
+        }
+
+        const response = await axios.get(`/users`, {
+            headers: {
+                'Authorization': `Bearer ${token}`,
+               
+            }
+        });
+
+        return response; 
+    } catch (error) {
+        console.error('Error creating class:', error);
+        throw error; 
+    }
+}
 export {
     LoginApi, loginWGoogle, decodeDataGoogle, getAllQuestionPack,
     getQuestionByQPId, getUserByUserId, createNewQuestionPackApi,
