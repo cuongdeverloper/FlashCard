@@ -7,7 +7,7 @@ import Cookies from 'js-cookie';
 import { useNavigate } from 'react-router-dom';
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
-
+import DefaultImg from '../../../../assests/avt.jpg'
 const DetailFormQA = (props) => {
   const { dataQuestion, currentQuestionIndex, isAnimating,idAuthor,idQp } = props;
   const navigate = useNavigate();
@@ -223,10 +223,10 @@ const DetailFormQA = (props) => {
 
   return (
     <li key={comment._id}>
-      <img src={comment?.user?.image} alt="Author" style={{ height: '50px', width: '50px' }} />
+      <img src={comment?.user?.image || DefaultImg} alt="Author" style={{ height: '50px', width: '50px' }} />
       <div className="comment-content">
         <p><strong>{comment?.user?.username}:</strong> {comment?.content}</p>
-        {comment?.image && <img src={comment?.image} alt="Comment" style={{ width: '100px' }} />}
+        {comment?.image && <img src={comment?.image || DefaultImg} alt="Comment" style={{ width: '100px' }} />}
         <span className="comment-date">
           {new Date(comment?.createdAt).toLocaleDateString()} {new Date(comment?.createdAt).toLocaleTimeString()}
         </span>

@@ -1,16 +1,17 @@
 import { useSelector } from "react-redux";
-import { getQuestionByQPId, getQuestionPackOfTeacher, updateQuestion, updateQuestionPack } from "../../service/ApiService";
+import {getQuestionByQPId, getQuestionPackOfTeacher, updateQuestion, updateQuestionPack } from "../../service/ApiService";
 import { useEffect, useState } from "react";
 import Select from 'react-select';
 import { Accordion, Button, Form, Alert } from "react-bootstrap";
 import ModalUpdateQuestionPack from "./ModalUpdateQuestionpack";
 import "./css/myManage.scss"
+import ModalAssignQpToClass from "./ModalAssignQpToClass";
 
 const MyManage = () => {
     const userId = useSelector((state) => state.user.account.id);
     const [show, setShow] = useState(false);
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
+    const handleClose = () => setShow(false);
+    const handleShow = () => setShow(true);
     const [listQp, setListQp] = useState([]);
     const [selectedOption, setSelectedOption] = useState(null);
     const [loading, setLoading] = useState(false);
@@ -21,6 +22,7 @@ const MyManage = () => {
     const [imageFile, setImageFile] = useState(null);
     const [saving, setSaving] = useState(false);
     const [validationError, setValidationError] = useState("");
+    const [idQp, setIdQp] = useState('')
     const [qpForm, setQpForm] = useState({
         title: '',
         description: '',
@@ -47,7 +49,6 @@ const MyManage = () => {
     }));
     const loadQuestionPackDetails = () => {
         const selectedQp = listQp.find(item => item._id === selectedOption.value);
-        console.log('sc', qpForm)
         if (selectedQp) {
             setQpForm({
                 title: selectedQp.title,
@@ -67,7 +68,7 @@ const MyManage = () => {
             setLoading(true);
             let response = await getQuestionPackOfTeacher(userId);
             setListQp(response.data);
-     
+
         } catch (error) {
             setError('Failed to load question packs');
         } finally {
@@ -80,12 +81,13 @@ const MyManage = () => {
             if (selectedOption && selectedOption.value) {
                 let response = await getQuestionByQPId(selectedOption.value);
                 setQuestions(response.data.questions || []);
+                setIdQp(response.data._id)
             }
         } catch (error) {
             console.error('Error fetching questions:', error);
         }
     };
-
+   
     const handleEditClick = (question) => {
         setEditingQuestionId(question._id);
         setEditedQuestion({ ...question, correctAnswers: [...question.correctAnswers], answers: [...question.answers] });
@@ -166,9 +168,7 @@ const MyManage = () => {
             }
 
             setSaving(true);
-           console.log('cac',selectedOption)
-           let response= await updateQuestionPack(selectedOption.value, formData); 
-           console.log(response)
+            let response = await updateQuestionPack(selectedOption.value, formData);
             setSaving(false);
             getApiQpByTeacherId(); // Reload the updated question packs
         } catch (error) {
@@ -235,7 +235,11 @@ const MyManage = () => {
             )}
 
             {error && <p>{error}</p>}
-
+            {idQp && idQp.length > 0 && (
+                <ModalAssignQpToClass 
+                selectedOption={selectedOption}
+                />
+            )}
             {questions.length > 0 && (
                 <div className="questions-list">
                     {questions.map((question) => (
@@ -298,7 +302,7 @@ const MyManage = () => {
                                             />
                                         )}
                                     </Form.Group>
-                                    <Button onClick={handleSaveClick} disabled={saving}  className="btn-save">
+                                    <Button onClick={handleSaveClick} disabled={saving} className="btn-save">
                                         {saving ? 'Saving...' : 'Save'}
                                     </Button>
                                 </div>
