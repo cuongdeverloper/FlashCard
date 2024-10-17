@@ -3,7 +3,7 @@ import UseConversation from "./zustand/UseConversation";
 import { Card } from "react-bootstrap";
 import { useSocketContext } from "../../context/SocketContext";
 import "./css/Conversation.scss"
-
+import defaultImage from '../../../src/assests/avt.jpg'
 const Conversation = ({ conversation, lastIdx, emoji }) => {
     const { selectedConversation, setSelectedConversation } = UseConversation();
     const isSelected = selectedConversation?._id === conversation._id;
@@ -26,7 +26,7 @@ const Conversation = ({ conversation, lastIdx, emoji }) => {
                 <Card.Body className="d-flex align-items-center">
                     <div className="avatar me-3 position-relative">
                         <img
-                            src={conversation.image}
+                            src={conversation.image || defaultImage}
                             alt='user avatar'
                             className='rounded-circle'
                             style={{ height: '50px', width: '50px' }}

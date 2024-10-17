@@ -714,7 +714,7 @@ const getDataDashBoardAdm = async() =>{
 
         return response; 
     } catch (error) {
-        console.error('Error creating class:', error);
+        console.error('Error dashboard', error);
         throw error; 
     }
 }
@@ -735,7 +735,7 @@ const getAllUserAdm = async() =>{
 
         return response; 
     } catch (error) {
-        console.error('Error creating class:', error);
+        console.error('Error get all users', error);
         throw error; 
     }
 }
@@ -755,7 +755,27 @@ const deleteUserApi = async(userId) =>{
 
         return response; 
     } catch (error) {
-        console.error('Error creating class:', error);
+        console.error('Error delete user', error);
+        throw error; 
+    }
+}
+const getAllQpByAdmin = async() =>{
+    try {
+        const token = Cookies.get('accessToken');
+      
+        if (!token) {
+            throw new Error('No access token found. Please login again.');
+        }
+
+        const response = await axios.get(`/questionPacks-adm`, {
+            headers: {
+                'Authorization': `Bearer ${token}`,       
+            }
+        });
+
+        return response; 
+    } catch (error) {
+        console.error('Error get questionpacks', error);
         throw error; 
     }
 }
@@ -767,5 +787,5 @@ export {
     deleteReply, getClassById, getClassByClassId, getQuestionPackByQuestionPackId, removeQpToClass
     , joinClassByInvite, getMemberByClassId, searchUserId, getAllUserApi, sendMess, getMessagesApi
     , getQuizByQuizId, postSubmitExam, getQuestionPackOfTeacher, updateQuestion, updateQuestionPack, reSendOtpApi, sendOTPApi, requestPasswordResetApi, resetPasswordApi
-    ,getAllResultsByTeacher,getAllResultsByUser,updateUserProfile,createClassApi,getDataDashBoardAdm,getAllUserAdm,deleteUserApi
+    ,getAllResultsByTeacher,getAllResultsByUser,updateUserProfile,createClassApi,getDataDashBoardAdm,getAllUserAdm,deleteUserApi,getAllQpByAdmin
 }

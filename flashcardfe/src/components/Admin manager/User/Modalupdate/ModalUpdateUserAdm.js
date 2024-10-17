@@ -6,9 +6,9 @@ import { toast } from 'react-toastify';
 import Select from 'react-select';
 import { updateUserProfile } from '../../../../service/ApiService';
 
-const ModalUpdateUserAdm = ({ user, showUpdate, setShowUpdate }) => {
+const ModalUpdateUserAdm = ({ user, showUpdate, setShowUpdate,onSuccess }) => {
     const [show, setShow] = useState(showUpdate);
-    const [originalProfile, setOriginalProfile] = useState(null); // Store the original profile
+    const [originalProfile, setOriginalProfile] = useState(null); 
     const [updatedProfile, setUpdatedProfile] = useState({
         username: '',
         email: '',
@@ -23,18 +23,13 @@ const ModalUpdateUserAdm = ({ user, showUpdate, setShowUpdate }) => {
     const handleClose = () => {
         setShow(false);
         setShowUpdate(false);
-        // Reset to the original profile when closing
         setUpdatedProfile(originalProfile);
     };
 
-    const handleShow = () => {
-        setShow(true);
-    };
 
     useEffect(() => {
         setShow(showUpdate);
         if (user) {
-            // Save original profile when the modal is opened
             setOriginalProfile(user);
             setUpdatedProfile(user);
             setImageUrl(user.image);
@@ -86,7 +81,8 @@ const ModalUpdateUserAdm = ({ user, showUpdate, setShowUpdate }) => {
             if (response && response.errorCode === 0) {
                 toast.success('Profile updated successfully!');
                 setOriginalProfile(updatedProfile);
-                window.location.reload();
+                onSuccess()
+                handleClose()
             }
         } catch (error) {
             toast.error('Error updating profile: ' + error.message);
@@ -115,10 +111,6 @@ const ModalUpdateUserAdm = ({ user, showUpdate, setShowUpdate }) => {
 
     return (
         <>
-            <Button variant="primary" onClick={handleShow}>
-                Edit Profile
-            </Button>
-
             <Modal show={show} onHide={handleClose}>
                 <Modal.Header closeButton>
                     <Modal.Title>Update Profile</Modal.Title>

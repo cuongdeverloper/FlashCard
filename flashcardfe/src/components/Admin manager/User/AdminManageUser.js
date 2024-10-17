@@ -3,6 +3,7 @@ import { getAllUserAdm } from "../../../service/ApiService"
 import { Button, Pagination } from "react-bootstrap";
 import ModalPreviewUserAdm from "./Modal Preview user/ModalPreviewUserAdm";
 import ModalUpdateUserAdm from "./Modalupdate/ModalUpdateUserAdm";
+import ModalDeleteUserAdm from "./Modal delete user/ModalDeleteUserAdm";
 
 const AdminManageUser = () =>{
     const [results, setResults] = useState([]);
@@ -10,19 +11,20 @@ const AdminManageUser = () =>{
     const [showPreview,setShowPreview] = useState(false);
     const [showUpdate,setShowUpdate] = useState(false);
     const [selectedUser, setSelectedUser] = useState(null);
+    const [showDelete,setShowDelete] = useState(false)
     const resultsPerPage = 7;
     const getAllUser = async() =>{
         let response = await getAllUserAdm();
         setResults(response.data)
         console.log(response)
     }
-    const indexOfLastResult = currentPage * resultsPerPage;
+  const indexOfLastResult = currentPage * resultsPerPage;
   const indexOfFirstResult = indexOfLastResult - resultsPerPage;
   const currentResults = results.slice(indexOfFirstResult, indexOfLastResult);
   const totalPages = Math.ceil(results.length / resultsPerPage); 
 
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
-
+ 
   const handleNextPage = () => {
     if (currentPage < totalPages) {
       setCurrentPage(currentPage + 1);
@@ -40,8 +42,11 @@ const handlePreviewUser = (user) =>{
 }
 const handleUpdateUser = (user)=>{
   setSelectedUser(user)
-  console.log(user)
   setShowUpdate(true)
+}
+const handleDeleteUser = (user)=>{
+  setSelectedUser(user)
+  setShowDelete(true)
 }
     useEffect(()=>{
         getAllUser()
@@ -88,7 +93,7 @@ const handleUpdateUser = (user)=>{
                       </Button>
                       <Button
                         variant="danger"
-                        // onClick={() => handleViewDetails(result)}
+                        onClick={() => handleDeleteUser(result)}
                       >
                         Delete
                       </Button>
@@ -134,7 +139,16 @@ const handleUpdateUser = (user)=>{
         user={selectedUser}
         showUpdate={showUpdate}
         setShowUpdate={setShowUpdate}
+        onSuccess={getAllUser}
       />
+
+      <ModalDeleteUserAdm 
+        user={selectedUser}
+        show={showDelete}
+        setShow={setShowDelete}
+        onSuccess={getAllUser}
+      />
+
         </>
     )
 }

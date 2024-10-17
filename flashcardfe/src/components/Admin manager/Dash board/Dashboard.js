@@ -64,7 +64,7 @@ const Dashboard = () => {
                             <Card.Text>{dataOverView.flashcardCount}</Card.Text>
                         </Card.Body>
                     </Card>
-                    <Card style={{ width: "18rem", margin: "10px" }}>
+                    <Card style={{ width: "18rem", margin: "10px" }} onClick={()=>navigate('admin-questionPack')}>
                         <Card.Body>
                             <Card.Title>
                                 <FaQuestion style={{ marginRight: "10px", color: "#e74c3c" }} />
