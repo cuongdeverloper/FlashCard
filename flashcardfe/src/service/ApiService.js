@@ -833,7 +833,7 @@ const ApiDeleteQuestionPack = async ( questionPackId) => {
             throw new Error('No access token found. Please login again.');
         }
 
-        const response = await axios.post(`/questionPack/${questionPackId}`, {
+        const response = await axios.delete(`/questionPack/${questionPackId}`, {
             headers: {
                 'Authorization': `Bearer ${token}`,
             }
