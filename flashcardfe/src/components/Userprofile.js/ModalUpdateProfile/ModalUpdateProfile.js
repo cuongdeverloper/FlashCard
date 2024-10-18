@@ -9,7 +9,7 @@ import { useDispatch } from 'react-redux';
 import { doLogout } from '../../../redux/action/userAction';
 import { useNavigate } from 'react-router-dom';
 
-const ModalUpdateProfile = ({ user,showUpdate,setShowUpdate }) => {
+const ModalUpdateProfile = ({ user,showUpdate }) => {
     const [show, setShow] = useState(showUpdate);
     const [updatedProfile, setUpdatedProfile] = useState(user);
     const [imageUrl, setImageUrl] = useState(null);
@@ -18,7 +18,7 @@ const ModalUpdateProfile = ({ user,showUpdate,setShowUpdate }) => {
 
     const handleClose = () => {
         setShow(false)
-        setShowUpdate(false)
+    
     };
     const handleShow = () => {
         setShow(true)
