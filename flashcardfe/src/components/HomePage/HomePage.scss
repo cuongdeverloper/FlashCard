@@ -28,7 +28,8 @@
         position: relative;
         overflow-y: auto; /* Enable vertical scrolling if content overflows */
         height: 100vh; /* Full viewport height */
-        background: #121045;
+        background: var(--body_background);
+      
         flex-grow: 1;
         .Header-container {
             position: sticky;

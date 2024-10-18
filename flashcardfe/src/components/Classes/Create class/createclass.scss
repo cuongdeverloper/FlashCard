@@ -1,0 +1,57 @@
+.create-class-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #1a1a3d;
+}
+
+.create-class-card {
+    background-color: #222244;
+    border-radius: 10px;
+    padding: 20px;
+    width: 400px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    color: white;
+}
+
+.create-class-card h2 {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.create-class-card p {
+    font-size: 14px;
+    color: #aaa;
+    margin-bottom: 20px;
+}
+
+.create-class-form-group {
+    margin-bottom: 15px;
+}
+
+.create-class-input-field {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: #333366;
+    color: white;
+}
+
+.create-class-btn {
+    width: 100%;
+    padding: 10px;
+    background-color: #4a8dff;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.create-class-btn:hover {
+    background-color: #3970d3;
+}

@@ -12,6 +12,7 @@ import { IoAddOutline } from "react-icons/io5";
 import { Nav, NavDropdown } from "react-bootstrap";
 import { FaSearch } from "react-icons/fa";
 import { searchItems } from "../../service/ApiService";
+import DarkMode from "../darkmode/DarkMode";
 
 const NavHeader = () => {
   const isAuthenticated = useSelector((state) => state.user.isAuthenticated);
@@ -56,6 +57,8 @@ const iconNav = { fontSize: "20px", color: "#fff" }
     setSearchQuery("");
     setSearchResults([]);
   };
+
+
 
   return (
     <div className="Header-container" style={{ zIndex: "1000", width: "100%" }}>
@@ -130,7 +133,7 @@ const iconNav = { fontSize: "20px", color: "#fff" }
               {isAuthenticated ? (
                 <>
                   <NavLink to="/logout" className="nav-link">
-                    Logout
+                    <h5>logout</h5>
                   </NavLink>
 
                   {/* Admin-only icon */}
@@ -148,10 +151,7 @@ const iconNav = { fontSize: "20px", color: "#fff" }
               <Nav.Link onClick={() => navigate("/userprofile")}>
                 <IoPersonCircle style={iconNav}/>
               </Nav.Link>
-
-              <Nav.Link href="#home">
-                <GoSearch style={iconNav}/>
-              </Nav.Link>
+              <DarkMode></DarkMode>
             </Nav>
           </Navbar.Collapse>
         </Container>

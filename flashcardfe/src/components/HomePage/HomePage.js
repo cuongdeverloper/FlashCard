@@ -31,13 +31,22 @@ const HomePage = () => {
         }
     }, [isAuthenticated]); 
 
+    const setDarkMode = () => {
+        document.querySelector("body").setAttribute('data-theme','dark');
+    }
+
+    const setLightMode = () => {
+        document.querySelector("body").setAttribute('data-theme','light');
+    }
+
+
     return (
         <>
             <div className="HomePage-container">
                 <div className='Admin-SideBar'>
                     <SideBar classData={classData} />
                 </div>
-                <div className='Homepage-content' style={{color:'#fff'}}>
+                <div className='Homepage-content'>
                     <NavHeader />
                     <Outlet />
                 </div>

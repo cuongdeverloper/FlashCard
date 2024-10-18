@@ -34,7 +34,7 @@ const SideBar = (props) => {
         <Menu>
           <MenuItem onClick={handleCollapsedChange} icon={collapsed ? <GoArrowRight /> : <GoArrowLeft />}>
             <div style={{ padding: "9px", fontWeight: "bold", fontSize: 14, letterSpacing: "1px" }}>
-              Quizone
+              <p style={{marginTop: "15px"}}>Quizone</p>
             </div>
           </MenuItem>
         </Menu>

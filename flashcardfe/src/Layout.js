@@ -38,6 +38,7 @@ import CreateClass from "./components/Classes/Create class/CreateClass";
 import AdminManage from "./components/Admin manager/AdminManage";
 import Dashboard from "./components/Admin manager/Dash board/Dashboard";
 import AdminManageUser from "./components/Admin manager/User/AdminManageUser";
+import DarkMode from "./components/darkmode/DarkMode";
 
 
 
@@ -107,6 +108,7 @@ const Layout = () => {
                     <Route path="/result/:examId" element={<ResultTeacher />} />
                     <Route path="/results/user" element={<ResultUser />} />
                     <Route path="/userprofile" element={<ViewProfile />} />
+                    <Route path="/darkmode" element={<DarkMode />} />
                 </Routes>
             </BrowserRouter>
         </Suspense>

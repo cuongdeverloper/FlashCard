@@ -1,34 +1,46 @@
-*{
+* {
     margin: 0;
     padding: 0;
 }
-.pro-sidebar{
+
+.pro-sidebar {
     height: 100%;
-    z-index: 100; 
+    z-index: 100;
+}
+
+.pro-sidebar-header,
+.pro-sidebar-content,
+.pro-sidebar-footer {
+    background-color: var(--body_background-bar);
+}
+
+.pro-menu-item .pro-icon svg{
+    color: var(--body_icon);
     
 }
 
-.pro-sidebar-header{
-    background-color:  #0A092D;
+.pro-menu-item  span{
+ 
+    background-color:  transparent !important;
 }
-.pro-sidebar-content{
-    background-color:  #0A092D;
-} 
-
-.pro-sidebar-footer{
-    background-color:  #0A092D;
+.pro-menu-item p {
+    color: var(--body_color) ; 
+}
+.pro-item-content  {
+    color: var(--body_color) ; 
+}
+.pro-menu a{
+    color: var(--body_color) !important;
+}
+.pro-sidebar .home-menu-item:hover .nav-link {
+    background-color: #007bff !important;
+    color: #fff !important; /* Hover color for nav-link */
 }
 
-
-/* Apply background color specifically to the Home MenuItem */
-.pro-sidebar .pro-sidebar-content .home-menu-item .nav-link {
-    background-color: transparent !important; /* Transparent background */
-    color: #fff; /* White text color */
-  }
-  
-  /* Change background on hover for Home menu item */
-  .pro-sidebar .pro-sidebar-content .home-menu-item:hover .nav-link {
-    background-color: #007bff !important; /* Blue background on hover */
-    color: #fff; /* White text color */
-  }
-  
+.logoimg {
+    margin-left: 3.6px;
+    width: 100px;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+}

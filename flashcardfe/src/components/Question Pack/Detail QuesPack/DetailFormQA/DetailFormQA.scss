@@ -4,7 +4,8 @@
   justify-content: center;
   align-items: center;
   width: 90%;
-  margin: 20px auto; /* Center the container with margin */
+  margin: 20px auto; 
+
 }
 
 .flashcard {
@@ -14,6 +15,7 @@
   position: relative;
   cursor: pointer;
   color: #fff;
+
 }
 
 .flashcard-front,
@@ -30,6 +32,16 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   border-radius: 10px;
   transition: transform 0.6s ease-in-out;
+  img {
+    width: 200px !important;
+    height: auto !important;
+    margin-left: 20px;
+  }
+  p{
+    font-size: 30px;
+    width: 250px;
+    word-wrap: break-word;
+  }
 }
 
 .flashcard-front {
@@ -216,3 +228,10 @@ li.comment-item {
   text-decoration: underline;
 }
 
+.flashcard-footer {
+  span {
+    margin: 0 15px;
+    color: var(--body_color); // Chỉnh màu thành --body_color
+    font-weight: bold;
+  }
+}

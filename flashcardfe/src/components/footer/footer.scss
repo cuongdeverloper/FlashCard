@@ -1,9 +1,11 @@
 .footer {
-    background-color: #2E3856;
-    color: #ddd;
+    background-color: var(--body_footer);
+    color: var(--body_color);
     padding: 10px 20px; /* Giảm padding cho footer */
     text-align: center;
-  
+    p{
+      color: var(--body_color);
+    }
     .footer-content {
       display: flex;
       justify-content: space-between;

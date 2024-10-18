@@ -10,7 +10,6 @@ import ModalUpdateProfile from "./ModalUpdateProfile/ModalUpdateProfile";
 const ViewProfile = () => {
   const [userProfile, setUserProfile] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
   const [results, setResults] = useState([]);
   const [subjects, setSubjects] = useState([]);
   const [selectedSubject, setSelectedSubject] = useState(null);
@@ -30,7 +29,6 @@ const ViewProfile = () => {
       setUserProfile(user);
       setLoading(false);
     } else {
-      setError("User data not available");
       setLoading(false);
     }
   }, [user]);
@@ -60,12 +58,11 @@ const ViewProfile = () => {
           subjects.map((subject) => ({ value: subject, label: subject }))
         );
       } else {
-        setResults([]); 
-        setError("No results found.");
+        setResults([]); // No results found but no error
       }
-      setLoading(false);
     } catch (err) {
-      setError("Failed to fetch results.");
+      setResults([]); // Handle error but do not show it on the UI
+    } finally {
       setLoading(false);
     }
   };
@@ -85,10 +82,6 @@ const ViewProfile = () => {
 
   if (loading) {
     return <div>Loading...</div>;
-  }
-
-  if (error) {
-    return <div>{error}</div>;
   }
 
   return (
@@ -111,26 +104,21 @@ const ViewProfile = () => {
 
       {/* User Profile */}
       <div className="profile-section">
-  <div className="profile-info">
-    <img src={userProfile?.image} alt="Profile" className="profile-avatar" />
-    <p className="profile-name"><strong>{userProfile?.username || "N/A"}</strong></p>
-  </div>
-  
-  <div className="contact-info">
-    <p><strong>Full Name:</strong> {userProfile?.username || "N/A"}</p>
-    <p><strong>Email:</strong> {userProfile?.email || "N/A"}</p>
+        <div className="profile-info">
+          <img src={userProfile?.image} alt="Profile" className="profile-avatar" />
+          <p className="profile-name"><strong>{userProfile?.username || "N/A"}</strong></p>
+        </div>
+        <div className="contact-info">
+          <p><strong>Full Name:</strong> {userProfile?.username || "N/A"}</p>
+          <p><strong>Email:</strong> {userProfile?.email || "N/A"}</p>
           {/* Modal for editing profile */}
           <ModalUpdateProfile
-        user={userProfile}
-        showModal={showModal}
-        handleClose={handleClose}
-      />
-  </div>
-</div>
-
-
-
-
+            user={userProfile}
+            showModal={showModal}
+            handleClose={handleClose}
+          />
+        </div>
+      </div>
 
       {/* Exam Results */}
       <div>
@@ -143,39 +131,34 @@ const ViewProfile = () => {
           placeholder="Select a subject"
           className="mb-4"
         />
-        {selectedSubject ? (
-          filteredResults && filteredResults.length > 0 ? (
-            <div className="row">
-              {filteredResults.map((result, index) => (
-                <div key={index} className="col-md-4">
-                  <div className="card mb-3">
-                    <div className="card-body">
-                      <h5 className="card-title">
-                        {result?.exam?.questionPack?.subject ||
-                          "Unknown Subject"}
-                      </h5>
-                      <p className="card-text">
-                        Score: {result?.score || "N/A"}
-                      </p>
-                      <p className="card-text">
-                        Exam Title: {result?.exam?.title || "Unknown Title"}
-                      </p>
-                      <p className="card-text">
-                        Exam Date:{" "}
-                        {result?.exam?.createdAt
-                          ? new Date(result.exam.createdAt).toLocaleDateString()
-                          : "Unknown Date"}
-                      </p>
-                    </div>
+        {filteredResults && filteredResults.length > 0 ? (
+          <div className="row">
+            {filteredResults.map((result, index) => (
+              <div key={index} className="col-md-4">
+                <div className="card mb-3">
+                  <div className="card-body">
+                    <h5 className="card-title">
+                      {result?.exam?.questionPack?.subject || "Unknown Subject"}
+                    </h5>
+                    <p className="card-text">
+                      Score: {result?.score || "N/A"}
+                    </p>
+                    <p className="card-text">
+                      Exam Title: {result?.exam?.title || "Unknown Title"}
+                    </p>
+                    <p className="card-text">
+                      Exam Date:{" "}
+                      {result?.exam?.createdAt
+                        ? new Date(result.exam.createdAt).toLocaleDateString()
+                        : "Unknown Date"}
+                    </p>
                   </div>
                 </div>
-              ))}
-            </div>
-          ) : (
-            <div>No results found for this exam.</div>
-          )
+              </div>
+            ))}
+          </div>
         ) : (
-          <div className="text-white">Please select a subject to view results.</div>
+          <div>No exam results found for this subject.</div>
         )}
       </div>
     </div>
