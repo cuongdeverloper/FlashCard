@@ -179,7 +179,6 @@ const ManageAddQuiz = () => {
                 subjectQP, 
                 imagePreview
             );
-        console.log(response)
             if (response && response._id) {
                 const questionPackId = response._id;
                 toast.success('Question pack created successfully!');
@@ -204,7 +203,7 @@ const ManageAddQuiz = () => {
                     console.log('img',formattedQuestion.image)
                     console.log('qs',questionResponse)
                     if (questionResponse && questionResponse.errorCode === 0) {
-                        toast.success('Question added successfully!');
+                        // toast.success('Question added successfully!');
                     } else {
                         toast.error('Failed to add question.');
                     }

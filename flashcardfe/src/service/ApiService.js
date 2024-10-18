@@ -169,6 +169,26 @@ const createQuestionToQuestionPackAPI = async (questionText, questionImage, answ
     }
 };
 
+const deleteQuestionToQuestionPackAPI = async (flashcardId) => {
+    const token = Cookies.get('accessToken');
+
+    if (!token) {
+        throw new Error('No token found');
+    }
+
+    try {
+        const response = await axios.delete(`/flashcard/${flashcardId}`, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        });
+
+        return response;
+    } catch (error) {
+        console.error('Error deleting question:', error);
+        throw error;
+    }
+};
 const getAllCommentFlashCard = async (flashcardId, page = 1) => {
     const token = Cookies.get('accessToken');
 
@@ -813,5 +833,5 @@ export {
     deleteReply, getClassById, getClassByClassId, getQuestionPackByQuestionPackId, removeQpToClass
     , joinClassByInvite, getMemberByClassId, searchUserId, getAllUserApi, sendMess, getMessagesApi
     , getQuizByQuizId, postSubmitExam, getQuestionPackOfTeacher, updateQuestion, updateQuestionPack, reSendOtpApi, sendOTPApi, requestPasswordResetApi, resetPasswordApi
-    ,getAllResultsByTeacher,getAllResultsByUser,updateUserProfile,createClassApi,getDataDashBoardAdm,getAllUserAdm,deleteUserApi,getAllQpByAdmin,apiAssignQpToClass
+    ,getAllResultsByTeacher,getAllResultsByUser,updateUserProfile,createClassApi,getDataDashBoardAdm,getAllUserAdm,deleteUserApi,getAllQpByAdmin,apiAssignQpToClass,deleteQuestionToQuestionPackAPI
 }

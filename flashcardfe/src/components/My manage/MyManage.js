@@ -1,11 +1,14 @@
 import { useSelector } from "react-redux";
-import {getQuestionByQPId, getQuestionPackOfTeacher, updateQuestion, updateQuestionPack } from "../../service/ApiService";
+import {createQuestionToQuestionPackAPI, deleteQuestionToQuestionPackAPI, getQuestionByQPId, getQuestionPackOfTeacher, updateQuestion, updateQuestionPack } from "../../service/ApiService";
 import { useEffect, useState } from "react";
 import Select from 'react-select';
 import { Accordion, Button, Form, Alert } from "react-bootstrap";
 import ModalUpdateQuestionPack from "./ModalUpdateQuestionpack";
 import "./css/myManage.scss"
 import ModalAssignQpToClass from "./ModalAssignQpToClass";
+import ModalAddFlashCard from "./ModalAddFlashCard";
+import { toast } from "react-toastify";
+import ModalDeleteFlashCard from "./ModalDeleteFlashCard";
 
 const MyManage = () => {
     const userId = useSelector((state) => state.user.account.id);
@@ -22,7 +25,12 @@ const MyManage = () => {
     const [imageFile, setImageFile] = useState(null);
     const [saving, setSaving] = useState(false);
     const [validationError, setValidationError] = useState("");
-    const [idQp, setIdQp] = useState('')
+    const [idQp, setIdQp] = useState('');
+    const [showAddQuestionModal, setShowAddQuestionModal] = useState(false);
+const [showModalRemove,setShowModalRemove] = useState(false);
+const [dataRemove,setDataRemove] = useState('');
+    const handleCloseAddQuestionModal = () => setShowAddQuestionModal(false);
+    const handleShowAddQuestionModal = () => setShowAddQuestionModal(true);
     const [qpForm, setQpForm] = useState({
         title: '',
         description: '',
@@ -31,6 +39,24 @@ const MyManage = () => {
         subject: '',
 
     });
+    const handleAddQuestions = async (newQuestions) => {
+        try {
+            let response =await Promise.all(newQuestions.map(question => 
+                createQuestionToQuestionPackAPI(
+                    question.questionText,
+                    question.image, 
+                    question.answers,
+                    question.correctAnswers,
+                    selectedOption.value 
+                )
+            ));
+            toast.success('Create success')
+            handleGetQuestionByQpId(); // Refresh the questions
+            handleCloseAddQuestionModal(); // Close the modal
+        } catch (error) {
+            console.error('Error adding questions:', error);
+        }
+    };
     const [imagePreview, setImagePreview] = useState(null);
     useEffect(() => {
         getApiQpByTeacherId();
@@ -164,13 +190,13 @@ const MyManage = () => {
             formData.append('subject', qpForm.subject);
 
             if (imagePreview) {
-                formData.append('imagePreview', imagePreview); // Add the image preview file
+                formData.append('imagePreview', imagePreview); 
             }
 
             setSaving(true);
             let response = await updateQuestionPack(selectedOption.value, formData);
             setSaving(false);
-            getApiQpByTeacherId(); // Reload the updated question packs
+            getApiQpByTeacherId(); 
         } catch (error) {
             console.error('Failed to update question pack:', error);
             setSaving(false);
@@ -199,6 +225,20 @@ const MyManage = () => {
         });
     };
 
+    const handleRemoveFlashCard = (flashcard) =>{
+        setShowModalRemove(true)
+        setDataRemove(flashcard)
+    }
+    const handleDeleteQuestion = async () => {
+        let response = await deleteQuestionToQuestionPackAPI(dataRemove._id)
+    console.log(response)
+    if(response && response.errorCode === 0) {
+        toast.success(response.message)
+        handleGetQuestionByQpId()
+    } else {
+        toast.error(response?.message)
+    }
+    };
     return (
         <div style={{ backgroundColor: '#121045' }}>
             {loading ? <p>Loading...</p> : (
@@ -235,10 +275,21 @@ const MyManage = () => {
             )}
 
             {error && <p>{error}</p>}
-            {idQp && idQp.length > 0 && (
-                <ModalAssignQpToClass 
+            {idQp && idQp.length > 0 && (          
+                <>
+                 <ModalAssignQpToClass 
                 selectedOption={selectedOption}
                 />
+               <Button variant="primary" onClick={handleShowAddQuestionModal}>
+                Add Questions
+            </Button>
+            <ModalAddFlashCard 
+                show={showAddQuestionModal} 
+                handleClose={handleCloseAddQuestionModal} 
+                handleAddQuestions={handleAddQuestions}
+                selectedOption={selectedOption} 
+            />
+                </>
             )}
             {questions.length > 0 && (
                 <div className="questions-list">
@@ -282,7 +333,7 @@ const MyManage = () => {
                                             variant="success"
                                             onClick={handleAddAnswer}
                                             className="mt-2"
-                                            disabled={editedQuestion.answers.length >= 4} // Disable if there are 4 answers
+                                            disabled={editedQuestion.answers.length >= 4}
                                         >
                                             Add Answer
                                         </Button>
@@ -327,12 +378,20 @@ const MyManage = () => {
                                         )}
                                     </ul>
                                     <Button onClick={() => handleEditClick(question)}>Edit</Button>
+                                    <Button onClick={() => handleRemoveFlashCard(question)}>Remove</Button>
                                 </div>
                             )}
                         </div>
                     ))}
                 </div>
             )}
+            <ModalDeleteFlashCard 
+                show={showModalRemove}
+                setShow={setShowModalRemove}
+                dataRemove={dataRemove}
+                setDataRemove={setDataRemove}
+                handleDeleteQuestion={handleDeleteQuestion}
+            />
         </div>
     );
 };
