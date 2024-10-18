@@ -55,7 +55,7 @@ const Dashboard = () => {
         <div className="dashboard-container row mt-3">
             {dataOverView && Object.keys(dataOverView).length > 0 && (
                 <div className="dashboard-left col-md-6 row">
-                    <Card style={{ width: "18rem", margin: "10px" }} onClick={()=>navigate('admin-user')}>
+                    <Card style={{ width: "18rem", margin: "10px" }}>
                         <Card.Body>
                             <Card.Title>
                                 <FaRegAddressCard style={{ marginRight: "10px", color: "#3498db" }} />
@@ -73,7 +73,7 @@ const Dashboard = () => {
                             <Card.Text>{dataOverView.questionPackCount}</Card.Text>
                         </Card.Body>
                     </Card>
-                    <Card style={{ width: "18rem", margin: "10px" }}>
+                    <Card style={{ width: "18rem", margin: "10px" }}  onClick={()=>navigate('admin-user')}>
                         <Card.Body>
                             <Card.Title>
                                 <FaUserAlt style={{ marginRight: "10px", color: "#2ecc71" }} />
