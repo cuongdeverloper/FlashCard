@@ -824,7 +824,27 @@ const apiAssignQpToClass = async (classId, questionPackId) => {
         throw error; // Propagate the error to be handled by the caller
     }
 };
+const ApiDeleteQuestionPack = async ( questionPackId) => {
+    try {
+        const token = Cookies.get('accessToken');
+      
+        // Check if the token exists
+        if (!token) {
+            throw new Error('No access token found. Please login again.');
+        }
 
+        const response = await axios.post(`/questionPack/${questionPackId}`, {
+            headers: {
+                'Authorization': `Bearer ${token}`,
+            }
+        });
+
+        return response; 
+    } catch (error) {
+        console.error('Error delete questionpack:', error);
+        throw error;
+    }
+};
 export {
     LoginApi, loginWGoogle, decodeDataGoogle, getAllQuestionPack,
     getQuestionByQPId, getUserByUserId, createNewQuestionPackApi,
@@ -832,6 +852,8 @@ export {
     postComment, deleteCommentApi, postReplyComment, searchItems, registerUser,
     deleteReply, getClassById, getClassByClassId, getQuestionPackByQuestionPackId, removeQpToClass
     , joinClassByInvite, getMemberByClassId, searchUserId, getAllUserApi, sendMess, getMessagesApi
-    , getQuizByQuizId, postSubmitExam, getQuestionPackOfTeacher, updateQuestion, updateQuestionPack, reSendOtpApi, sendOTPApi, requestPasswordResetApi, resetPasswordApi
-    ,getAllResultsByTeacher,getAllResultsByUser,updateUserProfile,createClassApi,getDataDashBoardAdm,getAllUserAdm,deleteUserApi,getAllQpByAdmin,apiAssignQpToClass,deleteQuestionToQuestionPackAPI
+    , getQuizByQuizId, postSubmitExam, getQuestionPackOfTeacher, updateQuestion, updateQuestionPack, reSendOtpApi, sendOTPApi,
+     requestPasswordResetApi, resetPasswordApi
+    ,getAllResultsByTeacher,getAllResultsByUser,updateUserProfile,createClassApi,getDataDashBoardAdm,getAllUserAdm,
+    deleteUserApi,getAllQpByAdmin,apiAssignQpToClass,deleteQuestionToQuestionPackAPI,ApiDeleteQuestionPack
 }
