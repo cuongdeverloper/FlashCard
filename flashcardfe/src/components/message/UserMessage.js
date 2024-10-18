@@ -4,7 +4,7 @@ import UseConversation from "./zustand/UseConversation";
 import Messages from "./Messages";
 import { TiMessages } from "react-icons/ti";
 import "./css/UserMessage.scss"
-
+import defaultImage from '../../../src/assests/avt.jpg'
 const UserMessage = () => {
     const { selectedConversation, setSelectedConversation } = UseConversation();
 
@@ -22,7 +22,7 @@ const UserMessage = () => {
 <div className='to-container'>
     <div className="avatar me-2">
         <img
-            src={selectedConversation?.image}
+            src={selectedConversation?.image || defaultImage}
             alt="User avatar"
             className="rounded-circle"
             style={{ height: '40px', width: '40px' }}

@@ -12,11 +12,12 @@ import {
 } from "recharts";
 import { Card } from "react-bootstrap";
 import { FaRegAddressCard, FaQuestion, FaUserAlt } from "react-icons/fa"; // Importing icons
+import { useNavigate } from "react-router-dom";
 
 const Dashboard = () => {
     const [dataOverView, setDataOverView] = useState([]);
     const [dataChart, setDataChart] = useState([]);
-
+    const navigate = useNavigate()
     const getDataDashBoard = async () => {
         const response = await getDataDashBoardAdm();
         console.log(response);
@@ -54,7 +55,7 @@ const Dashboard = () => {
         <div className="dashboard-container row mt-3">
             {dataOverView && Object.keys(dataOverView).length > 0 && (
                 <div className="dashboard-left col-md-6 row">
-                    <Card style={{ width: "18rem", margin: "10px" }} >
+                    <Card style={{ width: "18rem", margin: "10px" }} onClick={()=>navigate('admin-user')}>
                         <Card.Body>
                             <Card.Title>
                                 <FaRegAddressCard style={{ marginRight: "10px", color: "#3498db" }} />
@@ -63,7 +64,7 @@ const Dashboard = () => {
                             <Card.Text>{dataOverView.flashcardCount}</Card.Text>
                         </Card.Body>
                     </Card>
-                    <Card style={{ width: "18rem", margin: "10px" }}>
+                    <Card style={{ width: "18rem", margin: "10px" }} onClick={()=>navigate('admin-questionPack')}>
                         <Card.Body>
                             <Card.Title>
                                 <FaQuestion style={{ marginRight: "10px", color: "#e74c3c" }} />

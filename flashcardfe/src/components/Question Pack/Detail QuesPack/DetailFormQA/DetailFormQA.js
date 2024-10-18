@@ -7,7 +7,7 @@ import Cookies from 'js-cookie';
 import { useNavigate } from 'react-router-dom';
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
-
+import DefaultImg from '../../../../assests/avt.jpg'
 const DetailFormQA = (props) => {
   const { dataQuestion, currentQuestionIndex, isAnimating,idAuthor,idQp } = props;
   const navigate = useNavigate();
@@ -217,62 +217,68 @@ const DetailFormQA = (props) => {
               <p>Loading comments...</p>
             ) : comments.length > 0 ? (
               <ul>
-              {comments.map(comment => (
-                <li key={comment._id}>
-                  <img src={comment.user.image} alt="Author" style={{ height: '50px', width: '50px' }} />
-                  <div className="comment-content">
-                    <p><strong>{comment.user.username}:</strong> {comment.content}</p>
-                    {comment.image && <img src={comment.image} alt="Comment" style={{ width: '100px' }} />}
-                    <span className="comment-date">
-                      {new Date(comment.createdAt).toLocaleDateString()} {new Date(comment.createdAt).toLocaleTimeString()}
-                    </span>
-            
-                    {/* Điều kiện hiển thị nút xóa nếu người dùng là tác giả */}
-                    {(comment.user._id === userAcc || idAuthor === userAcc )&& (
-                      <button className="delete-button" onClick={()  => handleDeleteComment(comment._id)}>
-                        <FaTrash /> 
-                      </button>
-                    )}
-            
-                    <button onClick={() => handleToggleReplyForm(comment._id)}>
-                      <FaReply /> Reply
-                    </button>
-            
-                    {/* Hiển thị form trả lời khi người dùng muốn trả lời */}
-                    {showReplyForm[comment._id] && (
-                      <form onSubmit={(e) => handleReplySubmit(e, comment._id)}>
-                        <textarea
-                          value={reply[comment._id] || ""}
-                          onChange={(e) => handleReplyChange(e, comment._id)}
-                          placeholder="Add a reply..."
-                          rows="2"
-                        />
-                        <button type="submit">Reply</button>
-                      </form>
-                    )}
-                  </div>
-            
-                  {/* Phần hiển thị reply */}
-                  {comment.replies && comment.replies.length > 0 && (
-                    <div className="reply">
-                      <ul>
-                        {comment.replies.map(reply => (
-                          <li key={reply._id}>
-                            <p><strong>{reply.user.username}:</strong> {reply.content}</p>
-            
-                            {/* Hiển thị nút xóa reply nếu người dùng là tác giả hoặc người viết comment */}
-                            {(reply.user === userAcc || userAcc === idAuthor) && (
-                              <button onClick={() => handleDeleteReply(comment._id, reply._id)}>
-                                <FaTrash /> 
-                              </button>
-                            )}
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  )}
-                </li>
-              ))}
+            {comments.map(comment => {
+  // If comment.user is null, skip this comment
+  if (!comment.user) return null;
+
+  return (
+    <li key={comment._id}>
+      <img src={comment?.user?.image || DefaultImg} alt="Author" style={{ height: '50px', width: '50px' }} />
+      <div className="comment-content">
+        <p><strong>{comment?.user?.username}:</strong> {comment?.content}</p>
+        {comment?.image && <img src={comment?.image || DefaultImg} alt="Comment" style={{ width: '100px' }} />}
+        <span className="comment-date">
+          {new Date(comment?.createdAt).toLocaleDateString()} {new Date(comment?.createdAt).toLocaleTimeString()}
+        </span>
+
+        {/* Display delete button if the user is the author */}
+        {(comment?.user?._id === userAcc || idAuthor === userAcc ) && (
+          <button className="delete-button" onClick={()  => handleDeleteComment(comment?._id)}>
+            <FaTrash /> 
+          </button>
+        )}
+
+        <button onClick={() => handleToggleReplyForm(comment?._id)}>
+          <FaReply /> Reply
+        </button>
+
+        {/* Show reply form when the user wants to reply */}
+        {showReplyForm[comment?._id] && (
+          <form onSubmit={(e) => handleReplySubmit(e, comment?._id)}>
+            <textarea
+              value={reply[comment?._id] || ""}
+              onChange={(e) => handleReplyChange(e, comment?._id)}
+              placeholder="Add a reply..."
+              rows="2"
+            />
+            <button type="submit">Reply</button>
+          </form>
+        )}
+      </div>
+
+      {/* Display replies */}
+      {comment.replies && comment.replies.length > 0 && (
+        <div className="reply">
+          <ul>
+            {comment.replies.map(reply => (
+              <li key={reply._id}>
+                <p><strong>{reply.user.username}:</strong> {reply.content}</p>
+
+                {/* Show delete button for replies if the user is the author */}
+                {(reply.user._id === userAcc || userAcc === idAuthor) && (
+                  <button onClick={() => handleDeleteReply(comment._id, reply._id)}>
+                    <FaTrash /> 
+                  </button>
+                )}
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+    </li>
+  );
+})}
+
             </ul>
             
             ) : <p>No comments yet.</p>

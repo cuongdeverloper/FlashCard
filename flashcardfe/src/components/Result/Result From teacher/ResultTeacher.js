@@ -6,14 +6,14 @@ import { Pagination, Button } from 'react-bootstrap';
 
 const ResultTeacher = () => {
   const params = useParams();
-  const navigate = useNavigate(); // For navigation
+  const navigate = useNavigate(); 
   const [results, setResults] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1); // Trang hiện tại
-  const resultsPerPage = 7; // Số kết quả trên mỗi trang
+  const [currentPage, setCurrentPage] = useState(1); 
+  const resultsPerPage = 7; 
 
   useEffect(() => {
     getRsTeacher();
-  }, []);
+  }, [navigate]);
 
   const getRsTeacher = async () => {
     try {
@@ -27,16 +27,13 @@ const ResultTeacher = () => {
     }
   };
 
-  // Tính toán các chỉ số cho phân trang
   const indexOfLastResult = currentPage * resultsPerPage;
   const indexOfFirstResult = indexOfLastResult - resultsPerPage;
   const currentResults = results.slice(indexOfFirstResult, indexOfLastResult);
-  const totalPages = Math.ceil(results.length / resultsPerPage); // Tổng số trang
+  const totalPages = Math.ceil(results.length / resultsPerPage); 
 
-  // Hàm chuyển trang
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
-  // Hàm chuyển trang tiếp theo và trước đó
   const handleNextPage = () => {
     if (currentPage < totalPages) {
       setCurrentPage(currentPage + 1);

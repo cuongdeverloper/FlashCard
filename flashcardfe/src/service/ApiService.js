@@ -169,6 +169,26 @@ const createQuestionToQuestionPackAPI = async (questionText, questionImage, answ
     }
 };
 
+const deleteQuestionToQuestionPackAPI = async (flashcardId) => {
+    const token = Cookies.get('accessToken');
+
+    if (!token) {
+        throw new Error('No token found');
+    }
+
+    try {
+        const response = await axios.delete(`/flashcard/${flashcardId}`, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        });
+
+        return response;
+    } catch (error) {
+        console.error('Error deleting question:', error);
+        throw error;
+    }
+};
 const getAllCommentFlashCard = async (flashcardId, page = 1) => {
     const token = Cookies.get('accessToken');
 
@@ -647,7 +667,7 @@ const getAllResultsByUser = async() =>{
             }
         });
 
-        return response; // Return the response data
+        return response; 
     } catch (error) {
         console.error('Error updating question:', error);
         throw error; // Propagate the error to be handled by the caller
@@ -714,7 +734,7 @@ const getDataDashBoardAdm = async() =>{
 
         return response; 
     } catch (error) {
-        console.error('Error creating class:', error);
+        console.error('Error dashboard', error);
         throw error; 
     }
 }
@@ -735,10 +755,76 @@ const getAllUserAdm = async() =>{
 
         return response; 
     } catch (error) {
-        console.error('Error creating class:', error);
+        console.error('Error get all users', error);
         throw error; 
     }
 }
+const deleteUserApi = async(userId) =>{
+    try {
+        const token = Cookies.get('accessToken');
+      
+        if (!token) {
+            throw new Error('No access token found. Please login again.');
+        }
+
+        const response = await axios.delete(`/user/${userId}`, {
+            headers: {
+                'Authorization': `Bearer ${token}`,       
+            }
+        });
+
+        return response; 
+    } catch (error) {
+        console.error('Error delete user', error);
+        throw error; 
+    }
+}
+const getAllQpByAdmin = async() =>{
+    try {
+        const token = Cookies.get('accessToken');
+      
+        if (!token) {
+            throw new Error('No access token found. Please login again.');
+        }
+
+        const response = await axios.get(`/questionPacks-adm`, {
+            headers: {
+                'Authorization': `Bearer ${token}`,       
+            }
+        });
+
+        return response; 
+    } catch (error) {
+        console.error('Error get questionpacks', error);
+        throw error; 
+    }
+}
+const apiAssignQpToClass = async (classId, questionPackId) => {
+    try {
+        const token = Cookies.get('accessToken');
+      
+        // Check if the token exists
+        if (!token) {
+            throw new Error('No access token found. Please login again.');
+        }
+
+        const response = await axios.post(`/class/questionPackToClass`, {
+            classId,
+            questionPackId
+        }, {
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            }
+        });
+
+        return response; 
+    } catch (error) {
+        console.error('Error assigning question pack to class:', error);
+        throw error; // Propagate the error to be handled by the caller
+    }
+};
+
 export {
     LoginApi, loginWGoogle, decodeDataGoogle, getAllQuestionPack,
     getQuestionByQPId, getUserByUserId, createNewQuestionPackApi,
@@ -747,5 +833,5 @@ export {
     deleteReply, getClassById, getClassByClassId, getQuestionPackByQuestionPackId, removeQpToClass
     , joinClassByInvite, getMemberByClassId, searchUserId, getAllUserApi, sendMess, getMessagesApi
     , getQuizByQuizId, postSubmitExam, getQuestionPackOfTeacher, updateQuestion, updateQuestionPack, reSendOtpApi, sendOTPApi, requestPasswordResetApi, resetPasswordApi
-    ,getAllResultsByTeacher,getAllResultsByUser,updateUserProfile,createClassApi,getDataDashBoardAdm,getAllUserAdm
+    ,getAllResultsByTeacher,getAllResultsByUser,updateUserProfile,createClassApi,getDataDashBoardAdm,getAllUserAdm,deleteUserApi,getAllQpByAdmin,apiAssignQpToClass,deleteQuestionToQuestionPackAPI
 }

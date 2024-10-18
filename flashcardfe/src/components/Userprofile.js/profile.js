@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from "react";
 import "./profile.css";
 import { useSelector } from "react-redux";
-import { FaUpload } from "react-icons/fa";
-import { toast } from "react-toastify";
-import { getAllResultsByUser } from "../../service/ApiService";
-import Select from "react-select"; // Import Select component
-import ModalUpdateProfile from "./ModalUpdateProfile/ModalUpdateProfile";
 
+import { getAllResultsByUser } from "../../service/ApiService";
+import Select from "react-select"; 
+import ModalUpdateProfile from "./ModalUpdateProfile/ModalUpdateProfile";
+import defaultImage from "../../../src/assests/avt.jpg"
 const ViewProfile = () => {
   const [userProfile, setUserProfile] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -41,6 +40,7 @@ const ViewProfile = () => {
   const getResultOfUser = async () => {
     try {
       let response = await getAllResultsByUser();
+      console.log(response)
       if (response && Array.isArray(response.results)) {
         setResults(response.results);
         const subjects = Array.from(
@@ -104,13 +104,14 @@ const ViewProfile = () => {
 
       {/* User Profile */}
       <div className="profile-section">
-        <div className="profile-info">
-          <img src={userProfile?.image} alt="Profile" className="profile-avatar" />
-          <p className="profile-name"><strong>{userProfile?.username || "N/A"}</strong></p>
-        </div>
-        <div className="contact-info">
-          <p><strong>Full Name:</strong> {userProfile?.username || "N/A"}</p>
-          <p><strong>Email:</strong> {userProfile?.email || "N/A"}</p>
+  <div className="profile-info">
+    <img src={userProfile?.image} alt="Profile" className="profile-avatar" />
+    <p className="profile-name"><strong>{userProfile?.username || "N/A"}</strong></p>
+  </div>
+  
+  <div className="contact-info">
+    <p><strong>Full Name:</strong> {userProfile?.username || "N/A"}</p>
+    <p><strong>Email:</strong> {userProfile?.email || "N/A"}</p>
           {/* Modal for editing profile */}
           <ModalUpdateProfile
             user={userProfile}

@@ -82,17 +82,7 @@ const DetailQuesPack = () => {
       }, 500);  // Sync with CSS animation duration
     }
   };
-  const getQuizId = async () => {
-    try {
-      const response = await getQuizByQuizId(idQp);
-      setIdQuiz(response.exam._id)
-    } catch (error) {
-      console.log(error)
-    } 
-  };
-  useEffect(()=>{
-    getQuizId()
-  },[idQp])
+
   return (
     <div className="DetailQuesPack-container row">
       <div className="DetailQP-content container-fluid col-9">
