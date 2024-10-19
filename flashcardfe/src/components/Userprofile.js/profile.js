@@ -5,6 +5,7 @@ import { getAllResultsByUser } from "../../service/ApiService";
 import Select from "react-select"; 
 import ModalUpdateProfile from "./ModalUpdateProfile/ModalUpdateProfile";
 import defaultImage from "../../../src/assests/avt.jpg"
+import ChangePassword from "./ChangePassword";
 const ViewProfile = () => {
   const [userProfile, setUserProfile] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -127,7 +128,9 @@ const ViewProfile = () => {
   </div>
 </div>
 
-
+<div className="change-password-section">
+        <ChangePassword />
+      </div>
 
 
 

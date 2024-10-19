@@ -845,6 +845,30 @@ const ApiDeleteQuestionPack = async ( questionPackId) => {
         throw error;
     }
 };
+const ApiChangePassword = async(currentPassword,newPassword) =>{
+    try {
+        const token = Cookies.get('accessToken');
+      
+        if (!token) {
+            throw new Error('No access token found. Please login again.');
+        }
+
+        const response = await axios.post(`/change-password`, {
+            currentPassword,
+            newPassword
+        }, {
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            }
+        });
+
+        return response; 
+    } catch (error) {
+        console.error('Error changepasswrod:', error);
+        throw error; 
+    }
+}
 export {
     LoginApi, loginWGoogle, decodeDataGoogle, getAllQuestionPack,
     getQuestionByQPId, getUserByUserId, createNewQuestionPackApi,
@@ -853,7 +877,7 @@ export {
     deleteReply, getClassById, getClassByClassId, getQuestionPackByQuestionPackId, removeQpToClass
     , joinClassByInvite, getMemberByClassId, searchUserId, getAllUserApi, sendMess, getMessagesApi
     , getQuizByQuizId, postSubmitExam, getQuestionPackOfTeacher, updateQuestion, updateQuestionPack, reSendOtpApi, sendOTPApi,
-     requestPasswordResetApi, resetPasswordApi
+     requestPasswordResetApi, resetPasswordApi,ApiChangePassword
     ,getAllResultsByTeacher,getAllResultsByUser,updateUserProfile,createClassApi,getDataDashBoardAdm,getAllUserAdm,
     deleteUserApi,getAllQpByAdmin,apiAssignQpToClass,deleteQuestionToQuestionPackAPI,ApiDeleteQuestionPack
 }
