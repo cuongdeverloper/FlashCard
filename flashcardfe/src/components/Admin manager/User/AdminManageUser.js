@@ -171,7 +171,9 @@ const AdminManageUser = () => {
                             />
                         </Pagination>
                     </div>
+                    <button className="btn btn-primary">{results?.length} users</button>
                 </div>
+                
             ) : (
                 <div className="alert alert-warning" role="alert">
                     No results available

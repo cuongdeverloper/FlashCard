@@ -164,7 +164,7 @@ const ModalUpdateUserAdm = ({ user, showUpdate, setShowUpdate,onSuccess }) => {
                             />
                         </Form.Group>
 
-                        <Form.Group controlId="formRole" hidden>
+                        <Form.Group controlId="formRole">
                             <Form.Label>Role</Form.Label>
                             <Select
                                 name="role"

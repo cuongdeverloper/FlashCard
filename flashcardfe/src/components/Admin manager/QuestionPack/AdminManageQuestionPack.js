@@ -170,6 +170,8 @@ const AdminManageQuestionPack = () => {
                             />
                         </Pagination>
                     </div>
+                    <button className="btn btn-primary">{results?.length} questionpacks</button>
+
                 </div>
             ) : (
                 <div className="alert alert-warning" role="alert">
