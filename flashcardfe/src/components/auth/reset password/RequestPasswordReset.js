@@ -14,7 +14,11 @@ const RequestPasswordReset = () => {
       const response = await requestPasswordResetApi(email);
       if (response.errorCode === 0) {
         toast.success(response.message);
-      } else {
+      } else
+        if(response.errorCode === 2) {
+          toast.warning(response.message)
+        } else
+      {
         toast.error(response.message);
       }
     } catch (error) {

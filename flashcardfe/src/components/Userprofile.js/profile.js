@@ -6,7 +6,11 @@ import Select from "react-select";
 import ModalUpdateProfile from "./ModalUpdateProfile/ModalUpdateProfile";
 import defaultImage from "../../../src/assests/avt.jpg"
 import ChangePassword from "./ChangePassword";
+import { useNavigate } from "react-router-dom";
+
 const ViewProfile = () => {
+
+  const navigate = useNavigate()
   const [userProfile, setUserProfile] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -33,7 +37,12 @@ const ViewProfile = () => {
       setLoading(false);
     }
   }, [user]);
-
+  const isAuthenticated = useSelector((state=>state.user.isAuthenticated))
+  useEffect(()=>{
+    if(!isAuthenticated){
+      navigate('/login')
+    }
+  },[navigate])
   // Fetch user exam results
   useEffect(() => {
     getResultOfUser();

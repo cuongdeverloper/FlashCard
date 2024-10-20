@@ -12,7 +12,11 @@ const AdminManageQuestionPack = () => {
     const [selectedQuestionPack, setSelectedQuestionPack] = useState(null);
     const [sortField, setSortField] = useState("");
     const [sortOrder, setSortOrder] = useState("asc");
-    
+
+    const [searchTeacher, setSearchTeacher] = useState("");
+    const [searchSemester, setSearchSemester] = useState("");
+    const [searchSubject, setSearchSubject] = useState("");
+
     const resultsPerPage = 7;
 
     const getQuestionPackApi = async () => {
@@ -24,8 +28,14 @@ const AdminManageQuestionPack = () => {
     const navigate = useNavigate();
     const indexOfLastResult = currentPage * resultsPerPage;
     const indexOfFirstResult = indexOfLastResult - resultsPerPage;
-    const currentResults = results.slice(indexOfFirstResult, indexOfLastResult);
-    const totalPages = Math.ceil(results.length / resultsPerPage); 
+    const currentResults = results
+        .filter((result) => 
+            (!searchTeacher || (result.teacher && result.teacher.email.includes(searchTeacher))) &&
+            (!searchSemester || result.semester.toLowerCase().includes(searchSemester.toLowerCase())) &&
+            (!searchSubject || result.subject.toLowerCase().includes(searchSubject.toLowerCase()))
+        )
+        .slice(indexOfFirstResult, indexOfLastResult);
+    const totalPages = Math.ceil(results.length / resultsPerPage);
 
     const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
@@ -58,8 +68,8 @@ const AdminManageQuestionPack = () => {
     };
 
     const handleDeleteQp = (qp) => {
-        setSelectedQuestionPack(qp); 
-        setShowDelete(true); 
+        setSelectedQuestionPack(qp);
+        setShowDelete(true);
     };
 
     const sortResults = (field) => {
@@ -67,7 +77,6 @@ const AdminManageQuestionPack = () => {
         const order = sortOrder === "asc" ? 1 : -1;
 
         sortedResults.sort((a, b) => {
-            // Handle teacher property being null
             const fieldA = (field === "teacher") ? (a.teacher ? a.teacher.email : "") : a[field];
             const fieldB = (field === "teacher") ? (b.teacher ? b.teacher.email : "") : b[field];
 
@@ -81,7 +90,7 @@ const AdminManageQuestionPack = () => {
 
         setResults(sortedResults);
         setSortField(field);
-        setSortOrder(sortOrder === "asc" ? "desc" : "asc"); // toggle sort order
+        setSortOrder(sortOrder === "asc" ? "desc" : "asc");
     };
 
     useEffect(() => {
@@ -90,6 +99,30 @@ const AdminManageQuestionPack = () => {
 
     return (
         <>
+            <div className="search-bar">
+                <input
+                    type="text"
+                    placeholder="Search by teacher email"
+                    value={searchTeacher}
+                    onChange={(e) => setSearchTeacher(e.target.value)}
+                    className="form-control mb-2"
+                />
+                <input
+                    type="text"
+                    placeholder="Search by semester"
+                    value={searchSemester}
+                    onChange={(e) => setSearchSemester(e.target.value)}
+                    className="form-control mb-2"
+                />
+                <input
+                    type="text"
+                    placeholder="Search by subject"
+                    value={searchSubject}
+                    onChange={(e) => setSearchSubject(e.target.value)}
+                    className="form-control mb-2"
+                />
+            </div>
+
             {currentResults.length > 0 ? (
                 <div>
                     <div className="card-body">
@@ -149,7 +182,7 @@ const AdminManageQuestionPack = () => {
                                 ))}
                             </tbody>
                         </table>
-                        {/* Pagination */}
+
                         <Pagination>
                             <Pagination.Prev
                                 onClick={handlePreviousPage}
@@ -170,7 +203,7 @@ const AdminManageQuestionPack = () => {
                             />
                         </Pagination>
                     </div>
-                    <button className="btn btn-primary">{results?.length} questionpacks</button>
+                    <button className="btn btn-primary">{results?.length} question packs</button>
 
                 </div>
             ) : (
@@ -178,6 +211,7 @@ const AdminManageQuestionPack = () => {
                     No results available
                 </div>
             )}
+
             <ModalDeleteQuestionPackAdm 
                 show={showDelete}
                 setShow={setShowDelete}
