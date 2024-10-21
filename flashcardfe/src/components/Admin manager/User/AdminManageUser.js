@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
 import { getAllUserAdm } from "../../../service/ApiService";
-import { Button, Dropdown, Pagination } from "react-bootstrap";
+import { Button, Dropdown, Pagination, Form } from "react-bootstrap";
 import ModalPreviewUserAdm from "./Modal Preview user/ModalPreviewUserAdm";
 import ModalUpdateUserAdm from "./Modalupdate/ModalUpdateUserAdm";
 import ModalDeleteUserAdm from "./Modal delete user/ModalDeleteUserAdm";
 
 const AdminManageUser = () => {
     const [results, setResults] = useState([]);
+    const [filteredResults, setFilteredResults] = useState([]); // For search filtering
     const [currentPage, setCurrentPage] = useState(1);
     const [showPreview, setShowPreview] = useState(false);
     const [showUpdate, setShowUpdate] = useState(false);
@@ -14,19 +15,21 @@ const AdminManageUser = () => {
     const [showDelete, setShowDelete] = useState(false);
     const [sortField, setSortField] = useState("");
     const [sortOrder, setSortOrder] = useState("asc");
+    const [searchTerm, setSearchTerm] = useState(""); // Search term state
 
     const resultsPerPage = 7;
 
     const getAllUser = async () => {
         let response = await getAllUserAdm();
         setResults(response.data);
-        console.log(response);
+        setFilteredResults(response.data); // Set initial filtered results
     };
 
+    // Pagination logic
     const indexOfLastResult = currentPage * resultsPerPage;
     const indexOfFirstResult = indexOfLastResult - resultsPerPage;
-    const currentResults = results.slice(indexOfFirstResult, indexOfLastResult);
-    const totalPages = Math.ceil(results.length / resultsPerPage); 
+    const currentResults = filteredResults.slice(indexOfFirstResult, indexOfLastResult); // Use filteredResults
+    const totalPages = Math.ceil(filteredResults.length / resultsPerPage); 
 
     const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
@@ -58,7 +61,7 @@ const AdminManageUser = () => {
     };
 
     const sortResults = (field) => {
-        const sortedResults = [...results];
+        const sortedResults = [...filteredResults]; // Sort filteredResults
         const order = sortOrder === "asc" ? 1 : -1;
 
         sortedResults.sort((a, b) => {
@@ -70,9 +73,26 @@ const AdminManageUser = () => {
             return 0;
         });
 
-        setResults(sortedResults);
+        setFilteredResults(sortedResults); // Set sorted filtered results
         setSortField(field);
         setSortOrder(sortOrder === "asc" ? "desc" : "asc"); // Toggle sort order
+    };
+
+    // Search functionality
+    const handleSearch = (e) => {
+        const term = e.target.value.toLowerCase();
+        setSearchTerm(term);
+
+        if (term) {
+            const filtered = results.filter((user) =>
+                user.email.toLowerCase().includes(term) ||
+                user.username.toLowerCase().includes(term)
+            );
+            setFilteredResults(filtered);
+        } else {
+            setFilteredResults(results);
+        }
+        setCurrentPage(1); 
     };
 
     useEffect(() => {
@@ -81,6 +101,15 @@ const AdminManageUser = () => {
 
     return (
         <>
+            <div className="mb-3">
+                <Form.Control
+                    type="text"
+                    placeholder="Search by email or username"
+                    value={searchTerm}
+                    onChange={handleSearch}
+                />
+            </div>
+
             {currentResults.length > 0 ? (
                 <div>
                     <div className="card-body">
@@ -171,27 +200,26 @@ const AdminManageUser = () => {
                             />
                         </Pagination>
                     </div>
-                    <button className="btn btn-primary">{results?.length} users</button>
+                    <button className="btn btn-primary">{filteredResults?.length} users</button>
                 </div>
-                
             ) : (
                 <div className="alert alert-warning" role="alert">
                     No results available
                 </div>
             )}
 
-            <ModalPreviewUserAdm 
+            <ModalPreviewUserAdm
                 show={showPreview}
                 setShow={setShowPreview}
                 user={selectedUser}
             />
-            <ModalUpdateUserAdm 
+            <ModalUpdateUserAdm
                 user={selectedUser}
                 showUpdate={showUpdate}
                 setShowUpdate={setShowUpdate}
                 onSuccess={getAllUser}
             />
-            <ModalDeleteUserAdm 
+            <ModalDeleteUserAdm
                 user={selectedUser}
                 show={showDelete}
                 setShow={setShowDelete}

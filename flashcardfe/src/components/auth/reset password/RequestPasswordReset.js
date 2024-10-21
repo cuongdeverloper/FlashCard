@@ -8,6 +8,7 @@ const RequestPasswordReset = () => {
     const [email, setEmail] = useState('');
     const [isLoading, setIsLoading] = useState(false);
 
+<<<<<<< HEAD
     const handleSubmit = async (e) => {
         e.preventDefault();
         setIsLoading(true);
@@ -24,6 +25,28 @@ const RequestPasswordReset = () => {
             setIsLoading(false);
         }
     };
+=======
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setIsLoading(true);
+    try {
+      const response = await requestPasswordResetApi(email);
+      if (response.errorCode === 0) {
+        toast.success(response.message);
+      } else
+        if(response.errorCode === 2) {
+          toast.warning(response.message)
+        } else
+      {
+        toast.error(response.message);
+      }
+    } catch (error) {
+      toast.error('Failed to send reset link. Please try again later.');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+>>>>>>> 96edaafb3b06955dabcd278905aff18606955775
 
     return (
       <div className='reset-container'>
