@@ -6,6 +6,7 @@ import './Register.scss';
 import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
 import { registerUser, reSendOtpApi } from "../../service/ApiService";
+import "./Register.scss"
 
 const Register = () => {
     const [isLoadingRegister, setIsLoadingRegister] = useState(false);
@@ -141,7 +142,7 @@ const Register = () => {
                             <input
                                 type="file"
                                 id="imageForm"
-                                className="form-control input-field"
+                                className="form-control input-field file-upload-button"
                                 onChange={handleImageChange}
                             />
                         </div>

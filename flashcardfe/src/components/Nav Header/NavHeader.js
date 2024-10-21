@@ -13,6 +13,8 @@ import { Nav, NavDropdown } from "react-bootstrap";
 import { FaSearch } from "react-icons/fa";
 import { searchItems } from "../../service/ApiService";
 import DarkMode from "../darkmode/DarkMode";
+import FontSizeChanger from "../fontsizechange/FontSizeChanger";
+
 
 const NavHeader = () => {
   const isAuthenticated = useSelector((state) => state.user.isAuthenticated);
@@ -152,6 +154,7 @@ const iconNav = { fontSize: "20px", color: "#fff" }
                 <IoPersonCircle style={iconNav}/>
               </Nav.Link>
               <DarkMode></DarkMode>
+              <FontSizeChanger></FontSizeChanger>
             </Nav>
           </Navbar.Collapse>
         </Container>

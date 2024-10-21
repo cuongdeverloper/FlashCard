@@ -284,6 +284,7 @@ const ManageAddQuiz = () => {
                                 name="semester"
                                 value={semesterQP}
                                 onChange={handleSemesterChange}
+                                className='flashcard-semester-option'
                             >
                                 <option value="ky1">KY1</option>
                                 <option value="ky2">KY2</option>

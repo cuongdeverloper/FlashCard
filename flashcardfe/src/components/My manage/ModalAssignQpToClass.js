@@ -61,7 +61,7 @@ const ModalAssignQpToClass = (props) => {
 
   return (
     <>
-      <Button variant="primary" onClick={handleShow}>
+      <Button variant="primary" className='mt-4 mx-3' onClick={handleShow}>
       Assign <b style={{color:'#333'}}>{selectedOption.label}</b> to Class
       </Button>
 

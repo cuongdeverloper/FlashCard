@@ -3,6 +3,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { ImSpinner9 } from "react-icons/im";
 import { sendOTPApi } from "../../service/ApiService";
+import "./otp.scss"
 
 const EnterOTPRegister = () => {
   const [otp, setOtp] = useState('');
@@ -33,7 +34,8 @@ const EnterOTPRegister = () => {
   };
 
   return (
-    <div className="EnterOTP-container">
+    <div className="enterotp-bigcontainer">
+      <div className="EnterOTP-container">
       <h1 className="otp-title">Enter OTP</h1>
       <div className="otp-input-group">
         <input
@@ -54,6 +56,8 @@ const EnterOTPRegister = () => {
         </button>
       </div>
     </div>
+    </div>
+    
   );
 };
 

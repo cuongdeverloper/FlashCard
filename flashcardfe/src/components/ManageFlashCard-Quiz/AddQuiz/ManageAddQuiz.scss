@@ -26,8 +26,8 @@
         border-radius: 5px;
         border: 1px solid #ddd; 
         padding: 10px;
-        background-color: #f9f9f9;  
-        color: black;
+        background-color: transparent;  
+        color: #fff;
 
        
         ::file-selector-button {
@@ -117,6 +117,7 @@
             border-radius: 5px;
             padding: 10px;
             margin-bottom: 10px;
+          
         }
     }
 
@@ -194,5 +195,11 @@
             background-color: #c82333;
             border-color: #bd2130;
         }
+    }
+    .flashcard-semester-option{
+        background-color: transparent;
+        border: 0;
+        border-bottom: 2px solid #fff; 
+        color: #fff;
     }
 }

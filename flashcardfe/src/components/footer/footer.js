@@ -10,13 +10,13 @@ const Footer = () => {
           <h4>Contact Us</h4>
           <ul>
             <li>
-              <FaMapMarkerAlt /> Address: 123 Main Street, City, Country
+              <FaMapMarkerAlt /> Address: FPT university Da Nang
             </li>
             <li>
-              <FaEnvelope /> Email: info@example.com
+              <FaEnvelope /> Email: namedexxxxxx@fpt.edu.vn
             </li>
             <li>
-              <FaPhoneAlt /> Phone: +123-456-7890
+              <FaPhoneAlt /> Phone: +84 - 0123456789
             </li>
           </ul>
         </div>
@@ -42,7 +42,7 @@ const Footer = () => {
         </div>
       </div>
       <div className="footer-bottom">
-        <p>&copy; 2024 Your Company | All Rights Reserved</p>
+        <p>&copy; 2024 Quizones | All Rights Reserved</p>
       </div>
     </footer>
   );

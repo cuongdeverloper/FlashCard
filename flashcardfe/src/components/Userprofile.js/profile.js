@@ -133,7 +133,7 @@ const ViewProfile = () => {
 
       {/* Exam Results */}
       <div>
-        <h2 className="text-white mt-4">Exam Results</h2>
+        <h2 className=" mt-4" style={{color:'#717CA5'}}>Exam Results</h2>
         <Select
           value={selectedSubject}
           onChange={handleSubjectChange}
@@ -171,10 +171,10 @@ const ViewProfile = () => {
               ))}
             </div>
           ) : (
-            <div>No results found for this exam.</div>
+            <div style={{color:'#717CA5'}}>No results found for this exam.</div>
           )
         ) : (
-          <div className="text-white">Please select a subject to view results.</div>
+          <div style={{color:'#717CA5'}}>Please select a subject to view results.</div>
         )}
       </div>
     </div>

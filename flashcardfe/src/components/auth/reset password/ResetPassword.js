@@ -2,13 +2,15 @@ import React, { useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { resetPasswordApi } from '../../../service/ApiService';
+import "./ResetPassword.scss"
 
 const ResetPassword = () => {
     const [searchParams] = useSearchParams();
     const [newPassword, setNewPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const token = searchParams.get('token');
-    const navigate = useNavigate()
+    const navigate = useNavigate();
+
     const handleResetPassword = async () => {
         if (newPassword !== confirmPassword) {
             toast.error("Passwords do not match!");
@@ -16,10 +18,10 @@ const ResetPassword = () => {
         }
         try {
             const response = await resetPasswordApi(token, newPassword);
-            console.log(response)
+            console.log(response);
             if (response.errorCode === 0) {
                 toast.success(response.message);
-                navigate('/login')
+                navigate('/login');
             } else {
                 toast.error(response.message);
             }
@@ -29,27 +31,27 @@ const ResetPassword = () => {
     };
 
     return (
-        <div className="reset-password-container">
-            <h2>Reset Your Password</h2>
-            <div className="form-group">
-                <label>New Password</label>
+        <div className="reset-password__container">
+            <h2 className="reset-password__heading">Reset Your Password</h2>
+            <div className="reset-password__form-group">
+                <label className="reset-password__label">New Password</label>
                 <input
                     type="password"
                     value={newPassword}
                     onChange={(e) => setNewPassword(e.target.value)}
-                    className="form-control"
+                    className="reset-password__form-control"
                 />
             </div>
-            <div className="form-group">
-                <label>Confirm Password</label>
+            <div className="reset-password__form-group">
+                <label className="reset-password__label">Confirm Password</label>
                 <input
                     type="password"
                     value={confirmPassword}
                     onChange={(e) => setConfirmPassword(e.target.value)}
-                    className="form-control"
+                    className="reset-password__form-control"
                 />
             </div>
-            <button className="btn btn-primary" onClick={handleResetPassword}>
+            <button className="reset-password__btn" onClick={handleResetPassword}>
                 Reset Password
             </button>
         </div>

@@ -33,34 +33,37 @@
 
 /* Profile section - phần Your Profile */
 .profile-section {
-  background-color: #fff;
+  background-color: #0A082D;
   padding: 20px;
-  border-radius: 10px;
+  border-radius: 10px ;
+  border: 1px solid #25284B;
   display: flex;
-  justify-content: space-between; /* Căn giữa các phần */
+
   align-items: center;
   margin: 0 auto;
-  width: 60%; /* Đảm bảo kích thước hiển thị tốt */
+  width: 45%; /* Đảm bảo kích thước hiển thị tốt */
   margin-bottom: 20px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  height: 300px;
+  height: 430px;
     position: relative;
+    flex-direction: column;
+    color: #9089A5;
+
 }
-.profile-section::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 40%; /* Đặt đường kẻ giữa avatar và thông tin */
-  width: 1px;
-  background-color: rgba(0, 0, 0, 0.2); /* Màu đường phân tách */
-}
+
 
 .profile-info {
   display: flex;
-  flex-direction: column;
+
   align-items: center;
-  width: 40%;
+  width: 108%;
+  border-bottom: 1px solid #25284B;
+  justify-content: flex-start;
+    img{
+      margin-left:30px ;
+      margin-bottom: 30px;
+      margin-right: 30px;
+    }
 }
 
 .profile-avatar {
@@ -78,25 +81,26 @@
 }
 
 .contact-info {
-  width: 55%;
+  width: 107%;
+  button {
+    position: relative;
+    left: 20px;
+    top: 13px;
+  }
+  
 }
 
 .contact-info p {
-  margin: 10px 0;
+  margin: 20px 0 0 0;
   font-size: 16px;
   position: relative;
+  width: 100%;
+  padding-left: 10px;
+  padding-bottom: 30px;
+  border-bottom: 1px solid #25284B;
+  text-indent: 20px;
 }
 
-.contact-info p::after {
-  content: '';
-  display: block;
-  width: 100%;
-  height: 1px;
-  background-color: rgba(0, 0, 0, 0.2); /* Gạch dưới */
-  position: absolute;
-  bottom: -3px;
-  left: 0;
-}
 
 
 
@@ -124,7 +128,7 @@
 }
 
 .card {
-  background-color: #fff;
+  background-color: #717CA5;
   border: none;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);

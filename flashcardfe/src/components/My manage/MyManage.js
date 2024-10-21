@@ -240,7 +240,7 @@ const [dataRemove,setDataRemove] = useState('');
     }
     };
     return (
-        <div style={{ backgroundColor: '#121045' }}>
+        <div style={{ backgroundColor: '#121045' }} className="m-3">
             {loading ? <p>Loading...</p> : (
                 <Accordion defaultActiveKey="0">
                     <Accordion.Item eventKey="0">
@@ -277,10 +277,10 @@ const [dataRemove,setDataRemove] = useState('');
             {error && <p>{error}</p>}
             {idQp && idQp.length > 0 && (          
                 <>
-                 <ModalAssignQpToClass 
+                 <ModalAssignQpToClass  
                 selectedOption={selectedOption}
                 />
-               <Button variant="primary" onClick={handleShowAddQuestionModal}>
+               <Button variant="primary" className="mt-4" onClick={handleShowAddQuestionModal}>
                 Add Questions
             </Button>
             <ModalAddFlashCard 
@@ -378,7 +378,7 @@ const [dataRemove,setDataRemove] = useState('');
                                         )}
                                     </ul>
                                     <Button onClick={() => handleEditClick(question)}>Edit</Button>
-                                    <Button onClick={() => handleRemoveFlashCard(question)}>Remove</Button>
+                                    <Button onClick={() => handleRemoveFlashCard(question)} className="mx-3">Remove</Button>
                                 </div>
                             )}
                         </div>
