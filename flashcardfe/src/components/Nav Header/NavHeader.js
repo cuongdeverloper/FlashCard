@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import Container from "react-bootstrap/Container";
 import Navbar from "react-bootstrap/Navbar";
@@ -9,21 +9,30 @@ import { GoSearch } from "react-icons/go";
 import { FaUserShield } from "react-icons/fa"; // Admin icon
 import logoImg from "../../assests/logo.png";
 import { IoAddOutline } from "react-icons/io5";
-import { Nav, NavDropdown } from "react-bootstrap";
+import { Nav, NavDropdown,Dropdown } from "react-bootstrap";
 import { FaSearch } from "react-icons/fa";
 import { searchItems } from "../../service/ApiService";
 import DarkMode from "../darkmode/DarkMode";
 import FontSizeChanger from "../fontsizechange/FontSizeChanger";
-
+import defaultImg from "../../assests/avt.jpg"
 
 const NavHeader = () => {
+  const user = useSelector((state) => state.user.account.image)
   const isAuthenticated = useSelector((state) => state.user.isAuthenticated);
   const userRole = useSelector((state) => state.user.account.role); 
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState([]);
   const [openDropdown, setOpenDropdown] = useState(null);
+  const [showDropdown, setShowDropdown] = useState(false);
 const iconNav = { fontSize: "20px", color: "#fff" }
+
+const handleToggle = () => {
+  setShowDropdown(!showDropdown);
+};
+const handleClickInside = (e) => {
+  e.stopPropagation(); // Ngăn sự kiện click lan ra ngoài và đóng dropdown
+};
   const handleMouseEnter = (dropdownId) => {
     setOpenDropdown(dropdownId);
   };
@@ -97,7 +106,7 @@ const iconNav = { fontSize: "20px", color: "#fff" }
           <Navbar.Collapse id="basic-navbar-nav">
             <div className="d-flex flex-wrap navbar-outlay">
               <div
-                className="text-white px-3"
+                className=" px-3"
                 onMouseEnter={() => handleMouseEnter("shirt-dropdown")}
                 onMouseLeave={handleMouseLeave}
                 style={{ cursor: "pointer" }}
@@ -134,27 +143,49 @@ const iconNav = { fontSize: "20px", color: "#fff" }
             <Nav>
               {isAuthenticated ? (
                 <>
-                  <NavLink to="/logout" className="nav-link">
-                    <h5>logout</h5>
-                  </NavLink>
+
 
                   {/* Admin-only icon */}
                   {userRole === "admin" && (
                     <Nav.Link onClick={() => navigate("/admin-manage")}>
                       <FaUserShield style={iconNav} />
                     </Nav.Link>
+                    
                   )}
+                                    <Dropdown align="end" >
+                    
+                    <Dropdown.Toggle as="div" className="avatar-button" show={showDropdown}>
+                      {/* <IoPersonCircle style={{ fontSize: "40px", color: "#fff", cursor: "pointer" }} /> */}
+                      <img src={user || defaultImg} style={{width:'40px', height:'40px', borderRadius:'50px'}} />
+                    </Dropdown.Toggle>
+
+                    <Dropdown.Menu className="profile-dropdown">
+
+                    <Dropdown.Item as="button" onClick={() => navigate("/userprofile")} >
+                    <IoPersonCircle style={{ fontSize: "40px", color: "#fff", cursor: "pointer" }} />
+                        <p>Profile</p>
+                      </Dropdown.Item>
+                      <Dropdown.Item as="button" onClick={handleClickInside}>
+                        <DarkMode />
+                      </Dropdown.Item>
+
+                      <Dropdown.Item as="button" onClick={handleClickInside}>
+                        <FontSizeChanger />
+                      </Dropdown.Item>
+
+                      <Dropdown.Item as="button"  onClick={() => navigate("/logout")}>
+                    <h5>logout</h5>
+                      </Dropdown.Item>
+                    </Dropdown.Menu>
+                  </Dropdown>
                 </>
               ) : (
                 <NavLink to="/login" className="nav-link">
                   Login
                 </NavLink>
               )}
-              <Nav.Link onClick={() => navigate("/userprofile")}>
-                <IoPersonCircle style={iconNav}/>
-              </Nav.Link>
-              <DarkMode></DarkMode>
-              <FontSizeChanger></FontSizeChanger>
+
+
             </Nav>
           </Navbar.Collapse>
         </Container>

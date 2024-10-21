@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { ApiChangePassword } from "../../service/ApiService";
 import { toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css'; // Make sure you have toastify styles imported
+import "./ChangePassword.scss"
 
 const ChangePassword = () => {
   const [currentPassword, setCurrentPassword] = useState("");
