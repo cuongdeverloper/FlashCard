@@ -20,7 +20,7 @@ export const SocketContextProvider = ({ children }) => {
 					userId: authUser.access_token,
 				},
 			});
-            console.log(socket)
+            // console.log(socket)
 			setSocket(socket);
 
 			socket.on("onlineUser", (users) => {

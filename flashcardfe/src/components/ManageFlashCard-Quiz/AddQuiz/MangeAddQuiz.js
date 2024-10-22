@@ -15,6 +15,7 @@ const ManageAddQuiz = () => {
         semester: 'ky1',
         subject: '',
         imagePreview: null,
+        isPublic:false,
         questions: [
             { question: '', answers: [{ answer: '', isCorrect: false }], image: null }
         ]
@@ -33,6 +34,7 @@ const ManageAddQuiz = () => {
     const [semesterQP, setSemesterQP] = useState(initQP.semester);
     const [subjectQP, setSubjectQP] = useState(initQP.subject);
     const [imagePreview, setImagePreview] = useState(initQP.imagePreview);
+    const [isPublic, setIsPublic] = useState(false);
     const [userId, setUserId] = useState('');
 
     const handleSemesterChange = (event) => {
@@ -177,8 +179,10 @@ const ManageAddQuiz = () => {
                 userId, 
                 semesterQP, 
                 subjectQP, 
-                imagePreview
+                imagePreview,
+                isPublic
             );
+            console.log('rs',response)
             if (response && response._id) {
                 const questionPackId = response._id;
                 toast.success('Question pack created successfully!');
@@ -222,12 +226,14 @@ const ManageAddQuiz = () => {
             const imageUrl = URL.createObjectURL(file);
             setQuestionPack((prev) => ({
                 ...prev,
-                imagePreview: imageUrl, // Set the preview URL for display
+                imagePreview: imageUrl, 
             }));
-            setImagePreview(file); // Store the file for upload
+            setImagePreview(file); 
         }
     };
-    
+    const handleIsPublicChange = () => {
+        setIsPublic(!isPublic);
+    };
     const getId = async () => {
         try {
             const response = await getUserId();
@@ -274,7 +280,15 @@ const ManageAddQuiz = () => {
                         </Form.Group>
                     </Col>
                 </Row>
-
+                <Form.Group controlId="formIsPublic">
+                <Form.Label>Is Public?</Form.Label>
+                    <Form.Check 
+                        type="checkbox" 
+                        
+                        checked={isPublic} 
+                        onChange={handleIsPublicChange} 
+                    />
+                </Form.Group>
                 <Row className="mb-3">
                     <Col md={6}>
                         <Form.Group>

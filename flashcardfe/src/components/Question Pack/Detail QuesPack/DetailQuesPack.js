@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
-import { getQuestionByQPId, getQuizByQuizId, getUserByUserId } from "../../../service/ApiService";
+import { getQuestionByQPId, getQuizByQuizId, getUserByUserId, searchItems } from "../../../service/ApiService";
 import "./DetailQuesPack.scss";
 import DetailFormQA from "./DetailFormQA/DetailFormQA";
 import { FaRegArrowAltCircleLeft, FaRegArrowAltCircleRight, FaShareAlt, FaSave, FaEllipsisH } from "react-icons/fa";
@@ -19,13 +19,14 @@ const DetailQuesPack = () => {
   const [idAuthor, setIdAuthor] = useState('');
   const [semester,setSemester]=useState('');
   const [title,setTitle] = useState('');
-  const [idQuiz,setIdQuiz] = useState('')
+  const [idQuiz,setIdQuiz] = useState('');
+  const [searchResults, setSearchResults] = useState([]);
+
   const location = useLocation();
   const navigate = useNavigate()
   const getQuestionByQuestionPack = async () => {
     try {
       let response = await getQuestionByQPId(params.packId);
-      console.log('re',response)
       if(response && response.errorCode === 2 ){
         navigate('/forbidden')
       }
@@ -52,7 +53,15 @@ const DetailQuesPack = () => {
       }
     }
   };
-
+ const getQuizIdHandle = async() =>{
+    if(idQp){
+      let response = await getQuizByQuizId(idQp);
+      setIdQuiz(response.exam._id)
+    }
+ }
+ useEffect(()=>{
+  getQuizIdHandle()
+ },[idQp])
   useEffect(() => {
     getQuestionByQuestionPack();
   }, [params.packId]);
@@ -82,13 +91,19 @@ const DetailQuesPack = () => {
       }, 500);  // Sync with CSS animation duration
     }
   };
+const searchBreadcum = async()=>{
+  const response = await searchItems(semester);
+  setSearchResults(response.data || []);
+  const results = response.data;
+  navigate("/search", { state: { results, query: semester } });
 
+}
   return (
     <div className="DetailQuesPack-container row">
       <div className="DetailQP-content container-fluid col-9">
         <Breadcrumb className="breadcrumbitem" style={{color:'#fff'}}>
           <Breadcrumb.Item href="/" className="breadCrumb-href">Home</Breadcrumb.Item>
-          <Breadcrumb.Item href="/us" className="breadCrumb-href semester">
+          <Breadcrumb.Item onClick={() =>searchBreadcum()} className="breadCrumb-href semester">
             {semester || "Unknown Semester"}
           </Breadcrumb.Item>
           <Breadcrumb.Item className="disable-pack"active>

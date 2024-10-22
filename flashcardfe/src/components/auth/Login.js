@@ -80,7 +80,9 @@ const Login = () =>{
             setIsLoadingLogin(false);
         }
     };
-    
+    const handleSocialNotDeveloped = () =>{
+        toast.warning('This feature is not developed yet !')
+    }
     useEffect(() => {
         if (isAuthenticated) {
           const redirectUrl = localStorage.getItem('redirectAfterLogin');
@@ -105,16 +107,16 @@ const Login = () =>{
                     </div>
                     <h1 className='form-title'>LOGIN</h1>
                     <div className="Login-body-social mb-3">
-                        <div className="div-icon-social btn btn-primary">
-                            <a href="#" className="icon-social">
+                        {/* <div className="div-icon-social btn btn-primary">
+                            <a href="#" className="icon-social" onClick={()=>handleSocialNotDeveloped()}>
                                 <FaFacebookF />
                             </a>
                         </div>
                         <div className="div-icon-social btn btn-secondary">
-                            <a href="#" className="icon-social">
+                            <a href="#" className="icon-social" onClick={()=>handleSocialNotDeveloped()}>
                                 <FaInstagram />
                             </a>
-                        </div>
+                        </div> */}
                         <div className="div-icon-social btn btn-success">
                             <i id='iconGoogle' onClick={redirectGoogleLogin}><FaGoogle /></i>
                         </div>

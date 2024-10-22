@@ -22,7 +22,8 @@ const ResultSearchItem = () => {
             >
               <div className="row no-gutters">
                 <div className="col-md-4 card-div">
-                  <Card.Img src={result.imagePreview} alt={result.title} />
+                {result.imagePreview && <Card.Img src={result.imagePreview} alt={result.title} />}
+                  
                 </div>
                 <div className="col-md-8">
                   <Card.Body>

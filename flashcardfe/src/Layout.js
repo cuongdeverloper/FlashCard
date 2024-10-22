@@ -110,6 +110,7 @@ const Layout = () => {
                     <Route path="/result/:examId" element={<ResultTeacher />} />
                     <Route path="/results/user" element={<ResultUser />} />
                     <Route path="/userprofile" element={<ViewProfile />} />
+
                 </Routes>
             </BrowserRouter>
         </Suspense>

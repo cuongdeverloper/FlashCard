@@ -111,7 +111,7 @@ const getUserId = async () => {
         return null;
     }
 };
-const createNewQuestionPackApi = async (title, description, teacher, semester, subject, imagePreview) => {
+const createNewQuestionPackApi = async (title, description, teacher, semester, subject, imagePreview,isPublic) => {
     const token = Cookies.get('accessToken');
 
     if (!token) {
@@ -126,6 +126,7 @@ const createNewQuestionPackApi = async (title, description, teacher, semester, s
         form.append('teacher', teacher);
         form.append('semester', semester);
         form.append('subject', subject);
+        form.append('isPublic',isPublic)
         if (imagePreview) {
             form.append('imagePreview', imagePreview); // Append the actual file
         }
@@ -864,6 +865,21 @@ const ApiChangePassword = async(currentPassword,newPassword) =>{
         });
 
         return response; 
+    } catch (error) {
+        console.error('Error changepasswrod:', error);
+        throw error; 
+    }
+}
+const ApiAddQuizzByTeacher = async() =>{
+    try {
+        const token = Cookies.get('accessToken');
+      
+        if (!token) {
+            throw new Error('No access token found. Please login again.');
+        }
+
+      
+
     } catch (error) {
         console.error('Error changepasswrod:', error);
         throw error; 
