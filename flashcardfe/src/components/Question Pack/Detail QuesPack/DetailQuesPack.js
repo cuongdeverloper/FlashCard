@@ -6,6 +6,7 @@ import DetailFormQA from "./DetailFormQA/DetailFormQA";
 import { FaRegArrowAltCircleLeft, FaRegArrowAltCircleRight, FaShareAlt, FaSave, FaEllipsisH } from "react-icons/fa";
 import { Breadcrumb, Button } from "react-bootstrap";
 import { useSelector } from "react-redux";
+import { toast } from "react-toastify";
 
 const DetailQuesPack = () => {
   const params = useParams();
@@ -20,7 +21,6 @@ const DetailQuesPack = () => {
   const [semester,setSemester]=useState('');
   const [title,setTitle] = useState('');
   const [idQuiz,setIdQuiz] = useState('');
-  const [searchResults, setSearchResults] = useState([]);
 
   const location = useLocation();
   const navigate = useNavigate()
@@ -56,7 +56,10 @@ const DetailQuesPack = () => {
  const getQuizIdHandle = async() =>{
     if(idQp){
       let response = await getQuizByQuizId(idQp);
-      setIdQuiz(response.exam._id)
+      if(response){
+        setIdQuiz(response?.exam?._id)
+      }
+      
     }
  }
  useEffect(()=>{
@@ -93,10 +96,23 @@ const DetailQuesPack = () => {
   };
 const searchBreadcum = async()=>{
   const response = await searchItems(semester);
-  setSearchResults(response.data || []);
   const results = response.data;
   navigate("/search", { state: { results, query: semester } });
 
+}
+const handleNavigateRs = ()=>{
+  if(idQuiz){
+    navigate(`/result/${idQuiz}`)
+  } else{
+    toast.warning('no quiz yet')
+  }
+}
+const handleNavigateQuiz = ()=>{
+  if(idQp){
+    navigate(`/quiz/${idQp}`)
+  } else{
+    toast.warning('no quiz yet')
+  }
 }
   return (
     <div className="DetailQuesPack-container row">
@@ -111,8 +127,8 @@ const searchBreadcum = async()=>{
             
           </Breadcrumb.Item>
         </Breadcrumb>
-        <Button className="btn btn-secondary" onClick={()=> navigate(`/quiz/${idQp}`)}>Do quiz</Button>
-        {(userId === idAuthor) && <Button className="btn btn-secondary" onClick={()=> navigate(`/result/${idQuiz}`)}>Get result</Button>
+        <Button className="btn btn-secondary" onClick={handleNavigateQuiz}>Do quiz</Button>
+        {(userId === idAuthor) && <Button className="btn btn-secondary" onClick={handleNavigateRs }>Get result</Button>
       }
         <DetailFormQA
           dataQuestion={dataQuestion}
