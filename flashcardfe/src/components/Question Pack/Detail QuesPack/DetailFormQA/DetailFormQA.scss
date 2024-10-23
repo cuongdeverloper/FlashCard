@@ -40,8 +40,10 @@
   }
   p{
     font-size: 30px;
-    width: 250px;
+    width: max;
     word-wrap: break-word;
+    max-height: 100%;
+    overflow-y: scroll;
   }
 }
 
