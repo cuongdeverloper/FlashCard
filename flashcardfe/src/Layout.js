@@ -39,6 +39,7 @@ import AdminManage from "./components/Admin manager/AdminManage";
 import Dashboard from "./components/Admin manager/Dash board/Dashboard";
 import AdminManageUser from "./components/Admin manager/User/AdminManageUser";
 import AdminManageQuestionPack from "./components/Admin manager/QuestionPack/AdminManageQuestionPack";
+import AddQuiz from "./components/AddQuiz/AddQuiz";
 
 
 
@@ -72,6 +73,7 @@ const Layout = () => {
                         <Route path="/crud-q" element={<PrivateRoute element={<ManageFcQ />} requiredRole={['teacher', 'admin']} />}>
                             <Route path="add-quiz" element={<PrivateRoute element={<ManageAddQuiz />} requiredRole="teacher" />} />
                         </Route>
+                        <Route path="quiz" element={<AddQuiz />} />
                         <Route path="/create-class" element={<PrivateRoute element={<CreateClass />} requiredRole={['teacher', 'admin']} />} />
 
                         <Route path="/admin-manage" element={<PrivateRoute element={<AdminManage />} requiredRole='admin'/>} >

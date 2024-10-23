@@ -47,7 +47,7 @@ const MyClass = () => {
 
   return (
     <div className="my-classes">
-      <h2>Lớp của bạn</h2>
+      <h2>Your class</h2>
       <div className="class-list">
         {classData.map((classItem) => (
           <div key={classItem._id} className="class-card">
@@ -55,14 +55,14 @@ const MyClass = () => {
             <p>{classItem.location}</p>
             <div className="class-details">
               <span className="course-count">
-                {classItem.courseCount} học phần
+                {classItem.questionPacks.length} Courses
               </span>
               <span className="member-count">
-                {classItem.memberCount} thành viên
+                {classItem.students.length} Members
               </span>
             </div>
             <Link to={`/classes/${classItem._id}`} className="class-link">
-              Xem chi tiết
+              Detail
             </Link>
           </div>
         ))}
