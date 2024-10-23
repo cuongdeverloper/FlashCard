@@ -83,5 +83,8 @@
 .d-flex.justify-content-start {
     margin-bottom: 20px; /* Tạo khoảng cách giữa tin nhắn của người khác */
 }
-
-
+@media screen {
+.ms{
+    width: auto;
+}
+}
