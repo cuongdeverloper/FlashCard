@@ -2,7 +2,6 @@ import { useSelector } from "react-redux";
 import UseConversation from "./zustand/UseConversation";
 import { extractTime } from "./extractTime/extractTime";
 import defaultImage from '../../../src/assests/avt.jpg';
-import './css/Message.scss';
 
 const Message = ({ message }) => {
     const authUser = useSelector(state => state.user.account);

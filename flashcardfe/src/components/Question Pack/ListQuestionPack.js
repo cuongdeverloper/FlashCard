@@ -54,7 +54,7 @@ const ListQuestionPack = () => {
 
   return (
     <div className="ListQuestionPack-container">
-      <h2 className="questionpack-h2">Flashcard by Semester</h2>
+      <h2 className="questionpack-h2">Flashcard</h2>
       {Object.keys(groupedBySemester).map((semester) => (
         <div key={semester}>
           <h3 className="semester-title mx-5">Semester {semester.replace('ky', '')}</h3>
@@ -85,7 +85,8 @@ const ListQuestionPack = () => {
                         >
                           <div className="row no-gutters">
                             <div className="col-md-4">
-                              <Card.Img src={pack.imagePreview || 'default_image_path.jpg'} alt={pack.title} />
+                              {pack.imagePreview && <Card.Img src={pack.imagePreview || 'default_image_path.jpg'} alt={pack.title} />
+                            }
                             </div>
                             <div className="col-md-8">
                               <Card.Body>
