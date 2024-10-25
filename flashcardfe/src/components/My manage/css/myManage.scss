@@ -29,6 +29,11 @@
     max-width: 400px;  /* Tăng độ rộng tối đa của phần tử */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
+    img {
+        max-width: 100%;
+        border-radius: 8px;
+        margin-top: 10px;
+    }
 }
 
 .question-item:hover {
@@ -75,11 +80,7 @@ button[disabled] {
 }
 
 /* Cải tiến hình ảnh trong câu hỏi */
-img {
-    max-width: 100%;
-    border-radius: 8px;
-    margin-top: 10px;
-}
+
 
 /* Cải tiến alert error */
 .alert-danger {

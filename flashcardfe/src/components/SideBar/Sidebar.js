@@ -44,7 +44,7 @@ const SideBar = (props) => {
               className="logoimg"
               src={logoImg}
               alt="Logo"
-              style={{ marginLeft: "3.6px", width: "100px", height: "auto", display: "block", margin: "0 auto" }}
+              style={{ marginLeft: "10px", width: "70px", height: "auto", display: "block", margin: "0 auto" }}
             />
           </MenuItem>
         </Menu>

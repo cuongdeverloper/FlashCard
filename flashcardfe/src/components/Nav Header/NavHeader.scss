@@ -275,7 +275,7 @@ a.dropdown-item.active {
     right: 0 !important; 
     padding: 0 !important;
     border-radius: 20px !important;
-    border: 1px solid #a8a8a899 !important;
+    border: 1px solid #5e5e5e99 !important;
     width: 300px;
     overflow: hidden; 
     z-index: 1000; 
@@ -292,7 +292,7 @@ a.dropdown-item.active {
         }
     }
     .dropdown-item:hover {
-      background-color: rgba(104, 102, 102, 0.633) !important; /* Soft gray hover effect */
+      background-color: #5D37F5 !important; /* Soft gray hover effect */
       opacity: 1; /* Add hover effect */
       color: black;
   }
