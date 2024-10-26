@@ -28,6 +28,9 @@ const apiLogin = async (req, res) => {
 
 
     const isPasswordValid = await bcrypt.compare(password, userRecord.password);
+    console.log('Password entered:', password);  // Mật khẩu người dùng nhập vào
+    console.log('Password in DB (hashed):', userRecord.password);  // Mật khẩu đã mã hóa trong DB
+    
     if (!isPasswordValid) {
       return res.status(400).json({
         errorCode: 3,
@@ -103,20 +106,16 @@ const apiRegister = async (req, res) => {
         });
       }
 
-      // Hash the password before saving
-      const hashedPassword = await bcrypt.hash(password, 10);
 
-      // Create new user
       const newUser = new user({
         username,
         email,
-        password: hashedPassword,
+        password,
         phoneNumber,
         gender,
         role: role || 'student',
         image,
       });
-
       await newUser.save();
 
       // Generate OTP
@@ -144,7 +143,7 @@ const apiRegister = async (req, res) => {
           await UserOTPVerification.deleteMany({ userId: newUser._id });
           console.log(`Deleted unverified user with ID: ${newUser._id}`);
         }
-      }, 5 * 60 * 1000); // 5 minutes timeout
+      }, 5 * 60 * 1000); 
 
       return res.status(201).json({
         errorCode: 0,
@@ -199,7 +198,7 @@ const verifyOtp = async (req, res) => {
 
 
     await user.findByIdAndUpdate(userId, { verified: true });
-
+    await UserOTPVerification.deleteMany({ userId });
     return res.status(200).json({
       errorCode: 0,
       message: 'OTP verification successful',
@@ -266,7 +265,7 @@ const requestPasswordReset = async (req, res) => {
     // Find user by email
     const userRecord = await user.findOne({ email });
     if (!userRecord) {
-      return res.status(400).json({ errorCode: 2, message: 'Email does not exist' });
+      return res.status(203).json({ errorCode: 2, message: 'Email does not exist' });
     }
 
     const payload = {
@@ -341,7 +340,61 @@ const resetPassword = async (req, res) => {
   }
 };
 
+const changePassword = async (req, res) => {
+  try {
+    const userId = req.user.id; 
+    const { currentPassword, newPassword } = req.body;
+
+    if (!currentPassword || !newPassword) {
+      return res.status(200).json({
+        errorCode: 1,
+        message: 'Current password and new password are required',
+      });
+    }
+
+    const userRecord = await user.findById(userId);
+    if (!userRecord) {
+      return res.status(200).json({
+        errorCode: 2,
+        message: 'User not found',
+      });
+    }
+
+    const isPasswordValid = await bcrypt.compare(currentPassword, userRecord.password);
+    if (!isPasswordValid) {
+      return res.status(200).json({
+        errorCode: 3,
+        message: 'Current password is incorrect',
+      });
+    }
+
+    const isSamePassword = await bcrypt.compare(newPassword, userRecord.password);
+    if (isSamePassword) {
+      return res.status(200).json({
+        errorCode: 4,
+        message: 'New password cannot be the same as the old password',
+      });
+    }
+
+    userRecord.password = newPassword
+    await userRecord.save();
+
+    return res.status(200).json({
+      errorCode: 0,
+      message: 'Password changed successfully',
+    });
+  } catch (error) {
+    console.error('Change password error:', error);
+    return res.status(500).json({
+      errorCode: 5,
+      message: 'An error occurred during password change',
+    });
+  }
+};
+
 
 module.exports = {
-  apiLogin,apiRegister,verifyOtp,resendOTPVerificationCode,requestPasswordReset,resetPassword
+  apiLogin,apiRegister,verifyOtp,resendOTPVerificationCode,
+  requestPasswordReset,resetPassword,changePassword
 };
+

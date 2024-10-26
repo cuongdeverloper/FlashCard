@@ -1,22 +1,25 @@
 const express = require('express');
-const { addUser, getUserFromUserId, getId, searchUser, getAllUsers, updateUserProfile } = require('../controller/ApiUser');
-const { apiLogin, apiRegister, verifyOtp, resendOTPVerificationCode, requestPasswordReset, resetPassword } = require('../controller/ApiAuth');
+const { addUser, getUserFromUserId, getId, searchUser, getAllUsers, updateUserProfile, deleteUser } = require('../controller/ApiUser');
+const { apiLogin, apiRegister, verifyOtp, resendOTPVerificationCode, requestPasswordReset, resetPassword, changePassword } = require('../controller/ApiAuth');
 const { createRefreshToken, createJWT, decodeToken, checkAccessToken } = require('../middleware/JWTAction');
 const passport = require('passport');
-const { createQuestionPack, getAllQuestionPack, searchQuestionPack, addQuestionPackToClass, getQuestionPackById, getAllQuestionPacksForTeacher, updateQuestionPack } = require('../controller/ApiQuestionPack');
-const { addQuestionFlashCard, getQuestionFlashCardByQuestionPackId, updateFlashcard } = require('../controller/ApiQuestionFlashCard');
+const { createQuestionPack, getAllQuestionPack, searchQuestionPack, addQuestionPackToClass, getQuestionPackById, getAllQuestionPacksForTeacher, updateQuestionPack, getAllQuestionPackByAd, deleteQuestionPack } = require('../controller/ApiQuestionPack');
+const { addQuestionFlashCard, getQuestionFlashCardByQuestionPackId, updateFlashcard, deleteFlashcard } = require('../controller/ApiQuestionFlashCard');
 const { addComment, getComments, getCommentById, deleteComment, addReply, deleteReply } = require('../controller/ApiComment');
 const { createClass, getClassesForUser, inviteStudentToClass, getClassByClassId, removeQuestionPackFromClass, joinClassByInvite, getStudentsByClassId, getAllMembersByClassId } = require('../controller/ApiClass');
 const { sendMessage, getMessages } = require('../controller/ApiMessage');
 const { addExam, getExam, getExamByQuestionPack } = require('../controller/ApiExam');
 const { submitExam, getExamResults, getStudentResults } = require('../controller/ApiResult');
+const { getDashboardData } = require('../controller/ApiAdmin');
 
 const routerApi = express.Router();
 
 routerApi.get('/id', checkAccessToken, getId)
 //auth
 routerApi.post('/auth', apiLogin);
-routerApi.post('/register',apiRegister)
+routerApi.post('/register',apiRegister);
+routerApi.post('/change-password',checkAccessToken,changePassword)
+
 routerApi.get('/auth/google',
     passport.authenticate('google', { scope: ['profile', 'email'] }));
 
@@ -59,18 +62,24 @@ routerApi.get('/user/:userId', getUserFromUserId)
 routerApi.get('/searchUser',checkAccessToken,searchUser)
 routerApi.get('/users',checkAccessToken,getAllUsers)
 routerApi.put('/user/:userId',checkAccessToken,updateUserProfile)
+routerApi.delete('/user/:userId',checkAccessToken,deleteUser)
+
 //Api QuestionPack
 routerApi.post('/questionPack', checkAccessToken, createQuestionPack)
 routerApi.get('/questionPack', getAllQuestionPack)
 routerApi.get('/questionPacks/search', searchQuestionPack)
 routerApi.get('/questionPacks/:questionPackId', checkAccessToken,getQuestionPackById)
 routerApi.put('/questionpack/:questionpackId',checkAccessToken,updateQuestionPack);
+routerApi.get('/questionPacks-adm', checkAccessToken,getAllQuestionPackByAd)
+routerApi.delete('/questionPack/:questionPackId', checkAccessToken,deleteQuestionPack)
 
 routerApi.get('/questionPack/:questionPackId', checkAccessToken,getQuestionFlashCardByQuestionPackId)
 //Api questionFC
 routerApi.post('/question',checkAccessToken, addQuestionFlashCard)
 routerApi.put('/flashcard/:flashcardId', checkAccessToken,updateFlashcard);
 
+//flashcard
+routerApi.delete('/flashcard/:flashcardId',checkAccessToken,deleteFlashcard)
 //Api comment
 routerApi.post('/questionpack/comments', checkAccessToken, addComment)
 routerApi.get('/questionpack/comments/:flashcardId', checkAccessToken, getComments)
@@ -111,4 +120,8 @@ routerApi.post('/verify-otp', verifyOtp);
 
 routerApi.post('/rqreset-password', requestPasswordReset);
 routerApi.post('/reset-password', resetPassword);
+
+
+//Admin
+routerApi.get('/dashboard-admin',checkAccessToken ,getDashboardData);
 module.exports = { routerApi };

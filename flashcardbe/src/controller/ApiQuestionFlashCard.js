@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const uploadCloud = require("../config/cloudinaryConfig");
 const QuestionPack = require('../modal/QuestionPack');
 const FlashCard = require('../modal/FlashCard');
+const Class = require('../modal/Class');
 
 
 const addQuestionFlashCard = (req, res) => {
@@ -88,7 +89,9 @@ const addQuestionFlashCard = (req, res) => {
 const getQuestionFlashCardByQuestionPackId = async (req, res) => {
   try {
     const { questionPackId } = req.params;
-    const userId= req.user.id
+    const userId = req.user.id;
+    const userRole = req.user.role;
+
     // Find the QuestionPack by ID and populate the questions (flashcards)
     const questionPack = await QuestionPack.findById(questionPackId).populate('questions').lean();
 
@@ -99,15 +102,39 @@ const getQuestionFlashCardByQuestionPackId = async (req, res) => {
         message: 'QuestionPack not found'
       });
     }
-    if((!questionPack.isPublic && questionPack.classId === null )){
-      console.log('123',questionPack.teacher._id.toString())
-      if (questionPack.teacher._id.toString() !== userId) {
-        return res.status(200).json({
+
+    // Check if the QuestionPack is private and the classId is not null
+    if (!questionPack.isPublic && questionPack.classId !== null) {
+      const classData = await Class.findById(questionPack.classId).lean();
+
+      // If the class doesn't exist
+      if (!classData) {
+        return res.status(404).json({
+          errorCode: 7,
+          message: 'Class not found'
+        });
+      }
+
+      // Check if the user is a student in the class or the teacher/admin
+      const isStudentInClass = classData.students.some(student => student.toString() === userId);
+      const isTeacher = classData.teacher.toString() === userId;
+      
+      if (!(isStudentInClass || isTeacher || userRole === 'admin')) {
+        return res.status(403).json({
           errorCode: 2,
-          message: 'Access denied: Only the teacher can view this question pack.'
+          message: 'Access denied: Only students in the class, the teacher, or an admin can view this question pack.'
+        });
+      }
+    } else if (!questionPack.isPublic && questionPack.classId === null) {
+      // If question pack is private but not associated with a class
+      if (questionPack.teacher._id.toString() !== userId && userRole !== 'admin') {
+        return res.status(403).json({
+          errorCode: 2,
+          message: 'Access denied: Only the teacher or admin can view this question pack.'
         });
       }
     }
+
     // Check if the QuestionPack has any flashcards
     if (!questionPack.questions || questionPack.questions.length === 0) {
       return res.status(200).json({
@@ -133,6 +160,7 @@ const getQuestionFlashCardByQuestionPackId = async (req, res) => {
     });
   }
 };
+
 
 const updateFlashcard = (req, res) => {
   // Use multer to handle the image upload
@@ -183,5 +211,58 @@ const updateFlashcard = (req, res) => {
 };
 
 
+const deleteFlashcard = async (req, res) => {
+  const flashcardId = req.params.flashcardId; 
+  const userId = req.user.id; 
 
-module.exports = { addQuestionFlashCard, getQuestionFlashCardByQuestionPackId,updateFlashcard };
+  try {
+    // Find the Flashcard by ID
+    const flashcard = await FlashCard.findById(flashcardId);
+    if (!flashcard) {
+      return res.status(404).json({
+        errorCode: 6,
+        message: 'Flashcard not found'
+      });
+    }
+
+    // Find the associated QuestionPack
+    const questionPack = await QuestionPack.findById(flashcard.questionPack);
+    if (!questionPack) {
+      return res.status(404).json({
+        errorCode: 6,
+        message: 'QuestionPack not found'
+      });
+    }
+
+    // Check if the logged-in user is the owner (teacher) of the QuestionPack
+    if (questionPack.teacher.toString() !== userId) {
+      return res.status(403).json({
+        errorCode: 2,
+        message: 'Access denied: Only the owner (teacher) of this QuestionPack can delete flashcards'
+      });
+    }
+
+    // Remove the flashcard reference from the QuestionPack's questions array
+    questionPack.questions = questionPack.questions.filter(
+      questionId => questionId.toString() !== flashcardId
+    );
+
+    // Save the updated QuestionPack
+    await questionPack.save();
+
+    // Delete the Flashcard using findByIdAndDelete
+    await FlashCard.findByIdAndDelete(flashcardId);
+
+    return res.status(200).json({
+      errorCode: 0,
+      message: 'Flashcard deleted successfully'
+    });
+  } catch (error) {
+    console.error('Error deleting flashcard:', error);
+    return res.status(500).json({
+      errorCode: 7,
+      message: 'An error occurred while deleting the flashcard'
+    });
+  }
+};
+module.exports = { addQuestionFlashCard, getQuestionFlashCardByQuestionPackId,updateFlashcard,deleteFlashcard };

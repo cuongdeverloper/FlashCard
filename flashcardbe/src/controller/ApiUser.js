@@ -125,7 +125,7 @@ const updateUserProfile = async (req, res) => {
 
     const { username, role, email, phoneNumber, gender } = req.body;
     const image = req.file ? req.file.path : null; 
-    if (userId !== req.user.id) {
+    if (userId !== req.user.id && req.user.role !=='admin') {
       return res.status(403).json({ message: 'Forbidden: You can only update your own profile.' });
     }
     if (!username || !email) {
@@ -165,4 +165,26 @@ const updateUserProfile = async (req, res) => {
   });
 };
 
-module.exports = { addUser,getUserFromUserId,getId,searchUser,getAllUsers,updateUserProfile };
+const deleteUser = async (req, res) => {
+  const { userId } = req.params;
+
+  if (req.user.id !== userId && req.user.role !== 'admin') {
+    return res.status(403).json({ message: 'Forbidden: You can only delete your own account or you must be an admin.' });
+  }
+
+  try {
+    const deletedUser = await User.findByIdAndDelete(userId);
+    
+    if (!deletedUser) {
+      return res.status(404).json({ message: 'User not found.' });
+    }
+
+    res.status(200).json({
+      errorCode:0,
+      message: 'User deleted successfully.', user: deletedUser });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: 'Error deleting user', error });
+  }
+};
+module.exports = { addUser,getUserFromUserId,getId,searchUser,getAllUsers,updateUserProfile,deleteUser };

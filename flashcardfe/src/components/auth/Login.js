@@ -83,15 +83,7 @@ const Login = () =>{
     const handleSocialNotDeveloped = () =>{
         toast.warning('This feature is not developed yet !')
     }
-    useEffect(() => {
-        if (isAuthenticated) {
-          const redirectUrl = localStorage.getItem('redirectAfterLogin');
-          if(redirectUrl) {
-            localStorage.removeItem('redirectAfterLogin'); 
-          window.location.href = redirectUrl;
-          }
-        }
-      }, [isAuthenticated, navigate]);
+
     useEffect(() => {
         checkExist();
     }, [email, password, confirm]);

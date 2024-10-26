@@ -27,21 +27,14 @@ const createQuestionPack = async (req, res) => {
     try {
       // Check if the authenticated user is a teacher
       const authenticatedUser = req.user;
-      if (authenticatedUser.role !== 'teacher') {
+      if (authenticatedUser.role !== 'teacher' && authenticatedUser.role !== 'admin') {
         return res.status(403).json({
           errorCode: 7,
           message: 'Only teachers can create question packs'
         });
       }
 
-      // Check if the provided teacher ID exists and is a teacher
-      const teacherUser = await User.findById(teacher);
-      if (!teacherUser || teacherUser.role !== 'teacher') {
-        return res.status(404).json({
-          errorCode: 8,
-          message: 'Invalid teacher ID or the user is not a teacher'
-        });
-      }
+   
 
       // Check if classId is provided and valid
       let classInfo = null;
@@ -54,7 +47,7 @@ const createQuestionPack = async (req, res) => {
           });
         }
       }
-
+      const isPublicValue = isPublic === 'true' || isPublic === true; 
       // Create the new question pack
       const newQuestionPack = new QuestionPack({
         title,
@@ -65,7 +58,7 @@ const createQuestionPack = async (req, res) => {
         subject,
         imagePreview,
         classId: classInfo ? new mongoose.Types.ObjectId(classId) : null,
-        isPublic: isPublic === true 
+        isPublic:isPublicValue
       });
 
       await newQuestionPack.save();
@@ -107,6 +100,32 @@ const getAllQuestionPack = async (req, res) => {
   }
 };
 
+const getAllQuestionPackByAd = async(req,res) =>{
+  try {
+    const user = req.user;
+    if(user.role !== 'admin') {
+      return res.status(500).json({
+        errorCode: 5,
+        message: 'Only admin can access this.'
+      });
+    }
+    const questionPacks = await QuestionPack.find({ })
+      .populate('teacher', 'name email') 
+
+    // Send the public question packs as the response
+    return res.status(200).json({
+      errorCode: 0,
+      message: 'Public question packs retrieved successfully',
+      data: questionPacks
+    });
+  } catch (err) {
+    console.error('Error fetching question packs:', err);
+    return res.status(500).json({
+      errorCode: 6,
+      message: 'An error occurred while fetching the question packs'
+    });
+  }
+}
 const searchQuestionPack = async (req, res) => {
   const { query } = req.query;
 
@@ -151,6 +170,7 @@ const addQuestionPackToClass = async (req, res) => {
     const { classId, questionPackId } = req.body; 
     const authenticatedUser = req.user;
 
+    // Check if the class exists
     const classData = await Class.findById(classId);
     if (!classData) {
       return res.status(404).json({
@@ -159,6 +179,7 @@ const addQuestionPackToClass = async (req, res) => {
       });
     }
 
+    // Check if the user is authorized (the teacher of the class)
     if (classData.teacher.toString() !== authenticatedUser.id.toString()) {
       return res.status(403).json({
         errorCode: 7,
@@ -166,6 +187,7 @@ const addQuestionPackToClass = async (req, res) => {
       });
     }
 
+    // Check if the question pack exists
     const questionPack = await QuestionPack.findById(questionPackId);
     if (!questionPack) {
       return res.status(404).json({
@@ -174,13 +196,16 @@ const addQuestionPackToClass = async (req, res) => {
       });
     }
 
+    // Check if the question pack is already in the class
     if (classData.questionPacks.includes(questionPackId)) {
-      return res.status(400).json({
-        errorCode: 9,
-        message: 'Question pack is already added to this class'
+      return res.status(200).json({  // Using status 200 as it's a valid response (can be 409 for conflict)
+        errorCode: 10,
+        message: 'Question pack already exists in this class',
+        data: classData
       });
     }
 
+    // Add the question pack to the class
     classData.questionPacks.push(questionPackId);
     await classData.save();
 
@@ -198,6 +223,7 @@ const addQuestionPackToClass = async (req, res) => {
     });
   }
 };
+
 const getQuestionPackById = async (req, res) => {
   try {
     const { questionPackId } = req.params;
@@ -363,7 +389,44 @@ const updateQuestionPack = async (req, res) => {
     }
   });
 };
+const deleteQuestionPack = async (req, res) => {
+  try {
+    const { questionPackId } = req.params;
+    const authenticatedUser = req.user;
 
+    // Find the question pack by its ID
+    const questionPack = await QuestionPack.findById(questionPackId);
+
+    if (!questionPack) {
+      return res.status(404).json({
+        errorCode: 1,
+        message: 'Question pack not found'
+      });
+    }
+
+    if (questionPack.teacher.toString() !== authenticatedUser.id && authenticatedUser.role !== 'admin') {
+      return res.status(403).json({
+        errorCode: 7,
+        message: 'You are not authorized to delete this question pack'
+      });
+    }
+
+    // Delete the question pack
+    await QuestionPack.findByIdAndDelete(questionPackId);
+
+    return res.status(200).json({
+      errorCode: 0,
+      message: 'Question pack deleted successfully'
+    });
+  } catch (err) {
+    console.error('Error deleting question pack:', err);
+    return res.status(500).json({
+      errorCode: 6,
+      message: 'An error occurred while deleting the question pack'
+    });
+  }
+};
 
 module.exports = { createQuestionPack,getAllQuestionPack,searchQuestionPack,
-  addQuestionPackToClass,getQuestionPackById,getAllQuestionPacksForTeacher,updateQuestionPack };
+  addQuestionPackToClass,getQuestionPackById,getAllQuestionPacksForTeacher,updateQuestionPack,
+getAllQuestionPackByAd ,deleteQuestionPack};
