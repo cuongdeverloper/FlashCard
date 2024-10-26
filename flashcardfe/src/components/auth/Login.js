@@ -52,6 +52,9 @@ const Login = () =>{
 
                 navigate('/')
             }
+            if(response.errorCode === 3) {
+                toast.error(response.message)
+            }
             else{
                 toast.error(response.error)
             }
