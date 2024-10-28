@@ -869,7 +869,7 @@ const ApiChangePassword = async(currentPassword,newPassword) =>{
         throw error; 
     }
 }
-const ApiAddQuizzByTeacher = async (classId, questionPackId, title, duration, instructions) => {
+const ApiAddQuizzByTeacher = async ( questionPackId, title, duration, instructions) => {
     try {
         const token = Cookies.get('accessToken');
 
@@ -880,7 +880,7 @@ const ApiAddQuizzByTeacher = async (classId, questionPackId, title, duration, in
         const response = await axios.post(
             'quiz', 
             {
-                classId,
+
                 questionPackId,
                 title,
                 duration,

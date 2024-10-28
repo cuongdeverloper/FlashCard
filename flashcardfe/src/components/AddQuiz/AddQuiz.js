@@ -1,24 +1,46 @@
-import React, { useState } from 'react';
-import { ApiAddQuizzByTeacher } from '../../service/ApiService'; 
+import React, { useState, useEffect } from 'react';
+import Select from 'react-select';
+import { ApiAddQuizzByTeacher, getQuestionPackOfTeacher } from '../../service/ApiService'; 
+import { toast } from 'react-toastify';
+import { useSelector } from 'react-redux';
 
 const AddQuiz = () => {
-    const [classId, setClassId] = useState('');
     const [questionPackId, setQuestionPackId] = useState('');
     const [title, setTitle] = useState('');
     const [duration, setDuration] = useState(60); 
     const [instructions, setInstructions] = useState('');
+    const [listQp, setListQp] = useState([]);
+    const [loading, setLoading] = useState(false);
+    const userId = useSelector((state) => state.user.account.id);
+
+    useEffect(() => {
+        getQpOfTeacher();
+    }, []);
+
+    const getQpOfTeacher = async () => {
+        try {
+            setLoading(true);
+            let response = await getQuestionPackOfTeacher(userId);
+            setListQp(response.data.map(qp => ({ value: qp._id, label: `${qp.subject}: ${qp.title}` }))); // Assuming qp has `_id` and `name` fields
+        } catch (error) {
+            console.error('Failed to load question packs:', error);
+        } finally {
+            setLoading(false);
+        }
+    };
 
     const handleSubmit = async (e) => {
         e.preventDefault(); 
 
         try {
-            const result = await ApiAddQuizzByTeacher(classId, questionPackId, title, duration, instructions);
-            console.log(result)
-            setClassId('');
-            setQuestionPackId('');
-            setTitle('');
-            setDuration(60);
-            setInstructions('');
+            const result = await ApiAddQuizzByTeacher(questionPackId, title, duration, instructions);
+            if (result.success) {
+                toast.success(result.message);
+                setQuestionPackId('');
+                setTitle('');
+                setDuration(60);
+                setInstructions('');
+            }
         } catch (error) {
             alert('Failed to add quiz. Please try again.'); 
         }
@@ -26,27 +48,17 @@ const AddQuiz = () => {
 
     return (
         <div className="container">
-            <h2 style={{color:'#fff'}}>Add Quiz</h2>
+            <h2 style={{ color: '#fff' }}>Add Quiz</h2>
             <form onSubmit={handleSubmit}>
                 <div className="form-group">
-                    <label htmlFor="classId">Class ID:</label>
-                    <input
-                        type="text"
-                        id="classId"
-                        value={classId}
-                        onChange={(e) => setClassId(e.target.value)}
-                        required
-                        className="form-control"
-                    />
-                </div>
-                <div className="form-group">
-                    <label htmlFor="questionPackId">Question Pack ID:</label>
-                    <input
-                        type="text"
+                    <label htmlFor="questionPackId">Select Question Pack:</label>
+                    <Select
                         id="questionPackId"
-                        value={questionPackId}
-                        onChange={(e) => setQuestionPackId(e.target.value)}
-                        required
+                        options={listQp}
+                        value={listQp.find(pack => pack.value === questionPackId)}
+                        onChange={(selectedOption) => setQuestionPackId(selectedOption?.value || '')}
+                        isLoading={loading}
+                        placeholder="Select a question pack"
                         className="form-control"
                     />
                 </div>
