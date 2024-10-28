@@ -178,6 +178,8 @@ const [dataRemove,setDataRemove] = useState('');
         const file = e.target.files[0];
         if (file) {
             setImagePreview(file);
+            setImageFile(file);
+            setImagePreview(URL.createObjectURL(file));
         }
     };
     const handleUpdateQuestionPack = async () => {
@@ -189,12 +191,15 @@ const [dataRemove,setDataRemove] = useState('');
             formData.append('semester', qpForm.semester);
             formData.append('subject', qpForm.subject);
 
-            if (imagePreview) {
-                formData.append('imagePreview', imagePreview); 
+            // if (imagePreview) {
+            //     formData.append('imagePreview', qpForm.imagePreview); 
+            // }
+            if (imageFile) {
+                formData.append('imagePreview', imageFile); // Attach the image file correctly
             }
-
             setSaving(true);
             let response = await updateQuestionPack(selectedOption.value, formData);
+            toast.success(response.message)
             setSaving(false);
             getApiQpByTeacherId(); 
         } catch (error) {
@@ -264,12 +269,11 @@ const [dataRemove,setDataRemove] = useState('');
                                 handleQpFormChange={handleQpFormChange}
                                 imagePreview={imagePreview}
                                 setImagePreview={setImagePreview}
+                                handleImagePreviewChange={handleImagePreviewChange}
                             />
                         </Accordion.Body>
 
-                        <ModalUpdateQuestionPack
-                            qpForm={qpForm}
-                        />
+                      
                     </Accordion.Item>
                 </Accordion>
             )}

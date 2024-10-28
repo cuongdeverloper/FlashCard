@@ -584,7 +584,6 @@ const updateQuestionPack = async (questionPackId, updatedData) => {
         const response = await axios.put(`/questionpack/${questionPackId}`, updatedData, {
             headers: {
                 'Authorization': `Bearer ${token}`,
-                'Content-Type': 'application/json'
             }
         });
 

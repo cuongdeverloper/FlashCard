@@ -2,7 +2,7 @@ import React from 'react';
 import { Modal, Button, Form } from 'react-bootstrap';
 import "./css/modalUpdate.scss";
 
-const ModalUpdateQuestionPack = ({ show, handleClose, handleUpdateQuestionPack, qpForm, handleQpFormChange, imagePreview, setImagePreview }) => {
+const ModalUpdateQuestionPack = ({ show, handleClose, handleUpdateQuestionPack, qpForm, handleQpFormChange, imagePreview, setImagePreview,handleImagePreviewChange }) => {
     return (
         <Modal show={show} onHide={handleClose} className="modal-custom">
             <Modal.Header closeButton className="modal-header-custom">
@@ -66,12 +66,7 @@ const ModalUpdateQuestionPack = ({ show, handleClose, handleUpdateQuestionPack, 
                         <Form.Control
                             type="file"
                             accept="image/*"
-                            onChange={(e) => {
-                                const file = e.target.files[0];
-                                if (file) {
-                                    setImagePreview(URL.createObjectURL(file));
-                                }
-                            }}
+                            onChange={handleImagePreviewChange}
                             className="file-input-custom"
                         />
                     </Form.Group>
