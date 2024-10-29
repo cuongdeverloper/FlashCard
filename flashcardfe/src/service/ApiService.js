@@ -893,15 +893,58 @@ const ApiAddQuizzByTeacher = async ( questionPackId, title, duration, instructio
                 }
             }
         );
-
-        // Handle successful response
-        return response // You can return the data to the calling function if needed
-
+        return response 
     } catch (error) {
         console.error('Error adding exam:', error);
-        throw error; // Rethrow the error to handle it further up the call chain
+        throw error; 
     }
 };
+
+const ApiRemoveStudentInClass = async (classId, studentId) => {
+    try {
+        const token = Cookies.get('accessToken');
+
+        if (!token) {
+            throw new Error('No access token found. Please login again.');
+        }
+
+        // Pass data in the data field of the configuration object
+        const response = await axios.delete(`/delete-student`, {
+            headers: {
+                'Authorization': `Bearer ${token}`,
+            },
+            data: { 
+                classId,
+                studentId
+            }
+        });
+        return response;
+    } catch (error) {
+        console.error('Error removing student:', error);
+        throw error;
+    }
+}
+    const ApiRemoveClass = async(classId)=>{
+        try {
+            const token = Cookies.get('accessToken');
+          
+            // Check if the token exists
+            if (!token) {
+                throw new Error('No access token found. Please login again.');
+            }
+    
+            const response = await axios.delete(`/delete-class/${classId}`, {
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                }
+            });
+    
+            return response; 
+        } catch (error) {
+            console.error('Error delete class:', error);
+            throw error;
+        }
+    }
 export {
     LoginApi, loginWGoogle, decodeDataGoogle, getAllQuestionPack,
     getQuestionByQPId, getUserByUserId, createNewQuestionPackApi,
@@ -912,5 +955,6 @@ export {
     , getQuizByQuizId, postSubmitExam, getQuestionPackOfTeacher, updateQuestion, updateQuestionPack, reSendOtpApi, sendOTPApi,
      requestPasswordResetApi, resetPasswordApi,ApiChangePassword
     ,getAllResultsByTeacher,getAllResultsByUser,updateUserProfile,createClassApi,getDataDashBoardAdm,getAllUserAdm,
-    deleteUserApi,getAllQpByAdmin,apiAssignQpToClass,deleteQuestionToQuestionPackAPI,ApiDeleteQuestionPack,ApiAddQuizzByTeacher
+    deleteUserApi,getAllQpByAdmin,apiAssignQpToClass,deleteQuestionToQuestionPackAPI,ApiDeleteQuestionPack,ApiAddQuizzByTeacher,
+    ApiRemoveStudentInClass,ApiRemoveClass
 }
