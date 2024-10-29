@@ -17,15 +17,11 @@ const ModalAssignQpToClass = (props) => {
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
-  useEffect(() => {
-    console.log(selectedOption);
-  }, [selectedOption]);
 
   const getApiClassForUser = async () => {
     try {
       setLoading(true);
       const response = await getClassById();
-      console.log(response)
       const options = response.data.map((cls) => ({
         value: cls._id,
         label: `${cls.name} - ${cls._id}`
@@ -62,7 +58,7 @@ const ModalAssignQpToClass = (props) => {
   return (
     <>
       <Button variant="primary" className='mt-4 mx-3' onClick={handleShow}>
-      Assign <b style={{color:'#333'}}>{selectedOption.label}</b> to Class
+      Assign <b style={{color:'#333'}}>{selectedOption?.label}</b> to Class
       </Button>
 
       <Modal

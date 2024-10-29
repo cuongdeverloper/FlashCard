@@ -1,5 +1,5 @@
 import { useSelector } from "react-redux";
-import {createQuestionToQuestionPackAPI, deleteQuestionToQuestionPackAPI, getQuestionByQPId, getQuestionPackOfTeacher, updateQuestion, updateQuestionPack } from "../../service/ApiService";
+import {ApiDeleteQuestionPack, createQuestionToQuestionPackAPI, deleteQuestionToQuestionPackAPI, getQuestionByQPId, getQuestionPackOfTeacher, updateQuestion, updateQuestionPack } from "../../service/ApiService";
 import { useEffect, useState } from "react";
 import Select from 'react-select';
 import { Accordion, Button, Form, Alert } from "react-bootstrap";
@@ -9,6 +9,7 @@ import ModalAssignQpToClass from "./ModalAssignQpToClass";
 import ModalAddFlashCard from "./ModalAddFlashCard";
 import { toast } from "react-toastify";
 import ModalDeleteFlashCard from "./ModalDeleteFlashCard";
+import ModalDeleteQp from "./ModalDeleteQp";
 
 const MyManage = () => {
     const userId = useSelector((state) => state.user.account.id);
@@ -31,6 +32,7 @@ const [showModalRemove,setShowModalRemove] = useState(false);
 const [dataRemove,setDataRemove] = useState('');
     const handleCloseAddQuestionModal = () => setShowAddQuestionModal(false);
     const handleShowAddQuestionModal = () => setShowAddQuestionModal(true);
+    const [showDeleteQp,setShowDeleteQp] = useState(false)
     const [qpForm, setQpForm] = useState({
         title: '',
         description: '',
@@ -236,7 +238,6 @@ const [dataRemove,setDataRemove] = useState('');
     }
     const handleDeleteQuestion = async () => {
         let response = await deleteQuestionToQuestionPackAPI(dataRemove._id)
-    console.log(response)
     if(response && response.errorCode === 0) {
         toast.success(response.message)
         handleGetQuestionByQpId()
@@ -244,6 +245,27 @@ const [dataRemove,setDataRemove] = useState('');
         toast.error(response?.message)
     }
     };
+    const handleModalRemoveQp =async()=>{
+        setShowDeleteQp(true);
+    }
+    const handleRemoveQp = async () => {
+        try {
+            let response = await ApiDeleteQuestionPack(selectedOption.value);
+            
+            if (response && response.errorCode === 0) {
+                toast.success(response.message);
+                setShowDeleteQp(false); 
+                setSelectedOption(null); 
+                getApiQpByTeacherId(); 
+            } else {
+                toast.error(response?.message || 'Failed to remove question pack.');
+            }
+        } catch (error) {
+            console.error('Error removing question pack:', error);
+            toast.error('An error occurred while removing the question pack.');
+        }
+    };
+    
     return (
         <div style={{ backgroundColor: '#121045' }} className="m-3">
             {loading ? <p>Loading...</p> : (
@@ -261,6 +283,9 @@ const [dataRemove,setDataRemove] = useState('');
                             <Button variant="primary" onClick={handleShow}>
                                 Update Question Pack
                             </Button>
+                            <Button variant="secondary" onClick={()=>handleModalRemoveQp()}>
+                                Remove Question Pack
+                            </Button>
                             <ModalUpdateQuestionPack
                                 show={show}
                                 handleClose={handleClose}
@@ -270,6 +295,11 @@ const [dataRemove,setDataRemove] = useState('');
                                 imagePreview={imagePreview}
                                 setImagePreview={setImagePreview}
                                 handleImagePreviewChange={handleImagePreviewChange}
+                            />
+                            <ModalDeleteQp 
+                                show={showDeleteQp}
+                                setShow={setShowDeleteQp}
+                                handleRemoveQp={handleRemoveQp}
                             />
                         </Accordion.Body>
 
