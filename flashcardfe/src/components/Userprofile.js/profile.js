@@ -51,7 +51,6 @@
     const getResultOfUser = async () => {
       try {
         let response = await getAllResultsByUser();
-        console.log(response)
         if (response && Array.isArray(response.results)) {
           setResults(response.results);
           const subjects = Array.from(

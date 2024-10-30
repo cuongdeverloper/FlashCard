@@ -12,9 +12,9 @@ import { useNavigate } from 'react-router-dom';
 const ModalUpdateProfile = ({ user,showUpdate }) => {
     const [show, setShow] = useState(showUpdate);
     const [updatedProfile, setUpdatedProfile] = useState(user);
-    const [imageUrl, setImageUrl] = useState(null);
-    const dispatch = useDispatch();
-    const navigate = useNavigate();
+    const [imageUrl, setImageUrl] = useState(user?.image);
+const dispatch = useDispatch();
+const navigate = useNavigate()
 
     const handleClose = () => {
         setShow(false)
@@ -71,7 +71,6 @@ useEffect(()=>{
 
         try {
             const response = await updateUserProfile(updatedProfile.id, formData);
-            console.log(response);
             if (response && response.errorCode === 0) {
                 toast.warning('You must login again.');
                 dispatch(doLogout());
