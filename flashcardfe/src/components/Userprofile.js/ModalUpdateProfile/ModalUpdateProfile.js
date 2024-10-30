@@ -71,11 +71,16 @@ useEffect(()=>{
 
         try {
             const response = await updateUserProfile(updatedProfile.id, formData);
+            console.log(response)
             if (response && response.errorCode === 0) {
                 toast.warning('You must login again.');
                 dispatch(doLogout());
                 navigate('/login');
-            } else {
+            } else 
+            if(response.errorCode ===15){
+                toast.warning(response.message)
+            }
+            else{
                 toast.success('Profile updated successfully!');
             }
         } catch (error) {
