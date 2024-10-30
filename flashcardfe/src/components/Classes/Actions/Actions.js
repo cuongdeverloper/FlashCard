@@ -3,6 +3,7 @@ import { useParams, useHistory, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { ApiRemoveClass } from "../../../service/ApiService";
 import { toast } from "react-toastify";
+import './actions.scss';
 
 const Actions = () => {
     const { classId } = useParams();
@@ -26,7 +27,7 @@ const Actions = () => {
     };
 
     return (
-        <div>
+        <div className="actions">
             <button onClick={handleRemoveClass}>Remove Class</button>
         </div>
     );
