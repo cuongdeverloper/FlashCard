@@ -95,8 +95,8 @@ const StudentsClass = () => {
                                     </div>
                                 </div>
                                 
-                                <div>
-                                    <span>{member._id === members.teacher._id ? 'Teacher' : 'Student'}</span>
+                                <div style={{display:'flex', flexDirection:'column'}}>
+                                    <span style={{marginLeft:'15px'}}>{member._id === members.teacher._id ? 'Teacher' : 'Student'}</span>
                                     {(member._id !== members.teacher._id )&&(userId === members.teacher._id)&& (
                                         <Button variant="danger" size="sm" onClick={() => confirmRemoveStudent(member)}>
                                             Remove
