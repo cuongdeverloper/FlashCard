@@ -11,9 +11,10 @@ const UseGetConversations = () => {
 			setLoading(true);
 			try {
 				const res = await getAllUserApi();
-				console.log(res)
+				if(res) {
+					setConversations(res.data);
+				}
 				
-				setConversations(res.data);
 			} catch (error) {
 				toast.error(error.message);
 			} finally {
