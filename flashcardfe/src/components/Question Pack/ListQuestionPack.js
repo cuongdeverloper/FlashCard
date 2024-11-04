@@ -8,6 +8,9 @@ import MyClass from "../Myclass-homepage/myclass";
 import Footer from "../footer/footer";
 import Banner from "../Banner/banner";
 import AOS from 'aos';
+import Introduce from "../introducing/Introduce";
+import Feedback from "../introducing/Feedback";
+
 
 
 const ListQuestionPack = () => {
@@ -57,7 +60,7 @@ const ListQuestionPack = () => {
 
   return (
     <div className="ListQuestionPack-container" >
-      <h2 className="questionpack-h2" >Flashcard</h2>
+      <Introduce/>
       {Object.keys(groupedBySemester).map((semester) => (
         <div key={semester} >
           <h3 className="semester-title mx-5">Semester {semester.replace('ky', '')}</h3>
@@ -130,6 +133,7 @@ const ListQuestionPack = () => {
       ))}
       <Banner />
       {isAuthenticated ? <MyClass  /> : <div></div>}
+      <Feedback/>
       <Footer />
     </div>
   );

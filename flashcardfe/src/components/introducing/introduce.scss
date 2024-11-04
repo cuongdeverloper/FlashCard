@@ -1,0 +1,71 @@
+.introduce {
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #333;
+
+  
+    .overlay {
+        background: linear-gradient(to right, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 1) 6.25%, rgba(255, 255, 255, 1) 93.75%, rgba(255, 255, 255, 0) 100%);
+        padding: 4rem;
+  padding: 2rem;
+        padding: 2rem;
+        text-align: center;
+        border-radius: 8px;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        width: 55%;
+      
+        h1 {
+          color: #7e5dff; 
+          text-shadow: none;
+          font-weight: bold;
+        }
+      
+        .quote {
+          font-size: 2rem;
+          margin-top: 1rem;
+          font-weight: bold;
+        }
+      
+        .quote-author {
+          color: #888;
+          font-size: 1rem;
+          margin-top: 0.5rem;
+        }
+      
+        .description {
+          font-size: 1rem;
+          margin-top: 1.5rem;
+        }
+      
+        .signup-button {
+          margin-top: 2rem;
+          font-size: 1rem;
+          color: #fff;
+          background-color: #7e5dff;
+          border: none;
+          border-radius: 4px;
+          cursor: pointer;
+          text-transform: uppercase;
+          font-weight: bold;
+          transition: background-color 0.3s ease;
+          width: 150px;
+          height: 50px;
+      
+          &:hover {
+            background-color: #6744d1;
+          }
+        }
+      } 
+      
+      
+  }
+  
