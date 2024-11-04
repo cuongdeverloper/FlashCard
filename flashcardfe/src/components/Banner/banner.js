@@ -2,9 +2,19 @@ import React from "react";
 import { FaBook } from "react-icons/fa"; 
 import "./banner.scss";
 
+import { useEffect } from "react";
+
+
+   
+
+
+
 const Banner = () => {
+
+  
+
   return (
-    <div className="banner-container">
+    <div className="banner-container animation">
       <div className="banner-content">
         <div className="banner-text">
           <h1>Welcome to Quizone</h1>

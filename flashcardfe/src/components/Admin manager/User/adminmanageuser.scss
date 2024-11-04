@@ -1,0 +1,67 @@
+
+.admin-manage-user {
+    .card-body {
+        padding: 20px;
+        background-color: #f8f9fa;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
+        .table {
+            margin-top: 20px;
+            th {
+                background-color: #343a40;
+                color: #ffffff;
+                font-weight: bold;
+                text-align: center;
+            }
+            td {
+                text-align: center;
+                vertical-align: middle;
+            }
+            .avatar {
+                width: 40px;
+                height: 40px;
+                border-radius: 50%;
+                object-fit: cover;
+                margin-right: 10px;
+            }
+        }
+
+        .pagination {
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .dropdown-toggle {
+            margin-bottom: 15px;
+        }
+    }
+
+    .btn-primary {
+        background-color: #4e73df;
+        border-color: #4e73df;
+        &:hover {
+            background-color: #375a7f;
+            border-color: #375a7f;
+        }
+    }
+
+    .btn-warning {
+        color: #fff;
+        background-color: #f6c23e;
+        border-color: #f6c23e;
+        &:hover {
+            background-color: #dda20a;
+            border-color: #dda20a;
+        }
+    }
+
+    .btn-danger {
+        background-color: #e74a3b;
+        border-color: #e74a3b;
+        &:hover {
+            background-color: #c82333;
+            border-color: #bd2130;
+        }
+    }
+}

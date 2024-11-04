@@ -40,11 +40,21 @@ import Dashboard from "./components/Admin manager/Dash board/Dashboard";
 import AdminManageUser from "./components/Admin manager/User/AdminManageUser";
 import AdminManageQuestionPack from "./components/Admin manager/QuestionPack/AdminManageQuestionPack";
 import AddQuiz from "./components/AddQuiz/AddQuiz";
+import Aos from "aos";
+import 'aos/dist/aos.css';
+import { useEffect } from "react";
 
 
 
 
 const Layout = () => {
+    useEffect(() => {
+        Aos.init({ duration: 1000,offset: 200,
+            duration: 600,
+            easing: 'ease-in-sine',
+            delay: 100, }); // Khởi tạo AOS với thời gian tùy chỉnh
+        Aos.refresh(); // Buộc AOS làm mới
+      }, []);
 
 
 

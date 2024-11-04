@@ -7,8 +7,11 @@ import "./ListQuestionPack.scss";
 import MyClass from "../Myclass-homepage/myclass";
 import Footer from "../footer/footer";
 import Banner from "../Banner/banner";
+import AOS from 'aos';
+
 
 const ListQuestionPack = () => {
+  
   const [questionPackData, setQuestionPackData] = useState([]);
   const [userNames, setUserNames] = useState({});
   const navigate = useNavigate();
@@ -30,6 +33,8 @@ const ListQuestionPack = () => {
         })
       );
       setUserNames(userNames);
+      // Refresh AOS after data changes
+      AOS.refresh();
     }
   };
 
@@ -37,12 +42,10 @@ const ListQuestionPack = () => {
     fetchQuestionPacks();
   }, []);
 
-
   const groupedBySemester = {};
   for (let semester = 1; semester <= 9; semester++) {
     groupedBySemester[`ky${semester}`] = questionPackData.filter(pack => pack.semester === `ky${semester}`);
   }
-
 
   const createSlides = (packs) => {
     const slides = [];
@@ -53,10 +56,10 @@ const ListQuestionPack = () => {
   };
 
   return (
-    <div className="ListQuestionPack-container">
-      <h2 className="questionpack-h2">Flashcard</h2>
+    <div className="ListQuestionPack-container" >
+      <h2 className="questionpack-h2" >Flashcard</h2>
       {Object.keys(groupedBySemester).map((semester) => (
-        <div key={semester}>
+        <div key={semester} >
           <h3 className="semester-title mx-5">Semester {semester.replace('ky', '')}</h3>
           {groupedBySemester[semester].length > 0 ? (
             <Carousel
@@ -64,10 +67,12 @@ const ListQuestionPack = () => {
               interval={3000}
               controls
               indicators={false}
+              className="animation"
+              data-aos="fade-up"
             >
               {createSlides(groupedBySemester[semester]).map((slide, slideIndex) => (
                 <Carousel.Item key={slideIndex}>
-                  <div className="row">
+                  <div className="row"  >
                     {slide.map((pack) => (
                       <div className="col-md-4" key={pack._id}>
                         <Card
@@ -82,11 +87,16 @@ const ListQuestionPack = () => {
                               },
                             });
                           }}
+                          // Add AOS attribute here
                         >
                           <div className="row no-gutters">
                             <div className="col-md-4">
-                              {pack.imagePreview && <Card.Img src={pack.imagePreview || 'default_image_path.jpg'} alt={pack.title} />
-                            }
+                              {pack.imagePreview && (
+                                <Card.Img
+                                  src={pack.imagePreview || 'default_image_path.jpg'}
+                                  alt={pack.title}
+                                />
+                              )}
                             </div>
                             <div className="col-md-8">
                               <Card.Body>
@@ -112,12 +122,14 @@ const ListQuestionPack = () => {
               ))}
             </Carousel>
           ) : (
-            <p className=" mx-6 no-questionpack">No question packs available for Semester {semester.replace('ky', '')}.</p>
+            <p className="mx-6 no-questionpack" >
+              No question packs available for Semester {semester.replace('ky', '')}.
+            </p>
           )}
         </div>
       ))}
       <Banner />
-      {isAuthenticated ? <MyClass /> : <div></div>}
+      {isAuthenticated ? <MyClass  /> : <div></div>}
       <Footer />
     </div>
   );

@@ -4,6 +4,7 @@ import { Button, Dropdown, Pagination, Form } from "react-bootstrap";
 import ModalPreviewUserAdm from "./Modal Preview user/ModalPreviewUserAdm";
 import ModalUpdateUserAdm from "./Modalupdate/ModalUpdateUserAdm";
 import ModalDeleteUserAdm from "./Modal delete user/ModalDeleteUserAdm";
+import './adminmanageuser.scss'
 
 const AdminManageUser = () => {
     const [results, setResults] = useState([]);
@@ -97,10 +98,11 @@ const AdminManageUser = () => {
 
     useEffect(() => {
         getAllUser();
+  
     }, []);
 
     return (
-        <>
+        <div className="admin-manage-user">
             <div className="mb-3">
                 <Form.Control
                     type="text"
@@ -113,31 +115,31 @@ const AdminManageUser = () => {
             {currentResults.length > 0 ? (
                 <div>
                     <div className="card-body">
-                        <div className="mb-3">
-                            <Dropdown>
-                                <Dropdown.Toggle variant="secondary" id="dropdown-basic">
-                                    Sort By
-                                </Dropdown.Toggle>
-                                <Dropdown.Menu>
-                                    <Dropdown.Item onClick={() => sortResults("email")}>
-                                        Email
-                                    </Dropdown.Item>
-                                    <Dropdown.Item onClick={() => sortResults("username")}>
-                                        User Name
-                                    </Dropdown.Item>
-                                    <Dropdown.Item onClick={() => sortResults("type")}>
-                                        Type
-                                    </Dropdown.Item>
-                                    <Dropdown.Item onClick={() => sortResults("balance")}>
-                                        Balance
-                                    </Dropdown.Item>
-                                </Dropdown.Menu>
-                            </Dropdown>
-                        </div>
+                        <Dropdown>
+                            <Dropdown.Toggle variant="secondary" id="dropdown-basic">
+                                Sort By
+                            </Dropdown.Toggle>
+                            <Dropdown.Menu>
+                                <Dropdown.Item onClick={() => sortResults("email")}>
+                                    Email
+                                </Dropdown.Item>
+                                <Dropdown.Item onClick={() => sortResults("username")}>
+                                    User Name
+                                </Dropdown.Item>
+                                <Dropdown.Item onClick={() => sortResults("type")}>
+                                    Type
+                                </Dropdown.Item>
+                                <Dropdown.Item onClick={() => sortResults("balance")}>
+                                    Balance
+                                </Dropdown.Item>
+                            </Dropdown.Menu>
+                        </Dropdown>
+
                         <table className="table table-striped">
                             <thead>
                                 <tr>
                                     <th>#</th>
+                                    <th>Avatar</th> {/* Thêm cột avatar */}
                                     <th>Id</th>
                                     <th>Email</th>
                                     <th>User Name</th>
@@ -150,6 +152,13 @@ const AdminManageUser = () => {
                                 {currentResults.map((result, index) => (
                                     <tr key={result._id}>
                                         <td>{indexOfFirstResult + index + 1}</td>
+                                        <td>
+                                            <img
+                                                src={result.image || "/path/to/default-avatar.jpg"}
+                                                alt="avatar"
+                                                className="avatar"
+                                            />
+                                        </td>
                                         <td>{result._id}</td>
                                         <td>{result.email}</td>
                                         <td>{result.username}</td>
@@ -159,12 +168,14 @@ const AdminManageUser = () => {
                                             <Button
                                                 variant="primary"
                                                 onClick={() => handlePreviewUser(result)}
+                                                className="mx-1"
                                             >
                                                 View Details
                                             </Button>
                                             <Button
                                                 variant="warning"
                                                 onClick={() => handleUpdateUser(result)}
+                                                className="mx-2"
                                             >
                                                 Update
                                             </Button>
@@ -179,7 +190,7 @@ const AdminManageUser = () => {
                                 ))}
                             </tbody>
                         </table>
-                        {/* Pagination */}
+                        
                         <Pagination>
                             <Pagination.Prev
                                 onClick={handlePreviousPage}
@@ -200,7 +211,9 @@ const AdminManageUser = () => {
                             />
                         </Pagination>
                     </div>
-                    <button className="btn btn-primary">{filteredResults?.length} users</button>
+                    <button className="btn btn-primary mt-4 mb-4 mx-4">
+                        {filteredResults?.length} users
+                    </button>
                 </div>
             ) : (
                 <div className="alert alert-warning" role="alert">
@@ -225,7 +238,7 @@ const AdminManageUser = () => {
                 setShow={setShowDelete}
                 onSuccess={getAllUser}
             />
-        </>
+        </div>
     );
 };
 
