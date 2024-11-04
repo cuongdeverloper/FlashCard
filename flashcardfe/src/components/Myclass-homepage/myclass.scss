@@ -1,7 +1,7 @@
 .my-classes {
     padding: 20px;
     background-color: var(--body_background);
-    color: white;
+    color: var(--body_color);
     margin-bottom: 50px;
   
     .class-list {
@@ -11,7 +11,7 @@
     }
   
     .class-card {
-      background-color: #1E1E40;
+      background-color: var(--body_background);
       border-radius: 8px;
       padding: 20px;
       width: 250px;
@@ -23,7 +23,7 @@
       }
   
       h3 {
-        color: white;
+        color: var(--body_color);
       }
   
       .class-details {
@@ -32,7 +32,7 @@
         margin-top: 10px;
   
         span {
-          background-color: #2E3856;
+          background-color: var(--body_footer);
           padding: 5px 10px;
           border-radius: 5px;
           font-size: 0.9rem;

@@ -67,8 +67,8 @@ const ListQuestionPack = () => {
               interval={3000}
               controls
               indicators={false}
-              className="animation"
-              data-aos="fade-up"
+              className="animation"        
+              style={{width:'85%', margin:'auto'}}
             >
               {createSlides(groupedBySemester[semester]).map((slide, slideIndex) => (
                 <Carousel.Item key={slideIndex}>
@@ -77,7 +77,7 @@ const ListQuestionPack = () => {
                       <div className="col-md-4" key={pack._id}>
                         <Card
                           className="mb-3"
-                          style={{ backgroundColor: "#1E1E40", boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.2)" }}
+                          style={{ backgroundColor: "transparent", boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.2)" }}
                           onClick={() => {
                             navigate(`/detailquespack/${pack._id}`, {
                               state: {
@@ -100,7 +100,7 @@ const ListQuestionPack = () => {
                             </div>
                             <div className="col-md-8">
                               <Card.Body>
-                                <h5 className="card-title" style={{ color: "White" }}>
+                                <h5 className="card-title" style={{ color: "var(--body_color)" }}>
                                   {pack.title}
                                 </h5>
                                 <div className="price">

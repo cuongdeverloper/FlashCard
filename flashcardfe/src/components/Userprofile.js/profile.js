@@ -144,7 +144,7 @@
 
         {/* Exam Results */}
         <div>
-          <h2 className=" mt-4" style={{color:'#717CA5'}}>Exam Results</h2>
+          <h2 className=" mt-4" style={{color:'var(--body_color)'}}>Exam Results</h2>
           <Select
             value={selectedSubject}
             onChange={handleSubjectChange}
@@ -182,10 +182,10 @@
                 ))}
               </div>
             ) : (
-              <div style={{color:'#717CA5'}}>No results found for this exam.</div>
+              <div style={{color:'var(--body_color)'}}>No results found for this exam.</div>
             )
           ) : (
-            <div style={{color:'#717CA5'}}>Please select a subject to view results.</div>
+            <div style={{color:''}}>Please select a subject to view results.</div>
           )}
         </div>
       </div>

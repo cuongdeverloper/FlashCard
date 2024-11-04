@@ -33,6 +33,7 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   border-radius: 10px;
   transition: transform 0.6s ease-in-out;
+  color: var(--body_color);
   img {
     width: 200px !important;
     height: auto !important;
@@ -48,11 +49,11 @@
 }
 
 .flashcard-front {
-  background-color: #2d1785;
+  background-color: var(--body_flashcard);
 }
 
 .flashcard-back {
-  background-color: #2d1785;
+  background-color: var(--body_flashcard);
   transform: rotateY(180deg);
 }
 

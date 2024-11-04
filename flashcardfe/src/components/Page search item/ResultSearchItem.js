@@ -27,7 +27,7 @@ const ResultSearchItem = () => {
                 </div>
                 <div className="col-md-8">
                   <Card.Body>
-                    <h5 className="card-title" style={{ color: 'white' }}>{result.title}</h5>
+                    <h5 className="card-title" >{result.title}</h5>
                     <button className="btn btn-secondary btn-queslength">
                       {result.questions?.length || 0} Flashcard
                     </button>

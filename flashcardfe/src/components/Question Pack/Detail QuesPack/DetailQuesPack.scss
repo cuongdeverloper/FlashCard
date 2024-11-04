@@ -4,20 +4,22 @@
 
 
 .breadCrumb-href a {
-  background-color: #5d37f5; /* Màu nền */
-  color: #fff; /* Màu chữ */
-  border-radius: 20px; /* Bo tròn góc */
-  padding: 10px 20px; /* Khoảng cách bên trong */ 
-  text-decoration: none; /* Bỏ gạch chân */
-  transition: background-color 0.3s ease; /* Hiệu ứng chuyển màu */
+  background-color: var(--body_flashcard); 
+  color: var(--body_color); 
+  border-radius: 20px;
+  padding: 10px 20px; 
+  text-decoration: none; 
+  transition: background-color 0.3s ease;
   position: relative;
   top : 10px;
   right: 15px;
   font-weight: 700;
 }
-
+.breadcrumb li::before{
+  display: none;
+}
 .breadCrumb-href a:hover {
-  background-color: #3b29b8; /* Màu nền khi hover */
+  background-color: #9e9e9e;
 }
 
 .breadcrumbitem .disable-pack {
@@ -175,26 +177,63 @@
 }
 
 .btn-hanldenextpre {
-  svg {
-    font-size: 42px;
+  cursor: pointer; 
+  color: #ffffff; 
+  background-color: transparent;
+  border: none; 
+  display: flex; 
+  align-items: center;
+  padding: 0.5rem; 
+
+  &:hover {
+    color: #00bfff; 
+    transition: color 0.3s ease;
   }
+
+  &.disabled {
+    color: #aaaaaa; 
+    cursor: not-allowed; 
+
+    &:hover {
+      color: #aaaaaa; 
+    }
+  }
+
+  .svg-nextpre {
+    font-size: 30px; 
+    transition: color 0.3s ease; 
+  }
+}
+
+
+.svg-nextpre {
+  color: inherit; 
+}
+
+
+.svg-nextpre{
+  color: var(--body_icon);
 }
 
 /* Table styles */
 .DQ-table {
   min-height: 92px;
   width: 100%;
-  background-color: #2d1785;
+  background-color: var(--body_flashcard);
+  color: var(--body_color);
   margin-bottom: 8px;
   border-radius: 10px;
-  
-  
+ 
+
+}
+.answer-row{
+  border: 2px solid rgba(211, 211, 211, 0.507) !important;
 }
 .DQ-table .question {
   display: flex;
   align-items: center;
   justify-content: center;
-  border-right:  3px solid #121045;
+  border-right:  3px solid rgba(211, 211, 211, 0.507);
   
 }
 

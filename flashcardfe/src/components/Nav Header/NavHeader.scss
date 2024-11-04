@@ -13,7 +13,7 @@
         background-color: var(--body_background-bar) !important;
 
         .container-navbar a {
-            color: #ffffffd8;
+            color: var(--body_color);
         }
     }
     
@@ -129,7 +129,7 @@ a.dropdown-item.active {
 
 
 #mid-navbar-nav {
-    background-color: #2E3856;
+    background-color: transparent;
     border-radius: 10px;
     height: 2.5rem;
     padding: 0 15px;
@@ -144,7 +144,7 @@ a.dropdown-item.active {
     font-size: 1.1rem;
     width: 100%;
     margin-left: 10px;
-    color: white; 
+    color: var(--body_color); 
     height: 100%;
 }
 
@@ -169,7 +169,7 @@ a.dropdown-item.active {
     top: 2px;
     left: 2px; 
     font-size: 20px; 
-    color: white;
+    color: var(--body_icon);
   }
   
   input.search-input {
@@ -189,8 +189,7 @@ a.dropdown-item.active {
     top: 40px;
     left: 0;
     width: 100%;
-    background:#0A092Dff; 
-    border: 1px solid #0A092D; 
+    border: 1px solid #a8a8a9c8; 
     border-radius: 8px; 
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); 
     max-height: 250px; 
@@ -205,10 +204,10 @@ a.dropdown-item.active {
       li {
         padding: 12px 15px; 
         cursor: pointer;
-        background-color: #2E3856; 
-        border-bottom: 1px solid #0A092D; 
+        background-color: var(--body_background); 
+        border-bottom: 1px solid #a8a8a9c8; 
         transition: background-color 0.3s ease; 
-        color: #fff;
+        color: var(--body_color);
         font-weight: 600;
         
         &:last-child {
@@ -216,7 +215,8 @@ a.dropdown-item.active {
         }
   
         &:hover {
-          background-color: #121045; 
+          background-color: rgb(53, 53, 53); 
+          color: white;
         }
       }
     }
@@ -229,11 +229,20 @@ a.dropdown-item.active {
 }
 
 .navbar-nav a.nav-link{
-
+  color: var(--body_color);
   display: flex;
   align-items: center;
 }
 
+.login{
+  color: var(--body_color);
+  padding: 7px 20px !important;
+  border: 2px solid rgba(175, 175, 175, 0.623) !important;
+  border-radius: 20px;
+}
+.login:hover{
+  background-color: var(--body_footer);
+}
   
   @media (max-width: 576px) {
     .navbar-collapse {
@@ -292,9 +301,18 @@ a.dropdown-item.active {
         }
     }
     .dropdown-item:hover {
-      background-color: #5D37F5 !important; /* Soft gray hover effect */
-      opacity: 1; /* Add hover effect */
-      color: black;
+      background-color: rgb(53, 53, 53) !important; 
+      opacity: 1; 
+       p{
+        color: white;
+       }
+       h5{
+        color: white;
+       }
+       svg{
+        color: white !important;
+       }
+      
   }
   
 

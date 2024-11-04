@@ -1,5 +1,7 @@
+
+
 .ListQuestionPack-container h2{
-    color :var(--body_color);
+    color :var(--body_color) ;
     margin: 10px 20px;
 }
 .img-container {
@@ -67,12 +69,13 @@
     }
 
     .card-title {
-        flex: 1; // Ensures that title takes available space
-        height: 50px; // Giảm chiều cao hoặc đặt chiều cao tối thiểu
-        overflow: hidden; // Ensure text does not overflow
-        text-align: center; // Center-align text
-        white-space: nowrap; // Prevents text from wrapping
-        text-overflow: ellipsis; // Adds ellipsis when text overflows
+        flex: 1; 
+        height: 50px; 
+        overflow: hidden; 
+        text-align: center; 
+        white-space: nowrap; 
+        text-overflow: ellipsis; 
+   
     }
 }
 
@@ -96,10 +99,11 @@
         align-items: center;
         gap: 0.5rem;
         margin-top: 10px;  // Giữ khoảng cách nếu cần thiết giữa phần thân và nút
+       
 
         .user-name {
             flex: 1;
-            color: #fff;
+            color: var(--body_color);
             font-weight: 700;
             height: 40px;
             overflow: hidden;
@@ -109,18 +113,16 @@
 
         .btn-queslength {
             flex-shrink: 0;
-            height: 40px;
-            padding: 0 1rem;
+            height: 30px;
+            padding: 0 0.5rem;
             border-radius: 30px;
         }
     }
 
     .btn-queslength {
-        position: absolute;  // Cố định vị trí của button
-        bottom: 10px;  // Cách dưới 10px
-        right: 10px;  // Cách phải 10px
-        height: 40px;
-        padding: 0 1rem;
+        position: absolute;  
+        bottom: 10px;  
+        right: 10px;  
         border-radius: 30px;
         background-color: #007bff;
         color: white;
@@ -229,7 +231,7 @@ h1 {
 .card-title.card-title.h5 {
     height: 48px;
     overflow: hidden;
-    color: #ddd;
+    color: var(--body_color);
 }
 
 .questionpack-h2{

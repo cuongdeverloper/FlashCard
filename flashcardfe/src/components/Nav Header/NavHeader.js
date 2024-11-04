@@ -180,7 +180,7 @@ const handleClickInside = (e) => {
                   </Dropdown>
                 </>
               ) : (
-                <NavLink to="/login" className="nav-link">
+                <NavLink to="/login" className="nav-link login">
                   Login
                 </NavLink>
               )}

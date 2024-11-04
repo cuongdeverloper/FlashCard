@@ -143,7 +143,9 @@ const handleNavigateQuiz = ()=>{
             onClick={handlePrevQuestion}
             className={`${currentQuestionIndex === 0 ? 'disabled' : ''} btn-hanldenextpre`}
           >
-            <FaRegArrowAltCircleLeft />
+            <FaRegArrowAltCircleLeft       style={{
+        color: currentQuestionIndex === 0 ? 'grey' : 'var(--body_icon)'
+      }} />
           </div>
           <div className="index/total" style={{ margin: '0 10px', fontSize: '25px', letterSpacing: '6px', fontWeight: 600, color: '#fff' }}>
             <span>{currentQuestionIndex + 1}/{dataQuestion.length}</span>
@@ -152,7 +154,9 @@ const handleNavigateQuiz = ()=>{
             onClick={handleNextQuestion}
             className={`${currentQuestionIndex === dataQuestion.length - 1 ? 'disabled' : ''} btn-hanldenextpre`}
           >
-            <FaRegArrowAltCircleRight />
+            <FaRegArrowAltCircleRight       style={{
+        color: currentQuestionIndex === dataQuestion.length - 1 ? 'grey' : 'var(--body_icon)'
+      }} />
           </div>
         </div>
 
@@ -175,7 +179,7 @@ const handleNavigateQuiz = ()=>{
         <div className="DQ-table-container">
           <h4>There are {dataQuestion.length} questions in this course.</h4>
           {dataQuestion.length > 0 && dataQuestion.map((item, index) => (
-            <div key={index} className="DQ-table row">
+            <div key={index} className="DQ-table row answer-row">
               <div className="question-col col-3 question"><h5>{item.questionText}</h5></div>
               
               <div className="answer-col col-9">

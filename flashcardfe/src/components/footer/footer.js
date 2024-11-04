@@ -29,7 +29,7 @@ const Footer = () => {
   }, []);
 
   return (
-    <footer className="footer" data-aos="fade-up" >
+    <footer className="footer">
       <div className="footer-content">
         <div className="footer-section contact-info">
           <h4>Contact Us</h4>

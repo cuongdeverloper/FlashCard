@@ -1,40 +1,44 @@
 .search{
     margin-bottom: 10px;
 }
-/* Search input container */
+
 .search {
     position: relative;
 }
 
-/* Input group for search */
+
 .search-input {
     display: flex;
     align-items: center;
     position: relative;
+    background-color: transparent;
+
 
 }
 
-/* Input field */
+
 .search-input .form-control {
-    padding-left: 40px; /* Tạo khoảng trống cho biểu tượng tìm kiếm */
-    border-radius: 30px !important; /* Border radius cho input */
-    height: 40px; /* Chiều cao của ô nhập liệu */
+    padding-left: 40px; 
+    border-radius: 30px !important; 
+    height: 40px; 
     box-shadow: none;
     border: none;
+    color: var(--body_color);
     background-color: #A3A2A2;a.search{
         margin-bottom: 10px;
     }
     
-    /* Search input container */
+   
     .search {
         position: relative;
     }
     
-    /* Input group for search */
+    
     .search-input {
         display: flex;
         align-items: center;
         position: relative;
+        
 
     }
 
@@ -43,11 +47,11 @@
         position: absolute;
         left: 10px;
         top: 10px;
-        color: black; /* Màu sắc của icon */
-        font-size: 20px; /* Kích thước của icon */
+        color: black; 
+        font-size: 20px; 
     }
     
-    /* Kết quả tìm kiếm */
+    
     .search .list-group {
         position: absolute;
         top: 100%;
@@ -71,7 +75,7 @@
     
     /* Màu placeholder */
     .search-input .form-control::placeholder {
-        color: black; 
+        color: var(--body_color); 
     }
     
     /* Hover effect khi di chuột vào kết quả */
@@ -94,7 +98,12 @@
     }
 }
 
-/* Icon tìm kiếm */
+.search-results-dropdown{
+    li{
+        background-color: var(--body_background);
+    }
+}
+
 .search-icon {
     position: absolute;
     left: 10px;

@@ -7,14 +7,14 @@
 
   h2 {
     font-size: 28px;
-    color: #fff;
+    color: var(--body_color);
     margin-bottom: 20px;
     text-align: center;
   }
 
   .no-results {
     font-size: 18px;
-    color: #999;
+    color: var(--body_color);
     text-align: center;
     margin-top: 50px;
   }
@@ -32,7 +32,7 @@
       padding: 15px;
       border: 1px solid #ddd;
       border-radius: 10px;
-      background-color: #f9f9f9;
+      background-color: var(--body_background) !important;
       transition: background-color 0.3s ease, transform 0.2s ease;
       margin: 0 auto; // Căn giữa card
       display: flex;
@@ -59,11 +59,14 @@
           text-decoration: underline;
           color: #004ba0;
         }
+        .card-body h5{
+          color: var(--body_color);
+        }
       }
 
       .result-description {
         font-size: 14px;
-        color: #666;
+        color: var(--body_color) !important;
         margin-top: 5px;
         line-height: 1.5;
         text-align: center;

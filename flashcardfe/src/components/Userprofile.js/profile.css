@@ -1,7 +1,7 @@
 /* Container profile */
 .container-profile {
   padding-top: 20px;
-  background-color: #1e1e66;
+  background-color: var(--body_background);
   min-height: 100vh; /* Đảm bảo chiều cao toàn màn hình */
   padding-bottom: 40px;
   padding-left: 10px;
@@ -10,16 +10,16 @@
 
 /* Navbar breadcrumb */
 .navbar-breadcrumb {
-  background-color: #5d37f5;
+  background-color: var(--body_footer);
   border-radius: 20px;
   padding: 10px 20px;
   margin: 0;
-  color: #fff;
+  color: var(--body_color);
 }
 
 .navbar-breadcrumb .breadcrum-userprofile-home {
   background-color: transparent;
-  color: #fff;
+  color: var(--body_color); 
   border-radius: 20px;
   padding: 10px 20px;
   text-decoration: none;
@@ -28,26 +28,24 @@
 }
 
 .breadcrum-userprofile-home:hover {
-  background-color: #34333b; /* Đổi màu nền khi hover */
+  background-color: var(--body_background); 
 }
 
-/* Profile section - phần Your Profile */
+
 .profile-section {
-  background-color: #0A082D;
+  background-color: var(--body_flashcard);
   padding: 20px;
   border-radius: 10px ;
-  border: 1px solid #25284B;
   display: flex;
-
   align-items: center;
   margin: 0 auto;
-  width: 45%; /* Đảm bảo kích thước hiển thị tốt */
+  width: 45%; 
   margin-bottom: 20px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   height: 430px;
     position: relative;
     flex-direction: column;
-    color: #9089A5;
+    color: var(--body_color);
 
 }
 
@@ -57,7 +55,6 @@
 
   align-items: center;
   width: 108%;
-  border-bottom: 1px solid #25284B;
   justify-content: flex-start;
     img{
       margin-left:30px ;
@@ -97,7 +94,7 @@
   width: 100%;
   padding-left: 10px;
   padding-bottom: 30px;
-  border-bottom: 1px solid #25284B;
+
   text-indent: 20px;
 }
 
