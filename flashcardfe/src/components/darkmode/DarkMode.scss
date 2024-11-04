@@ -5,6 +5,7 @@
     --body_icon: #000000;
     --body_footer: rgba(192, 190, 190, 0.532);
     --body_flashcard: rgba(217, 217, 217, 0.453);
+  
 }
 
 [data-theme="dark"] {
@@ -14,7 +15,9 @@
     --body_icon: #f0f0f0;
     --body_footer: #333344;
     --body_flashcard: #444455;
+
 }
+
 
 .dark_mode {
     margin-top: -17px;
