@@ -48,15 +48,10 @@ import { useEffect } from "react";
 
 
 const Layout = () => {
+
     useEffect(() => {
-        Aos.init({ duration: 1000,offset: 200,
-            duration: 600,
-            easing: 'ease-in-sine',
-            delay: 100, }); // Khởi tạo AOS với thời gian tùy chỉnh
-        Aos.refresh(); // Buộc AOS làm mới
-      }, []);
-
-
+        Aos.init({ duration: 1000 }); 
+    }, []);
 
     return (
         <Suspense fallback={<div>Loading...</div>}>

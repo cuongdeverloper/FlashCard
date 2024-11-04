@@ -67,8 +67,8 @@ const ListQuestionPack = () => {
               interval={3000}
               controls
               indicators={false}
-              className="animation"        
-              style={{width:'85%', margin:'auto'}}
+              className="animation"
+              data-aos="fade-up"
             >
               {createSlides(groupedBySemester[semester]).map((slide, slideIndex) => (
                 <Carousel.Item key={slideIndex}>
