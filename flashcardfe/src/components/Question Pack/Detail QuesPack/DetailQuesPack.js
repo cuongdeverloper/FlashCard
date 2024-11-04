@@ -27,7 +27,10 @@ const DetailQuesPack = () => {
   const getQuestionByQuestionPack = async () => {
     try {
       let response = await getQuestionByQPId(params.packId);
-      console.log(response)
+      if(response === null) {
+        toast.warning('You must login to continue !')
+        navigate('/login')
+      }
       if(response && response.errorCode === 2 ){
         navigate('/forbidden')
       }

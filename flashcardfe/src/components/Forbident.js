@@ -2,7 +2,7 @@ import React from 'react';
 
 const Forbidden = () => {
     return (
-        <div style={{ textAlign: 'center', marginTop: '50px',color:'#fff' }}>
+        <div style={{ textAlign: 'center', marginTop: '50px',color:'#333' }}>
             <h1>403 Forbidden</h1>
             <p>You do not have permission to access this page.</p>
         </div>
