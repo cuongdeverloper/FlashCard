@@ -69,6 +69,7 @@ const ListQuestionPack = () => {
               indicators={false}
               className="animation"
               data-aos="fade-up"
+              style={{width:'85%' ,margin:'auto'}}
             >
               {createSlides(groupedBySemester[semester]).map((slide, slideIndex) => (
                 <Carousel.Item key={slideIndex}>
