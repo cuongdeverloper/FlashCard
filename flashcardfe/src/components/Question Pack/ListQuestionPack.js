@@ -68,7 +68,6 @@ const ListQuestionPack = () => {
               controls
               indicators={false}
               className="animation"
-              data-aos="fade-up"
             >
               {createSlides(groupedBySemester[semester]).map((slide, slideIndex) => (
                 <Carousel.Item key={slideIndex}>

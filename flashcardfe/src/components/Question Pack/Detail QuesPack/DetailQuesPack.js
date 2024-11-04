@@ -11,7 +11,7 @@ import { toast } from "react-toastify";
 const DetailQuesPack = () => {
   const params = useParams();
   const userId = useSelector(state => state.user.account.id);
-
+  const isAuthenticated = useSelector(state => state.user.isAuthenticated);
   const [dataQuestion, setDataQuestion] = useState([]);
   const [idQp,setIdQp] = useState('')
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
@@ -27,6 +27,7 @@ const DetailQuesPack = () => {
   const getQuestionByQuestionPack = async () => {
     try {
       let response = await getQuestionByQPId(params.packId);
+      console.log(response)
       if(response && response.errorCode === 2 ){
         navigate('/forbidden')
       }
