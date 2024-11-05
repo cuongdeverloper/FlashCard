@@ -3,10 +3,11 @@ import "./introduce.scss";
 import backgroundImage from "../../assests/question_background.jpg";
 import { useNavigate } from "react-router-dom";
 import VideoIntro from "./VideoIntro";
+import { useSelector } from "react-redux";
 
 const Introduce = () => {
   const navigate = useNavigate();
-
+  const isAuthenticated = useSelector(state => state.user.isAuthenticated);
   return (
     <>
       <div
@@ -21,9 +22,10 @@ const Introduce = () => {
             Create and deliver bell-to-bell curriculum resources that meet the
             needs of every student.
           </p>
-          <button className="signup-button" onClick={() => navigate("/login")}>
+          {!isAuthenticated ? <button className="signup-button" onClick={() => navigate("/login")}>
             Sign up for free
-          </button>
+          </button> : ''}
+          
         </div>
       </div>
       <VideoIntro />
