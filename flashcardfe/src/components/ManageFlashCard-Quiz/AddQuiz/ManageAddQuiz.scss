@@ -8,9 +8,9 @@
      input.form-control {
         background-color: inherit;  
         border: none;  
-        border-bottom: 2px solid #fff;  
+        border-bottom: 2px solid var(--body_icon);  
         padding: 10px; 
-        color: #fff;  
+        color: var(--body_color);  
 
         &:focus {
             border-bottom: 2px solid #f39c12;  
@@ -19,15 +19,15 @@
             transition: border-bottom 0.3s ease, box-shadow 0.3s ease;  
         }
         &::placeholder {
-            color: #fff;
+            color: var(--body_color);
         }
     }
     input[type="file"] {
         border-radius: 5px;
-        border: 1px solid #ddd; 
+        border: 1px solid var(--body_icon); 
         padding: 10px;
         background-color: transparent;  
-        color: #fff;
+        color: var(--body_color);
 
        
         ::file-selector-button {
@@ -43,6 +43,9 @@
                 background-color: #0056b3;  
             }
         }
+    }
+    .form-check-label{
+        color: var(--body_color);
     }
 
     // Các trường textarea
@@ -63,7 +66,7 @@
     h1 {
         text-align: center;
         margin-bottom: 30px;
-        color: #fff;
+        color: var(--body_color);
         font-size: 2rem;
     }
 
@@ -169,7 +172,7 @@
 
     .form-label {
         font-weight: 600;
-        color: #fff;
+        color: var(--body_color);
     }
 
     .image-preview {
@@ -199,7 +202,7 @@
     .flashcard-semester-option{
         background-color: transparent;
         border: 0;
-        border-bottom: 2px solid #fff; 
-        color: #fff;
+        border-bottom: 2px solid var(--body_icon); 
+        color: var(--body_color);
     }
 }
