@@ -74,8 +74,8 @@ useEffect(()=>{
             console.log(response)
             if (response && response.errorCode === 0) {
                 toast.warning('You must login again.');
-                dispatch(doLogout());
-                navigate('/login');
+                // dispatch(doLogout());
+                // navigate('/login');
             } else 
             if(response.errorCode ===15){
                 toast.warning(response.message)

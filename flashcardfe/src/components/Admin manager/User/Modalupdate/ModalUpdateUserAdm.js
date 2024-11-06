@@ -6,33 +6,27 @@ import { toast } from 'react-toastify';
 import Select from 'react-select';
 import { updateUserProfile } from '../../../../service/ApiService';
 
-const ModalUpdateUserAdm = ({ user, showUpdate, setShowUpdate,onSuccess }) => {
+const ModalUpdateUserAdm = ({ user, showUpdate, setShowUpdate, onSuccess }) => {
     const [show, setShow] = useState(showUpdate);
-    const [originalProfile, setOriginalProfile] = useState(null); 
-    const [updatedProfile, setUpdatedProfile] = useState({
-        username: '',
-        email: '',
-        phoneNumber: '',
-        gender: '',
-        role: '',
-        image: null,
-        _id: null,
-    });
-    const [imageUrl, setImageUrl] = useState(null);
+    const [originalProfile, setOriginalProfile] = useState(null);
+    const [updatedProfile, setUpdatedProfile] = useState(user);
+    const [imageUrl, setImageUrl] = useState(user?.image);
+
+
 
     const handleClose = () => {
         setShow(false);
         setShowUpdate(false);
         setUpdatedProfile(originalProfile);
+        setImageUrl(originalProfile?.image || null); // Reset to original image URL
     };
-
 
     useEffect(() => {
         setShow(showUpdate);
         if (user) {
             setOriginalProfile(user);
             setUpdatedProfile(user);
-            setImageUrl(user.image);
+            setImageUrl(user.image || null); // Update imageUrl if user has an existing image
         }
     }, [showUpdate, user]);
 
@@ -71,23 +65,27 @@ const ModalUpdateUserAdm = ({ user, showUpdate, setShowUpdate,onSuccess }) => {
         formData.append('phoneNumber', updatedProfile.phoneNumber);
         formData.append('gender', updatedProfile.gender);
         formData.append('role', updatedProfile.role);
-
-        if (updatedProfile.image) {
-            formData.append('image', updatedProfile.image);
+    
+        // Check if there is a new image; if not, use the existing image URL
+        if (updatedProfile.image instanceof File) {
+            formData.append('image', updatedProfile.image); // New image
+        } else if (user.image) {
+            formData.append('image', user.image); // Existing image
         }
-
+    
         try {
             const response = await updateUserProfile(updatedProfile._id, formData);
             if (response && response.errorCode === 0) {
                 toast.success('Profile updated successfully!');
                 setOriginalProfile(updatedProfile);
-                onSuccess()
-                handleClose()
+                onSuccess();
+                handleClose();
             }
         } catch (error) {
             toast.error('Error updating profile: ' + error.message);
         }
     };
+    
 
     const genderOptions = [
         { value: 'male', label: 'Male' },
@@ -122,7 +120,7 @@ const ModalUpdateUserAdm = ({ user, showUpdate, setShowUpdate,onSuccess }) => {
                             <Form.Control
                                 type="text"
                                 name="username"
-                                value={updatedProfile.username || ''}
+                                value={updatedProfile?.username || ''}
                                 onChange={handleInputChange}
                                 placeholder="Enter your name"
                             />
@@ -133,7 +131,7 @@ const ModalUpdateUserAdm = ({ user, showUpdate, setShowUpdate,onSuccess }) => {
                             <Form.Control
                                 type="email"
                                 name="email"
-                                value={updatedProfile.email || ''}
+                                value={updatedProfile?.email || ''}
                                 onChange={handleInputChange}
                                 placeholder="Enter your email"
                                 disabled
@@ -145,7 +143,7 @@ const ModalUpdateUserAdm = ({ user, showUpdate, setShowUpdate,onSuccess }) => {
                             <Form.Control
                                 type="text"
                                 name="phoneNumber"
-                                value={updatedProfile.phoneNumber || ''}
+                                value={updatedProfile?.phoneNumber || ''}
                                 onChange={handleInputChange}
                                 placeholder="Enter your phone number"
                             />
@@ -156,7 +154,7 @@ const ModalUpdateUserAdm = ({ user, showUpdate, setShowUpdate,onSuccess }) => {
                             <Select
                                 name="gender"
                                 value={genderOptions.find(
-                                    (option) => option.value === updatedProfile.gender
+                                    (option) => option.value === updatedProfile?.gender
                                 ) || null}
                                 options={genderOptions}
                                 onChange={handleSelectChange}
@@ -168,27 +166,28 @@ const ModalUpdateUserAdm = ({ user, showUpdate, setShowUpdate,onSuccess }) => {
                             <Form.Label>Role</Form.Label>
                             <Select
                                 name="role"
-                                value={roleOptions.find((option) => option.value === updatedProfile.role) || null}
+                                value={roleOptions.find((option) => option.value === updatedProfile?.role) || null}
                                 options={roleOptions}
                                 onChange={handleSelectChange}
                                 placeholder="Select your role"
                             />
                         </Form.Group>
 
-                        <Form.Group controlId={`image-${updatedProfile._id}`}>
+                        <Form.Group controlId={`image-${updatedProfile?._id}`}>
                             <Form.Label>Profile Picture:</Form.Label>
                             <Form.Control
                                 type="file"
                                 accept="image/*"
                                 onChange={handleImageUpload}
                             />
-                            {imageUrl && (
+                            {(imageUrl || user?.image) && (
                                 <img
                                     src={imageUrl}
-                                    alt="Selected"
+                                    alt="Profile"
                                     style={{ height: '100px', width: '100px', marginTop: '10px' }}
                                 />
                             )}
+
                         </Form.Group>
                     </Form>
                 </Modal.Body>
